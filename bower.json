@@ -1,0 +1,6 @@
+{
+  "name": "YourApp.com",
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
