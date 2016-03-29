@@ -1,0 +1,26 @@
+body {
+    background-color: #eee;
+    font-family: TitilliumText,Helvetica,Arial,sans-serif;
+}
+
+.navbar-nav > li > a, .navbar-brand {
+    padding-top: 4px;
+    padding-bottom: 0;
+    height: 28px;
+}
+
+.navbar {
+    min-height: 28px;
+    margin-bottom: 0;
+}
+
+.main-container {
+    padding-top: 60px;
+}
+
+.game-container {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}

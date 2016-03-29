@@ -3,11 +3,14 @@
     <head>
         <title>@yield('title')</title>
 
+        <link rel="shortcut icon" href="/favicon.ico" type="image/png">
+
         <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'><link rel='stylesheet' href="https://apiary.a.ssl.fastly.net/assets/website-b64c00d70e7971fc4f7a.css">
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <link href="{{ asset('bower/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link href="{{ asset('css/main.css') }}" rel="stylesheet">
         @yield('styles')
 
         <script src="{{ asset('bower/jquery/dist/jquery.min.js') }}"></script>
@@ -15,7 +18,25 @@
         @yield('scripts')
     </head>
     <body>
-        <div class="container">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-6" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Games</a></li>
+                        <li><a href="/signin">Sign In</a></li>
+                        <li><a href="/signup">Sign Out</a></li>
+                        <li><a href="/logout">logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container main-container">
             <div class="content">
                 @yield('content')
             </div>

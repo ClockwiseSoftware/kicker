@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/', 'Auth\AuthController@index');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -25,5 +23,15 @@ Route::get('/', 'Auth\AuthController@index');
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+    // Authentication routes...
+    Route::get('/signin', 'Auth\AuthController@getLogin');
+    Route::post('/signin', 'Auth\AuthController@postLogin');
+    Route::get('/logout', 'Auth\AuthController@getLogout');
+
+    // Registration routes...
+    Route::get('/signup', 'Auth\AuthController@getRegister');
+    Route::post('/signup', 'Auth\AuthController@postRegister');
+
+    // Games routes
+    Route::get('/', 'GamesController@getIndex');
 });
