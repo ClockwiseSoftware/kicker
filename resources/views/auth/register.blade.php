@@ -15,7 +15,7 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <h2 class="form-sign-heading">Please sign up</h2>
-        <a href="#" class="sign-with">Sign up with Facebook</a>
+        <a href="/fb/signin" class="sign-with">Sign up with Facebook</a>
         <div class="sign-choices">OR</div>
 
         <div class="form-inputs">

@@ -28,6 +28,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/signin', 'Auth\AuthController@postLogin');
     Route::get('/logout', 'Auth\AuthController@getLogout');
 
+    Route::get('/fb/signin', 'Auth\AuthController@redirectToProvider');
+    Route::get('/fb/signin/callback', 'Auth\AuthController@handleProviderCallback');
+
     // Registration routes...
     Route::get('/signup', 'Auth\AuthController@getRegister');
     Route::post('/signup', 'Auth\AuthController@postRegister');

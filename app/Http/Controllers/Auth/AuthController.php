@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -30,11 +31,6 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/';
 
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware($this->guestMiddleware(), ['except' => ['logout', 'getLogout']]);
@@ -68,5 +64,20 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::with('facebook')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        $fbUser = Socialite::with('facebook')->user();
+        $user = User::where('id', '>', 1)->firstOrFail();
+
+        echo "<pre>"; print_r($user); echo "</pre>"; die();
+
+        // $user->token;
     }
 }
