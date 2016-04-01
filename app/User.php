@@ -6,6 +6,24 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public $defaults = [
+        'rating' => 1200,
+        'count_wins' => 0,
+        'count_draws' => 0,
+        'count_looses' => 0,
+        'avatar_url' => null,
+    ];
+
+    public function __construct(array $attributes = [])
+    {
+        foreach ($this->defaults as $attr => $value) {
+            if (!isset($attributes[$attr]))
+                $attributes[$attr] = $value;
+        }
+
+        parent::__construct($attributes);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -13,6 +31,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password',
+        'count_wins', 'count_draws', 'count_looses',
+        'rating', 'avatar_url'
     ];
 
     /**

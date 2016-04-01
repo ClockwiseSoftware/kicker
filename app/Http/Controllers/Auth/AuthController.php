@@ -84,6 +84,7 @@ class AuthController extends Controller
             if (!$user) {
                 $user = new User();
                 $user->facebook_id = $fbUser->id;
+                $user->avatar_url = $fbUser->avatar;
                 $user->email = $fbUser->email;
                 $user->name = $fbUser->name;
                 $user->password = $user->generateTempPassword();
