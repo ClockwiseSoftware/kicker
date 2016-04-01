@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -74,10 +75,30 @@ class AuthController extends Controller
     public function handleProviderCallback()
     {
         $fbUser = Socialite::with('facebook')->user();
-        $user = User::where('id', '>', 1)->firstOrFail();
 
-        echo "<pre>"; print_r($user); echo "</pre>"; die();
+        if ($fbUser) {
+            $user = User::where('facebook_id', $fbUser->id)
+                ->orWhere('email', $fbUser->email)
+                ->first();
 
-        // $user->token;
+            if (!$user) {
+                $user = new User();
+                $user->facebook_id = $fbUser->id;
+                $user->email = $fbUser->email;
+                $user->name = $fbUser->name;
+                $user->password = $user->generateTempPassword();
+
+                $user->save();
+            } elseif ($user->facebook_id === $fbUser->id) {
+                //
+            } elseif ($user->email === $fbUser->email) {
+                $user->facebook_id = $fbUser->id;
+                $user->save();
+            }
+
+            Auth::login($user);
+        }
+
+        return redirect()->route('home');
     }
 }

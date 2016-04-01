@@ -23,4 +23,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function generateTempPassword($length = 32)
+    {
+        $password = '';
+
+        $range = range('a', 'z');
+        $range = array_merge(range(1, 9), $range);
+
+        for ($i = 0; $i < $length; $i++) {
+            $index = rand(0, $length - 1);
+            $password .= $range[$index];
+        }
+
+        return $password;
+    }
 }

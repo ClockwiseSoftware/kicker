@@ -5,7 +5,8 @@
 
         <link rel="shortcut icon" href="/favicon.ico" type="image/png">
 
-        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'><link rel='stylesheet' href="https://apiary.a.ssl.fastly.net/assets/website-b64c00d70e7971fc4f7a.css">
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'>
+        <link rel='stylesheet' href="https://apiary.a.ssl.fastly.net/assets/website-b64c00d70e7971fc4f7a.css">
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
         <link href="{{ asset('bower/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -18,7 +19,7 @@
         @yield('scripts')
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top navbar-center">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -27,11 +28,14 @@
                     </button>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-center">
                         <li><a href="/">Games</a></li>
-                        <li><a href="/signin">Sign In</a></li>
-                        <li><a href="/signup">Sign Out</a></li>
-                        <li><a href="/logout">logout</a></li>
+                        @if(!Auth::check())
+                            <li><a href="/signin">Sign In</a></li>
+                            <li><a href="/signup">Sign Up</a></li>
+                        @else
+                            <li><a href="/logout">Logout</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>

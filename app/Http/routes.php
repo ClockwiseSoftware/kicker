@@ -36,5 +36,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/signup', 'Auth\AuthController@postRegister');
 
     // Games routes
-    Route::get('/', 'GamesController@getIndex');
+    Route::get('/', 'GamesController@getIndex')->name('home');
 });
