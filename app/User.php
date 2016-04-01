@@ -58,4 +58,12 @@ class User extends Authenticatable
 
         return $password;
     }
+
+    /**
+     * @return int
+     */
+    public function getCountGames()
+    {
+        return (int) $this->count_wins + (int) $this->count_draws + (int) $this->count_looses;
+    }
 }

@@ -36,3 +36,68 @@ body {
 .navbar.navbar-center .navbar-nav {
     vertical-align: middle;
 }
+
+.team {
+    display: inline-block;
+}
+
+.result-container {
+    display: inline-block;
+    font-size: 24px;
+    /*line-height: 48px;*/
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 43px;
+    vertical-align: top;
+}
+
+.team-user > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.team-user .user-avatar {
+    height: 70px;
+    width: 70px;
+    background-color: #8ca1dc;
+}
+
+.team-user:last-of-type {
+    margin-top: 5px;
+}
+
+.result .point {
+    display: inline-block;
+}
+
+.result .point.win {
+    font-weight: bold;
+}
+
+.result-container .versus {
+    text-align: center;
+}
+
+.team-b {
+    text-align: left;
+}
+
+.team-b .info {
+    padding-left: 10px;
+}
+
+.team-a {
+    text-align: right;
+}
+
+.team-a .info {
+    padding-right: 10px;
+}
+
+.game-graphic {
+    display: inline-block;
+}
+
+.game-information {
+    display: inline-block;
+}
