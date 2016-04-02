@@ -23,6 +23,7 @@ body {
     padding: 20px;
     border-radius: 6px;
     margin-bottom: 10px;
+    display: table;
 }
 
 .navbar.navbar-center .navbar-nav {
@@ -62,6 +63,11 @@ body {
     background-color: #8ca1dc;
 }
 
+.team-user .user-avatar img {
+    max-height: 70px;
+    max-width: 70px;
+}
+
 .team-user:last-of-type {
     margin-top: 5px;
 }
@@ -99,5 +105,30 @@ body {
 }
 
 .game-information {
-    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+}
+
+.game-information .game-name {
+    font-size: 25px;
+    text-align: center;
+}
+
+.game-information .controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.game-information .controls .control-button {
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    padding: 0;
+}
+
+.game-information .controls .control-button > * {
+    vertical-align: middle;
 }

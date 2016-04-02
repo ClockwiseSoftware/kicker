@@ -64,6 +64,15 @@ class User extends Authenticatable
      */
     public function getCountGames()
     {
-        return (int) $this->count_wins + (int) $this->count_draws + (int) $this->count_looses;
+        return
+            (int) $this->count_wins + (int) $this->count_draws + (int) $this->count_looses;
+    }
+
+    public function getAvatarUrl()
+    {
+        if ($this->avatar_url)
+            return $this->avatar_url;
+
+        return '/img/no-avatar.jpg';
     }
 }
