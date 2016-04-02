@@ -34,6 +34,7 @@
                             <li><a href="/signin">Sign In</a></li>
                             <li><a href="/signup">Sign Up</a></li>
                         @else
+                            <li><a href="{{ route('createGame') }}">Add game</a></li>
                             <li><a href="/logout">Logout</a></li>
                         @endif
                     </ul>

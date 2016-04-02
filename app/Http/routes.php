@@ -37,4 +37,8 @@ Route::group(['middleware' => ['web']], function () {
 
     // Games routes
     Route::get('/', 'GamesController@getIndex')->name('home');
+    Route::get('game/create', 'GamesController@getCreate')->name('createGame');
+
+    // Users routes
+    Route::post('/user/search', 'UserController@postSearch')->name('userSearch');
 });

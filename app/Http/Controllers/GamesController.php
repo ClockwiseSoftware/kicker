@@ -14,4 +14,9 @@ class GamesController extends Controller
             'games' => Game::with(['gamesUsersA.user', 'gamesUsersB.user'])->get()
         ]);
     }
+
+    public function getCreate(Request $request)
+    {
+        return view('games.create');
+    }
 }

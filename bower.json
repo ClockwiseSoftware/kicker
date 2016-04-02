@@ -1,6 +1,8 @@
 {
   "name": "YourApp.com",
   "dependencies": {
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "select2": "*",
+    "eonasdan-bootstrap-datetimepicker": "*"
   }
 }
