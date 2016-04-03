@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
@@ -27,7 +28,7 @@ class Game extends Model
         return $this->hasMany(GameUser::class)->where('team_index', static::TEAM_B_INDEX);
     }
 
-    public function addUsers(array $teamAUsers, array $teamBUsers)
+    public function addUsers($teamAUsers, $teamBUsers)
     {
         if (!$this->gamesUsersA->isEmpty())
             return false;
@@ -44,7 +45,7 @@ class Game extends Model
                 'user_id' => $user->id,
                 'team_index' => static::TEAM_A_INDEX,
                 'rating_before' => $user->rating,
-                'rating_after' => array_pop($teamARatings)
+                'rating_after' => array_shift($teamARatings)
             ]);
 
             $user->rating = $gameUser->rating_after;
@@ -65,7 +66,7 @@ class Game extends Model
                 'user_id' => $user->id,
                 'team_index' => static::TEAM_B_INDEX,
                 'rating_before' => $user->rating,
-                'rating_after' => array_pop($teamBRatings)
+                'rating_after' => array_shift($teamBRatings)
             ]);
 
             if ($gameResult === GameProcessor::WIN)
@@ -92,5 +93,15 @@ class Game extends Model
         } else {
             return GameProcessor::DRAW;
         }
+    }
+
+    public function setPlayedAtAttribute($value)
+    {
+        $this->attributes['played_at'] = date('c', strtotime($value));
+    }
+
+    public function getPlayedAtAttribute()
+    {
+        return date('m/d/Y H:i', strtotime($this->attributes['played_at']));
     }
 }

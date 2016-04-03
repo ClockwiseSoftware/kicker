@@ -36,8 +36,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/signup', 'Auth\AuthController@postRegister');
 
     // Games routes
-    Route::get('/', 'GamesController@getIndex')->name('home');
-    Route::get('game/create', 'GamesController@getCreate')->name('createGame');
+    Route::get('/', 'GameController@getIndex')->name('home');
+    Route::get('game/create', 'GameController@getCreate')->name('createGame');
+    Route::post('game/create', 'GameController@postCreate')->name('createGameCheck');
+    Route::get('game/update/{id}', 'GameController@getUpdate')
+        ->where('id', '[0-9]+')->name('updateGame');
+    Route::post('game/update/{id}', 'GameController@postUpdate')
+        ->where('id', '[0-9]+')->name('updateGameCheck');
 
     // Users routes
     Route::post('/user/search', 'UserController@postSearch')->name('userSearch');

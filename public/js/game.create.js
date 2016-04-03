@@ -40,9 +40,7 @@ $('document').ready(function(e) {
                     name = '';
 
                 for (var i = 0; i < data.length; i++) {
-                    name = '<b>#' + data[i].id + '</b> ' + '<span class="name">' +
-                        data[i].name
-                        + '</span>';
+                    name = '#' + data[i].id + ' ' + data[i].name;
                     results.push({id: data[i].id, text: name});
                 }
 
@@ -56,5 +54,11 @@ $('document').ready(function(e) {
         minimumInputLength: 3,
         multiple: true,
         maximumSelectionLength: 2
+    });
+
+    $(function () {
+        $('#played-at').datetimepicker({
+            format: 'MM/DD/YYYY HH:mm'
+        });
     });
 });

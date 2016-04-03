@@ -38,6 +38,11 @@ body {
     vertical-align: middle;
 }
 
+/* Games */
+.games-pages {
+    text-align: center;
+}
+
 .game-graphic .team {
     display: inline-block;
 }
@@ -52,6 +57,10 @@ body {
     vertical-align: top;
 }
 
+.team-user {
+    width: 190px;
+}
+
 .team-user > * {
     display: inline-block;
     vertical-align: middle;
@@ -61,11 +70,40 @@ body {
     height: 70px;
     width: 70px;
     background-color: #8ca1dc;
+    position: relative;
 }
 
 .team-user .user-avatar img {
     max-height: 70px;
     max-width: 70px;
+}
+
+.team-user .user-avatar .stat {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    text-align: right;
+    padding: 0 2px;
+    display: none;
+    font-weight: 600;
+}
+
+.team-user .user-avatar:hover .stat {
+    display: block;
+}
+
+.team-user .user-avatar .stat .wins {
+    color: #8ca1dc;
+}
+
+.team-user .user-avatar .stat .loses {
+    color: #c90000;
+}
+
+.team-user .user-avatar .stat .draws {
+    color: rgb(136, 136, 136);
 }
 
 .team-user:last-of-type {
@@ -78,6 +116,11 @@ body {
 
 .result .point.win {
     font-weight: bold;
+    color: #8ca1dc;
+}
+
+.result .point.lose {
+    color: #c90000;
 }
 
 .result-container .versus {
@@ -92,6 +135,20 @@ body {
     padding-left: 10px;
 }
 
+.team .info .name {
+    max-width: 103px;
+}
+
+.team .info .rating-delta.lose {
+    font-weight: bold;
+    color: #c90000;
+}
+
+.team .info .rating-delta.win {
+    font-weight: bold;
+    color: #8ca1dc;
+}
+
 .team-a {
     text-align: right;
 }
@@ -102,6 +159,7 @@ body {
 
 .game-graphic {
     display: inline-block;
+    text-align: center;
 }
 
 .game-information {
@@ -147,4 +205,7 @@ body {
     font-size: 20px;
     font-weight: 600;
     padding: 0 0 20px 0;
+}
+.create-game-container .error {
+    color: #c90000;
 }
