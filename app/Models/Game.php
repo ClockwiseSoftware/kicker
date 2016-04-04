@@ -11,6 +11,7 @@ class Game extends Model
     const TEAM_B_INDEX = 'b';
 
     protected $table = 'games';
+    protected $fillable = ['played_at', 'team_a_points', 'team_b_points'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -28,57 +29,24 @@ class Game extends Model
         return $this->hasMany(GameUser::class)->where('team_index', static::TEAM_B_INDEX);
     }
 
-    public function addUsers($teamAUsers, $teamBUsers)
+    public function usersA()
     {
-        if (!$this->gamesUsersA->isEmpty())
-            return false;
-
-        $gameResult = $this->getGameResult();
-
-        list($teamARatings, $teamBRatings) = GameProcessor::calculateRatingForTeams(
-            $teamAUsers, $teamBUsers, $gameResult
-        );
-
-        foreach ($teamAUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $this->id,
-                'user_id' => $user->id,
-                'team_index' => static::TEAM_A_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamARatings)
-            ]);
-
-            $user->rating = $gameUser->rating_after;
-
-            if ($gameResult === GameProcessor::WIN)
-                $user->count_wins++;
-            elseif ($gameResult === GameProcessor::LOSE)
-                $user->count_looses++;
-            else
-                $user->count_draws++;
-
-            $user->save();
+        $users = [];
+        foreach ($this->gamesUsersA as $gamesUsers) {
+            $users[] = $gamesUsers->user;
         }
 
-        foreach ($teamBUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $this->id,
-                'user_id' => $user->id,
-                'team_index' => static::TEAM_B_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamBRatings)
-            ]);
+        return $users;
+    }
 
-            if ($gameResult === GameProcessor::WIN)
-                $user->count_looses++;
-            elseif ($gameResult === GameProcessor::LOSE)
-                $user->count_wins++;
-            else
-                $user->count_draws++;
-
-            $user->rating = $gameUser->rating_after;
-            $user->save();
+    public function usersB()
+    {
+        $users = [];
+        foreach ($this->gamesUsersB as $gamesUsers) {
+            $users[] = $gamesUsers->user;
         }
+
+        return $users;
     }
 
     /**
@@ -95,11 +63,19 @@ class Game extends Model
         }
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setPlayedAtAttribute($value)
     {
         $this->attributes['played_at'] = date('c', strtotime($value));
+        return $this;
     }
 
+    /**
+     * @return bool|string
+     */
     public function getPlayedAtAttribute()
     {
         return date('m/d/Y H:i', strtotime($this->attributes['played_at']));

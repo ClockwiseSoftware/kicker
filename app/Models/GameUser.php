@@ -13,11 +13,25 @@ class GameUser extends Model
         'rating_before', 'rating_after'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function game()
+    {
+        return $this->hasOne(Game::class, 'id', 'game_id');
+    }
+
+    /**
+     * @return mixed
+     */
     public function getDelta()
     {
         return $this->rating_after - $this->rating_before;
