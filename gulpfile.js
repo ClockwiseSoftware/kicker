@@ -24,6 +24,8 @@ elixir(function(mix) {
         'bower/bootstrap/dist/js/bootstrap.min.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
+    mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
+
     // Create game assets
     mix.scripts([
         'bower/select2/dist/js/select2.full.min.js',
