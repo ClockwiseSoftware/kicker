@@ -1,5 +1,4 @@
 <?php
-var_dump(env('REDIRECT_URL')); die();
 return [
 
     /*
@@ -38,7 +37,7 @@ return [
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect' => env('REDIRECT_URL'),
+        'redirect' => env('FACEBOOK_REDIRECT_URL'),
     ],
 
 ];
