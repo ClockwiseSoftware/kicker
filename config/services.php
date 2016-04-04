@@ -1,5 +1,5 @@
 <?php
-
+var_dump(env('REDIRECT_URL')); die();
 return [
 
     /*
