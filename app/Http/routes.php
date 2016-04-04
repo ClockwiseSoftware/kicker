@@ -24,16 +24,17 @@
 
 Route::group(['middleware' => ['web']], function () {
     // Authentication routes...
-    Route::get('/signin', 'Auth\AuthController@getLogin');
-    Route::post('/signin', 'Auth\AuthController@postLogin');
-    Route::get('/logout', 'Auth\AuthController@getLogout');
+    Route::get('/signin', 'Auth\AuthController@getLogin')->name('login');
+    Route::post('/signin', 'Auth\AuthController@postLogin')->name('checkLogin');
+    Route::get('/logout', 'Auth\AuthController@getLogout')->name('logout');
 
-    Route::get('/fb/signin', 'Auth\AuthController@redirectToProvider');
-    Route::get('/fb/signin/callback', 'Auth\AuthController@handleProviderCallback');
+    Route::get('/fb/signin', 'Auth\AuthController@redirectToProvider')->name('fbRegister');
+    Route::get('/fb/signin/callback', 'Auth\AuthController@handleProviderCallback')
+        ->name('fbRegisterCheck');
 
     // Registration routes...
-    Route::get('/signup', 'Auth\AuthController@getRegister');
-    Route::post('/signup', 'Auth\AuthController@postRegister');
+    Route::get('/signup', 'Auth\AuthController@getRegister')->name('register');
+    Route::post('/signup', 'Auth\AuthController@postRegister')->name('checkRegister');
 
     // Games routes
     Route::get('/', 'GameController@getIndex')->name('home');

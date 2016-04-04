@@ -3,7 +3,7 @@
     <head>
         <title>@yield('title')</title>
 
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
         {{-- Google gonts CDN --}}
         <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'>
@@ -15,9 +15,6 @@
 
         {{ Html::style('css/main.css') }}
         @yield('styles')
-
-        {{ Html::script('js/vendors.js') }}
-        @yield('scripts')
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top navbar-center">
@@ -30,13 +27,13 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav navbar-center">
-                        <li><a href="/">Games</a></li>
+                        <li><a href="{{ route('home') }}">Games</a></li>
                         @if(!Auth::check())
-                            <li><a href="/signin">Sign In</a></li>
-                            <li><a href="/signup">Sign Up</a></li>
+                            <li><a href="{{ route('login') }}">Sign In</a></li>
+                            <li><a href="{{ route('register') }}">Sign Up</a></li>
                         @else
                             <li><a href="{{ route('createGame') }}">Add game</a></li>
-                            <li><a href="/logout">Logout</a></li>
+                            <li><a href="{{ route('logout') }}">Logout</a></li>
                         @endif
                     </ul>
                 </div>
@@ -47,5 +44,8 @@
                 @yield('content')
             </div>
         </div>
+
+        {{ Html::script('js/vendors.js') }}
+        @yield('scripts')
     </body>
 </html>

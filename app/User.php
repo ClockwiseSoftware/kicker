@@ -73,6 +73,6 @@ class User extends Authenticatable
         if ($this->avatar_url)
             return $this->avatar_url;
 
-        return '/img/no-avatar.png';
+        return '/img/no-avatar.min.png';
     }
 }
