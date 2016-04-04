@@ -1,5 +1,5 @@
 @extends('layouts.sign')
-@section('title', 'Kicker charts / Sign up')
+@section('title', 'Sign up')
 
 @section('content')
 

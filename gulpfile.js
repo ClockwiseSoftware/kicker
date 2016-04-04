@@ -12,5 +12,33 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+
+    // Main assets
+    mix.styles([
+        'bower/bootstrap/dist/css/bootstrap.css',
+        'css/main.css'
+    ], 'public/css/main.css', 'resources/assets');
+
+    mix.scripts([
+        'bower/jquery/dist/jquery.min.js',
+        'bower/bootstrap/dist/js/bootstrap.min.js'
+    ], 'public/js/vendors.js', 'resources/assets');
+
+    // Create game assets
+    mix.scripts([
+        'bower/select2/dist/js/select2.full.min.js',
+        'bower/moment/min/moment.min.js',
+        'bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+        'js/game.create.js'
+    ], 'public/js/game.js', 'resources/assets');
+
+    mix.styles([
+        'bower/select2/dist/css/select2.min.css',
+        'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
+    ], 'public/css/game.css', 'resources/assets');
+
+    // Sign-up and Sign-in
+    mix.styles([
+        'css/sign.css'
+    ], 'public/css/sign.css', 'resources/assets');
 });

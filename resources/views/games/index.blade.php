@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Page Title')
+@section('title', 'Games')
 @section('content')
     @foreach ($games as $game)
     <div class="row games-container">

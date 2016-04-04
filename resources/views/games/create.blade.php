@@ -1,18 +1,6 @@
-@extends('layouts.master')
-
-@section('styles')
-    <link href="{{ asset('bower/select2/dist/css/select2.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet"
-          href="{{ asset('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" />
-@stop
-@section('scripts')
-    <script src="{{ asset('bower/select2/dist/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('bower/moment/min/moment.min.js') }}"></script>
-    <script src="{{ asset('bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ asset('js/game.create.js') }}"></script>
-@stop
-
+@extends('layouts.game')
 @section('title', 'Add Game')
+
 @section('content')
 <div class="row">
     <div class="col-md-8 col-md-offset-2 create-game-container">

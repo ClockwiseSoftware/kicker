@@ -1,6 +1,5 @@
 @extends('layouts.sign')
-
-@section('title', 'Kicker charts / Sign in')
+@section('title', 'Sign in')
 
 @section('content')
 
