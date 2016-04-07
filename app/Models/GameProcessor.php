@@ -195,4 +195,50 @@ class GameProcessor
             }
         }
     }
+
+    public static function updateGame(Game $game, array $data)
+    {
+        $oldTeamAPoints = isset($data['team_a_points']) ? (int) $data['team_a_points'] : 0;
+        $oldTeamBPoints = isset($data['team_b_points']) ? (int) $data['team_b_points'] : 0;
+
+        $game = $game->with(['gamesUsersA.user', 'gamesUsersB.user'])->first();
+
+        foreach ($game->gamesUsersA as $gameUser) {
+            $user = $gameUser->user;
+            $user->rating = $gameUser->rating_before;
+
+            if ($oldTeamAPoints > $oldTeamBPoints) {
+                $user->count_wins--;
+            } elseif ($oldTeamAPoints < $oldTeamBPoints) {
+                $user->count_looses--;
+            } else {
+                $user->count_draws--;
+            }
+
+            $user->rating = $gameUser->rating_before;
+
+            if (!$user->save()) {
+                // do something...
+            }
+        }
+
+        foreach ($game->gamesUsersB as $gameUser) {
+            $user = $gameUser->user;
+            $user->rating = $gameUser->rating_before;
+
+            if ($oldTeamBPoints > $oldTeamAPoints) {
+                $user->count_wins--;
+            } elseif ($oldTeamBPoints < $oldTeamAPoints) {
+                $user->count_looses--;
+            } else {
+                $user->count_draws--;
+            }
+
+            $user->rating = $gameUser->rating_before;
+
+            if (!$user->save()) {
+                // do something...
+            }
+        }
+    }
 }

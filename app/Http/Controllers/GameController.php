@@ -25,6 +25,9 @@ class GameController extends Controller
 
     public function getIndex(Request $request)
     {
+        $game = Game::first();
+        GameProcessor::updateGame($game, 1, 2);
+        
         return view('games.index', [
             'user' => $request->user(),
             'games' => Game::with(['gamesUsersA.user', 'gamesUsersB.user'])
