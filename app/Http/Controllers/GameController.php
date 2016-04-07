@@ -15,10 +15,10 @@ class GameController extends Controller
     protected function validationRules()
     {
         return [
-            'games_users_a' => 'required',
-            'team_a_points' => 'required|integer|min:0',
+            'games_users_a' => 'required|users_ids:2',
+            'team_a_points' => 'required|min:0|max:100|integer',
             'games_users_b' => 'required',
-            'team_b_points' => 'required|integer|min:0',
+            'team_b_points' => 'required|min:0|max:100|integer',
             'played_at' => 'required|date',
         ];
     }
@@ -29,7 +29,7 @@ class GameController extends Controller
             'user' => $request->user(),
             'games' => Game::with(['gamesUsersA.user', 'gamesUsersB.user'])
                 ->orderBy('played_at', 'desc')
-                ->orderBy('id', 'desc')->paginate()
+                ->orderBy('id', 'desc')->paginate(5)
         ]);
     }
 

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Psy\Exception\ErrorException;
+
 class GameProcessor
 {
     const NEW_BEE_MATCHES_EDGE = 30;
+    const PRO_RATING_EDGE = 2400;
 
     const WIN = 1;
     const LOSE = 0;
@@ -17,13 +20,20 @@ class GameProcessor
     const POINTS_FOR_MEDIUM = 20;
     const POINTS_FOR_PRO = 10;
 
+    /**
+     * @param $ratingA
+     * @param $ratingB
+     * @param $matchResult
+     * @param $matchesCount
+     * @return mixed
+     */
     protected function newRating($ratingA, $ratingB, $matchResult, $matchesCount)
     {
         $e = 1 / (1 + pow(10, ($ratingB - $ratingA) / 400));
 
         if ($matchesCount <= static::NEW_BEE_MATCHES_EDGE)
             $k = static::POINTS_FOR_NEW_BEE;
-        elseif ($ratingA >= 2400)
+        elseif ($ratingA >= static::PRO_RATING_EDGE)
             $k = static::POINTS_FOR_PRO;
         else
             $k = static::POINTS_FOR_MEDIUM;
@@ -31,8 +41,16 @@ class GameProcessor
         return $ratingA + $k * ($matchResult - $e);
     }
 
+    /**
+     * @param $users
+     * @return float
+     * @throws ErrorException
+     */
     protected function teamRating($users)
     {
+        if (count($users) === 0)
+            throw new ErrorException('No users has been provided');
+
         $result = 0;
 
         foreach ($users as $user) {
@@ -42,19 +60,36 @@ class GameProcessor
         return $result / count($users);
     }
 
+    /**
+     * @param $users
+     * @return float
+     * @throws ErrorException
+     */
     protected function gamesPlayed($users)
     {
+        if (count($users) === 0)
+            throw new ErrorException('No users has been provided');
+
         $gamesPlayed = 0;
 
         foreach ($users as $user) {
             $gamesPlayed += $user->getCountGames();
         }
 
-        return $gamesPlayed;
+        return (int) $gamesPlayed / count($users);
     }
 
+    /**
+     * @param $users
+     * @param $oldTeamRating
+     * @param $newTeamRating
+     * @return array
+     */
     protected function newUsersRating($users, $oldTeamRating, $newTeamRating)
     {
+        if (count($users) === 0)
+            throw new ErrorException('No users has been provided');
+
         $result = [];
         $ratingDelta = ($newTeamRating - $oldTeamRating) / count($users);
 
@@ -100,9 +135,12 @@ class GameProcessor
         return [$newTeamA, $newTeamB];
     }
 
-    public static function addUsersToGame($game, $teamAUsers, $teamBUsers)
+    public static function addUsersToGame(Game $game, $teamAUsers, $teamBUsers)
     {
         if (!$game->gamesUsersA->isEmpty())
+            return false;
+
+        if (count($teamAUsers) === 0 || count($teamBUsers) === 0)
             return false;
 
         $gameResult = $game->getGameResult();
@@ -129,7 +167,9 @@ class GameProcessor
             else
                 $user->count_draws++;
 
-            $user->save();
+            if (!$user->save()) {
+                // do something...
+            }
         }
 
         foreach ($teamBUsers as $user) {
@@ -149,7 +189,10 @@ class GameProcessor
                 $user->count_draws++;
 
             $user->rating = $gameUser->rating_after;
-            $user->save();
+
+            if (!$user->save()) {
+                // do something...
+            }
         }
     }
 }

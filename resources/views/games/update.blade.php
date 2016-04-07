@@ -35,6 +35,7 @@
                         {{ Form::number('team_a_points', old('team_a_points', $game->team_a_points), [
                             'class' => 'form-control',
                             'min' => 0,
+                            'max' => 100,
                             'required' => 'required'
                         ]) }}
                         <div class="error">{{ $errors->first('team_a_points') }}</div>
@@ -64,6 +65,7 @@
                         {{ Form::number('team_b_points', old('team_b_points', $game->team_b_points), [
                             'class' => 'form-control',
                             'min' => 0,
+                            'max' => 100,
                             'required' => 'required'
                         ]) }}
                         <div class="error">{{ $errors->first('team_b_points') }}</div>

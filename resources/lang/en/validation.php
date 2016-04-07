@@ -80,6 +80,8 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'url'                  => 'The :attribute format is invalid.',
 
+    'users_ids'            => 'At least 2 users must be selected',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
