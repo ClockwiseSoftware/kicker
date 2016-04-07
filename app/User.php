@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
+    protected static $user;
     public $defaults = [
         'rating' => 1200,
         'count_wins' => 0,
@@ -74,5 +76,14 @@ class User extends Authenticatable
             return $this->avatar_url;
 
         return '/img/no-avatar.min.png';
+    }
+
+    public static function findMe()
+    {
+        if (!static::$user) {
+            static::$user = Auth::user();
+        }
+
+        return static::$user;
     }
 }

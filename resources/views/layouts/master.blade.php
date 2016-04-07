@@ -34,7 +34,7 @@
                             <li><a href="{{ route('register') }}">Sign Up</a></li>
                         @else
                             <li><a href="{{ route('createGame') }}">Add game</a></li>
-                            <li><a href="{{ route('logout') }}">Logout</a></li>
+                            <li><a href="{{ route('logout') }}">Logout ({{ App\User::findMe()->email }})</a></li>
                         @endif
                     </ul>
                 </div>
