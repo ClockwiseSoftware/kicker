@@ -79,7 +79,6 @@
                     {{--<a class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>--}}
                 </div>
                 @endif
-                <div class="game-name">Game #{{ $game->id }}</div>
                 <div>Played at: {{ $game->played_at }}</div>
             </div>
         </div>

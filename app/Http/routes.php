@@ -47,4 +47,7 @@ Route::group(['middleware' => ['web']], function () {
 
     // Users routes
     Route::post('/user/search', 'UserController@postSearch')->name('userSearch');
+
+    // Users routes
+    Route::get('/chart', 'ChartController@getIndex')->name('chart');
 });

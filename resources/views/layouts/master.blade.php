@@ -28,6 +28,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav navbar-center">
                         <li><a href="{{ route('home') }}">Games</a></li>
+                        <li><a href="{{ route('chart') }}">Chart</a></li>
                         @if(!Auth::check())
                             <li><a href="{{ route('login') }}">Sign In</a></li>
                             <li><a href="{{ route('register') }}">Sign Up</a></li>
