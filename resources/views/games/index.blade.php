@@ -79,7 +79,7 @@
                     {{--<a class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>--}}
                 </div>
                 @endif
-                <div>Played at: {{ $game->played_at }}</div>
+                <div>Played at: {{ $game->getPlayedAt() }}</div>
             </div>
         </div>
     </div>

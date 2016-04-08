@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
-use App\Models\GameProcessor;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -25,14 +24,11 @@ class GameController extends Controller
 
     public function getIndex(Request $request)
     {
-        $game = Game::first();
-        GameProcessor::updateGame($game, 1, 2);
-        
         return view('games.index', [
             'user' => $request->user(),
             'games' => Game::with(['gamesUsersA.user', 'gamesUsersB.user'])
                 ->orderBy('played_at', 'desc')
-                ->orderBy('id', 'desc')->paginate(5)
+                ->orderBy('id', 'desc')->paginate()
         ]);
     }
 
@@ -56,23 +52,15 @@ class GameController extends Controller
     public function postCreate(Request $request)
     {
         $this->validate($request, $this->validationRules());
-
-        $game = new Game();
-        $game->fill($request->all());
-
-        if ($game->save()) {
-            $usersATeam = User::whereIn('id', $request->get('games_users_a'))->get();
-            $usersBTeam = User::whereIn('id', $request->get('games_users_b'))->get();
-
-            GameProcessor::addUsersToGame($game, $usersATeam, $usersBTeam);
-        }
-
+        $game = Game::create($request->all());
         return redirect('/');
     }
 
     public function getUpdate(Request $request, $id)
     {
-        $game = Game::where(['id' => $id])->with(['gamesUsersA.user', 'gamesUsersB.user'])->first();
+        $game = Game::where(['id' => $id])->with([
+            'gamesUsersA.user', 'gamesUsersB.user'
+        ])->first();
 
         if (!$game)
             abort(404);
@@ -104,14 +92,8 @@ class GameController extends Controller
         if (!$game)
             abort(404);
 
-        $game->fill($request->all());
-
-        if ($game->save()) {
-            $usersATeam = User::whereIn('id', $request->get('games_users_a'))->get();
-            $usersBTeam = User::whereIn('id', $request->get('games_users_b'))->get();
-
-            GameProcessor::addUsersToGame($game, $usersATeam, $usersBTeam);
-        }
+        /* @var $game Game */
+        $game->updateWith($request->all());
 
         return redirect('/');
     }

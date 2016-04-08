@@ -70,7 +70,9 @@
             <div class="form-group">
                 {{ Form::label('played_at', 'Date', ['class' => 'col-sm-2 control-label']) }}
                 <div class="col-sm-10">
-                    {{ Form::text('played_at', old('played_at', 0), [
+                    {{ Form::text('played_at', old(
+                        'played_at', \Carbon\Carbon::now()->format('m/d/Y H:i')
+                    ), [
                         'class' => 'form-control',
                         'id' => 'played-at',
                         'required' => 'required'

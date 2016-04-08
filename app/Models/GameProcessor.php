@@ -20,6 +20,8 @@ class GameProcessor
     const POINTS_FOR_MEDIUM = 20;
     const POINTS_FOR_PRO = 10;
 
+    const DEFAULT_RATING = 1200;
+
     /**
      * @param $ratingA
      * @param $ratingB
@@ -133,112 +135,5 @@ class GameProcessor
         );
 
         return [$newTeamA, $newTeamB];
-    }
-
-    public static function addUsersToGame(Game $game, $teamAUsers, $teamBUsers)
-    {
-        if (!$game->gamesUsersA->isEmpty())
-            return false;
-
-        if (count($teamAUsers) === 0 || count($teamBUsers) === 0)
-            return false;
-
-        $gameResult = $game->getGameResult();
-
-        list($teamARatings, $teamBRatings) = GameProcessor::calculateRatingForTeams(
-            $teamAUsers, $teamBUsers, $gameResult
-        );
-
-        foreach ($teamAUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $game->id,
-                'user_id' => $user->id,
-                'team_index' => $game::TEAM_A_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamARatings)
-            ]);
-
-            $user->rating = $gameUser->rating_after;
-
-            if ($gameResult === GameProcessor::WIN)
-                $user->count_wins++;
-            elseif ($gameResult === GameProcessor::LOSE)
-                $user->count_looses++;
-            else
-                $user->count_draws++;
-
-            if (!$user->save()) {
-                // do something...
-            }
-        }
-
-        foreach ($teamBUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $game->id,
-                'user_id' => $user->id,
-                'team_index' => $game::TEAM_B_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamBRatings)
-            ]);
-
-            if ($gameResult === GameProcessor::WIN)
-                $user->count_looses++;
-            elseif ($gameResult === GameProcessor::LOSE)
-                $user->count_wins++;
-            else
-                $user->count_draws++;
-
-            $user->rating = $gameUser->rating_after;
-
-            if (!$user->save()) {
-                // do something...
-            }
-        }
-    }
-
-    public static function updateGame(Game $game, array $data)
-    {
-        $oldTeamAPoints = isset($data['team_a_points']) ? (int) $data['team_a_points'] : 0;
-        $oldTeamBPoints = isset($data['team_b_points']) ? (int) $data['team_b_points'] : 0;
-
-        $game = $game->with(['gamesUsersA.user', 'gamesUsersB.user'])->first();
-
-        foreach ($game->gamesUsersA as $gameUser) {
-            $user = $gameUser->user;
-            $user->rating = $gameUser->rating_before;
-
-            if ($oldTeamAPoints > $oldTeamBPoints) {
-                $user->count_wins--;
-            } elseif ($oldTeamAPoints < $oldTeamBPoints) {
-                $user->count_looses--;
-            } else {
-                $user->count_draws--;
-            }
-
-            $user->rating = $gameUser->rating_before;
-
-            if (!$user->save()) {
-                // do something...
-            }
-        }
-
-        foreach ($game->gamesUsersB as $gameUser) {
-            $user = $gameUser->user;
-            $user->rating = $gameUser->rating_before;
-
-            if ($oldTeamBPoints > $oldTeamAPoints) {
-                $user->count_wins--;
-            } elseif ($oldTeamBPoints < $oldTeamAPoints) {
-                $user->count_looses--;
-            } else {
-                $user->count_draws--;
-            }
-
-            $user->rating = $gameUser->rating_before;
-
-            if (!$user->save()) {
-                // do something...
-            }
-        }
     }
 }

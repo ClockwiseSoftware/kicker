@@ -78,7 +78,7 @@
                 <div class="form-group">
                     {{ Form::label('played_at', 'Date', ['class' => 'col-sm-2 control-label']) }}
                     <div class="col-sm-10">
-                        {{ Form::text('played_at', old('played_at', $game->played_at), [
+                        {{ Form::text('played_at', old('played_at', $game->getPlayedAt()), [
                             'class' => 'form-control',
                             'id' => 'played-at',
                             'required' => 'required'
