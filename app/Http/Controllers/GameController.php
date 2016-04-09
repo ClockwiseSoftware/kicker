@@ -52,7 +52,7 @@ class GameController extends Controller
     public function postCreate(Request $request)
     {
         $this->validate($request, $this->validationRules());
-        $game = Game::create($request->all());
+        Game::create($request->all());
         return redirect('/');
     }
 
@@ -96,5 +96,13 @@ class GameController extends Controller
         $game->updateWith($request->all());
 
         return redirect('/');
+    }
+
+    public function getDelete(Request $request, $id)
+    {
+        $game = Game::findOrFail($id);
+        $game->delete();
+
+        return redirect()->route('home');
     }
 }

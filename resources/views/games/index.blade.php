@@ -74,9 +74,11 @@
             <div class="game-information">
                 @if (Auth::check())
                 <div class="controls">
-                    <a href="{{ route('updateGame', ['id' => $game->id]) }}" class="btn btn-default btn-xs control-button"><i class="fa fa-pencil"></i></a>
+                    <a href="{{ route('updateGame', ['id' => $game->id]) }}"
+                       class="btn btn-default btn-xs control-button"><i class="fa fa-pencil"></i></a>
                     {{--<a class="btn btn-danger btn-xs control-button"><i class="fa fa-flag"></i></a>--}}
-                    {{--<a class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>--}}
+                    <a href="{{ route('deleteGame', ['id' => $game->id]) }}"
+                       class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>
                 </div>
                 @endif
                 <div>Played at: {{ $game->getPlayedAt() }}</div>

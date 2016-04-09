@@ -294,5 +294,18 @@ class Game extends Model
 
         $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
         $self->recountFromPosition($prevPosition);
+
+        return $self;
+    }
+
+    public function delete()
+    {
+        $position = $this->currentPosition();
+        $this->cancel();
+        $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
+
+        $this->recountFromPosition($prevPosition);
+
+        return parent::delete();
     }
 }
