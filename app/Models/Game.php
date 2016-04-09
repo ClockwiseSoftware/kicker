@@ -239,10 +239,6 @@ class Game extends Model
 
         $self->setUsers($usersATeam, $usersBTeam);
         $position = $self->currentPosition();
-        $countAll = Game::count();
-
-        if ($position === $countAll - 1)
-            return $self;
 
         $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
         $self->recountFromPosition($prevPosition);
