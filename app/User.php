@@ -105,4 +105,39 @@ class User extends Authenticatable
 
         return isset($game->id) ? (int) $game->id : false;
     }
+
+    public static function updateStat()
+    {
+        // @TODO refactor raw query with db builder
+        return DB::statement(
+            "UPDATE `users` as u1 LEFT JOIN 
+(SELECT g_u.`user_id`,
+	COUNT(
+		IF(
+			(
+				(g_u.`team_index` = 'a' AND (g.`team_a_points` > g.`team_b_points`))
+				OR
+				(g_u.`team_index` = 'b' AND (g.`team_a_points` < g.`team_b_points`))
+			), 1, NULL)
+	) as count_wins,
+	COUNT(
+		IF(
+			(
+				(g_u.`team_index` = 'a' AND (g.`team_a_points` < g.`team_b_points`))
+				OR
+				(g_u.`team_index` = 'b' AND (g.`team_a_points` > g.`team_b_points`))
+			), 1, NULL)
+	) as count_loses,
+	COUNT(
+		IF((g.`team_a_points` = g.`team_b_points`), 1, NULL)
+	) as count_draws
+FROM `games_users` as g_u 
+INNER JOIN `games` as g ON g_u.`game_id` = g.id
+INNER JOIN `users` as u ON g_u.`user_id` = u.id
+GROUP BY g_u.`user_id`) as result
+
+ON u1.`id` = result.`user_id`
+
+SET u1.`count_wins` = result.count_wins, u1.`count_looses` = result.count_loses, u1.`count_draws` = result.count_draws");
+    }
 }

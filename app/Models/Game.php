@@ -200,6 +200,8 @@ class Game extends Model
                 $game->setUsers($usersATeam, $usersBTeam);
             });
         }
+
+        User::updateStat();
     }
 
     public function updateWith($newAttributes)
