@@ -29,6 +29,11 @@ class Game extends Model
         return $this->hasMany(GameUser::class)->where('team_index', static::TEAM_B_INDEX);
     }
 
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
+    }
+
     public function usersA()
     {
         $users = [];

@@ -80,11 +80,18 @@
                     <a href="{{ route('deleteGame', ['id' => $game->id]) }}"
                        class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>
                     @else
-                        <a class="btn btn-danger btn-xs control-button"><i class="fa fa-flag"></i></a>
+                        <a href="{{ route('complain', ['id' => $game->id]) }}" class="btn btn-danger btn-xs control-button"><i class="fa fa-flag"></i></a>
                     @endif
                 </div>
                 @endif
                 <div>Played at: {{ $game->getPlayedAt() }}</div>
+                <div class="additional-info">
+                    <div class="complaints">
+                    @if(!$game->complaints->isEmpty())
+                        complaints: {{ $game->complaints->count() }}
+                    @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -6941,6 +6941,16 @@ body {
     right: 0;
 }
 
+.game-information .additional-info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.game-information .additional-info .complaints {
+    color: #c90000;
+}
+
 .game-information .controls .control-button {
     width: 22px;
     height: 22px;

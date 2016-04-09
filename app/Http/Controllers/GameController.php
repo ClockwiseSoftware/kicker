@@ -24,11 +24,13 @@ class GameController extends Controller
 
     public function getIndex(Request $request)
     {
+        $games = Game::with(['complaints', 'gamesUsersA.user', 'gamesUsersB.user'])
+            ->orderBy('played_at', 'desc')
+            ->orderBy('id', 'desc')->paginate();
+
         return view('games.index', [
             'user' => $request->user(),
-            'games' => Game::with(['gamesUsersA.user', 'gamesUsersB.user'])
-                ->orderBy('played_at', 'desc')
-                ->orderBy('id', 'desc')->paginate()
+            'games' => $games
         ]);
     }
 
