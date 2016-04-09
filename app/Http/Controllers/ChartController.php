@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\Request;
 
 class ChartController extends Controller
 {
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        $users = User::orderBy('rating', SORT_DESC)->get();
+        if ($request->ajax()) {
+            $users = User::orderBy('rating', SORT_DESC)->get();
+            return response()->json($users);
+        }
 
-        return view('chart.index', [
-            'users' => $users
-        ]);
+        return view('chart.index');
     }
 }

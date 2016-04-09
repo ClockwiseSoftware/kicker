@@ -47,6 +47,7 @@
         </div>
 
         {{ Html::script('js/vendors.js') }}
+        {{ Html::script('js/app.js') }}
         @yield('scripts')
     </body>
 </html>

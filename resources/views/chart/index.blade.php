@@ -2,7 +2,7 @@
 
 @section('title', 'Chart')
 @section('content')
-    <div class="row">
+    <div class="row" ng-app="kickerApp" ng-controller="ChartsCtrl">
         <div class="col-md-8 col-md-offset-2 content-wrap">
             <h3 class="text-center">User's chart</h3>
             <table class="table table-bordered table-condensed">
@@ -18,18 +18,18 @@
                     <th>Games draw</th>
                 </tr>
                 </thead>
-            @foreach ($users as $user)
-                <tr>
-                    <td>{{ $i = isset($i) ? ++$i : 1 }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->rating }}</td>
-                    <td>{{ $user->getCountGames() }}</td>
-                    <td>{{ $user->count_looses }}</td>
-                    <td>{{ $user->count_wins }}</td>
-                    <td>{{ $user->count_draws }}</td>
+                <tbody>
+                <tr ng-repeat="user in users">
+                    <td><% user.id %></td>
+                    <td><% user.name %></td>
+                    <td><% user.email %></td>
+                    <td><% user.rating %></td>
+                    <td><% user.countGames() %></td>
+                    <td><% user.count_looses %></td>
+                    <td><% user.count_wins %></td>
+                    <td><% user.count_draws %></td>
                 </tr>
-            @endforeach
+                </tbody>
             </table>
         </div>
     </div>

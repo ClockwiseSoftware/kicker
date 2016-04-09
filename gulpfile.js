@@ -1,4 +1,7 @@
+process.env.DISABLE_NOTIFIER = true;
+
 var elixir = require('laravel-elixir');
+elixir.config.sourcemaps = false;
 
 /*
  |--------------------------------------------------------------------------
@@ -16,15 +19,24 @@ elixir(function(mix) {
     // Main assets
     mix.styles([
         'bower/bootstrap/dist/css/bootstrap.css',
-        'css/main.css'
+        'css/main.css',
+        'resources/assets/bower/angular/angular-csp.css'
     ], 'public/css/main.css', 'resources/assets');
 
     mix.scripts([
-        'bower/jquery/dist/jquery.min.js',
-        'bower/bootstrap/dist/js/bootstrap.min.js'
+        'bower/jquery/dist/jquery.js',
+        'bower/bootstrap/dist/js/bootstrap.js',
+        'bower/angular/angular.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
+
+    // Angular application
+    mix.scripts([
+        'app.js',
+        'services/UserService.js',
+        'controllers/ChartsCtrl.js'
+    ], 'public/js/app.js', 'resources/assets/app');
 
     // Create game assets
     mix.scripts([
