@@ -86,4 +86,9 @@ class User extends Authenticatable
 
         return static::$user;
     }
+
+    public function isAdmin()
+    {
+        return (bool) $this->is_admin;
+    }
 }

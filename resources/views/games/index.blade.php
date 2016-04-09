@@ -74,11 +74,14 @@
             <div class="game-information">
                 @if (Auth::check())
                 <div class="controls">
+                    @if(App\User::findMe()->isAdmin())
                     <a href="{{ route('updateGame', ['id' => $game->id]) }}"
                        class="btn btn-default btn-xs control-button"><i class="fa fa-pencil"></i></a>
-                    {{--<a class="btn btn-danger btn-xs control-button"><i class="fa fa-flag"></i></a>--}}
                     <a href="{{ route('deleteGame', ['id' => $game->id]) }}"
                        class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>
+                    @else
+                        <a class="btn btn-danger btn-xs control-button"><i class="fa fa-flag"></i></a>
+                    @endif
                 </div>
                 @endif
                 <div>Played at: {{ $game->getPlayedAt() }}</div>
