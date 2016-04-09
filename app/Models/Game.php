@@ -83,66 +83,30 @@ class Game extends Model
 
     protected function cancel(array $options = [])
     {
-        $oldTeamAPoints = $this->team_a_points;
-        $oldTeamBPoints = $this->team_b_points;
         $resetRating = isset($options['reset_rating']) ? (bool) $options['reset_rating'] : true;
-        $defaultRating = isset($options['default_rating']) ?
-            (int) $options['default_rating'] : false;
 
-        $gamesUsersA = &$this->gamesUsersA;
-        $gamesUsersB = &$this->gamesUsersB;
+        foreach ([&$this->gamesUsersA, &$this->gamesUsersB] as $gamesUsers) {
+            while (true) {
+                if ($gamesUsers->isEmpty())
+                    break;
 
-        while (true) {
-            if ($gamesUsersA->isEmpty())
-                break;
+                $gameUser = $gamesUsers->shift();
+                $user = $gameUser->user;
+                $userFirstGameId = $user->getFirstGameId();
 
-            $gameUser = $gamesUsersA->shift();
-            $user = $gameUser->user;
+                if ($userFirstGameId === $this->id) {
+                    $user->rating = GameProcessor::DEFAULT_RATING;
+                } elseif ($resetRating) {
+                    $user->rating = $gameUser->rating_before;
+                }
 
-            if ($resetRating)
-                $user->rating = $defaultRating ?: $gameUser->rating_before;
+                if (!$user->save()) {
+                    // do something...
+                }
 
-            if ($oldTeamAPoints > $oldTeamBPoints) {
-                $user->count_wins--;
-            } elseif ($oldTeamAPoints < $oldTeamBPoints) {
-                $user->count_looses--;
-            } else {
-                $user->count_draws--;
-            }
-
-            if (!$user->save()) {
-                // do something...
-            }
-
-            if (!$gameUser->delete()) {
-                // do something...
-            }
-        }
-
-        while (true) {
-            if ($gamesUsersB->isEmpty())
-                break;
-
-            $gameUser = $gamesUsersB->shift();
-            $user = $gameUser->user;
-
-            if ($resetRating)
-                $user->rating = $defaultRating ?: $gameUser->rating_before;
-
-            if ($oldTeamBPoints > $oldTeamAPoints) {
-                $user->count_wins--;
-            } elseif ($oldTeamBPoints < $oldTeamAPoints) {
-                $user->count_looses--;
-            } else {
-                $user->count_draws--;
-            }
-
-            if (!$user->save()) {
-                // do something...
-            }
-
-            if (!$gameUser->delete()) {
-                // do something...
+                if (!$gameUser->delete()) {
+                    // do something...
+                }
             }
         }
 
@@ -174,13 +138,6 @@ class Game extends Model
 
             $user->rating = $gameUser->rating_after;
 
-            if ($gameResult === GameProcessor::WIN)
-                $user->count_wins++;
-            elseif ($gameResult === GameProcessor::LOSE)
-                $user->count_looses++;
-            else
-                $user->count_draws++;
-
             if (!$user->save()) {
                 // do something...
             }
@@ -194,13 +151,6 @@ class Game extends Model
                 'rating_before' => $user->rating,
                 'rating_after' => array_shift($teamBRatings)
             ]);
-
-            if ($gameResult === GameProcessor::WIN)
-                $user->count_looses++;
-            elseif ($gameResult === GameProcessor::LOSE)
-                $user->count_wins++;
-            else
-                $user->count_draws++;
 
             $user->rating = $gameUser->rating_after;
 
@@ -238,12 +188,7 @@ class Game extends Model
                 $usersIdsA = $game->gamesUsersA->pluck('user_id')->all();
                 $usersIdsB = $game->gamesUsersB->pluck('user_id')->all();
 
-                if ($position === 0 && $key === 0) {
-                    $game->cancel([
-                        'reset_rating' => true,
-                        'default_rating' => GameProcessor::DEFAULT_RATING,
-                    ]);
-                } elseif ($key === 0) {
+                if ($key === 0) {
                     $game->cancel(['reset_rating' => true]);
                 } else {
                     $game->cancel(['reset_rating' => false]);

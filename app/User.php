@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -90,5 +91,18 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return (bool) $this->is_admin;
+    }
+
+    public function getFirstGameId()
+    {
+        $game = DB::table('games')
+            ->select('games.id')
+            ->join('games_users', 'games.id', '=', 'games_users.game_id')
+            ->where(['user_id' => (int) $this->id])
+            ->orderBy('games.played_at', 'asc')
+            ->take(1)
+            ->first();
+
+        return isset($game->id) ? (int) $game->id : false;
     }
 }
