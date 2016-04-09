@@ -62,7 +62,7 @@ class AuthController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            'email' => mb_strtolower($data['email']),
             'password' => bcrypt($data['password']),
         ]);
     }
@@ -77,6 +77,8 @@ class AuthController extends Controller
         $fbUser = Socialite::with('facebook')->user();
 
         if ($fbUser) {
+            $fbUser->email = mb_strtolower($fbUser->email);
+            
             $user = User::where('facebook_id', $fbUser->id)
                 ->orWhere('email', $fbUser->email)
                 ->first();
@@ -94,6 +96,7 @@ class AuthController extends Controller
                 //
             } elseif ($user->email === $fbUser->email) {
                 $user->facebook_id = $fbUser->id;
+                $user->avatar_url = $fbUser->avatar;
                 $user->save();
             }
 
