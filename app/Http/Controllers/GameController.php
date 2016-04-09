@@ -16,7 +16,7 @@ class GameController extends Controller
         return [
             'games_users_a' => 'required|users_ids:2',
             'team_a_points' => 'required|min:0|max:100|integer',
-            'games_users_b' => 'required',
+            'games_users_b' => 'required|users_ids:2',
             'team_b_points' => 'required|min:0|max:100|integer',
             'played_at' => 'required|date',
         ];
