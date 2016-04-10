@@ -42,6 +42,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('game/create', 'GameController@getCreate')->name('createGame');
     Route::post('game/create', 'GameController@postCreate')->name('createGameCheck');
 
+    Route::get('game/{id}', 'GameController@getOne')
+        ->where('id', '[0-9]+')->name('oneGame');
+    
     Route::get('game/{id}/update', 'GameController@getUpdate')
         ->where('id', '[0-9]+')->name('updateGame');
     Route::post('game/{id}/update', 'GameController@postUpdate')
@@ -49,6 +52,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('game/{id}/delete', 'GameController@getDelete')
         ->where('id', '[0-9]+')->name('deleteGame');
+    
     Route::get('game/{id}/complain', 'ComplaintController@create')
         ->where('id', '[0-9]+')->name('complain');
 

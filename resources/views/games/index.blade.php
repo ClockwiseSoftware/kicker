@@ -2,101 +2,102 @@
 
 @section('title', 'Games')
 @section('content')
-    @foreach ($games as $game)
-    <div class="row games-container">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 game-container">
-            <div class="game-graphic">
-                <div class="team team-a">
-                    @foreach ($game->gamesUsersA as $gameUser)
-                    <div class="team-user">
-                        <div class="info">
-                            <div class="name">{{ $gameUser->user->name }}</div>
-                            <div class="rating-delta {{ userPointsClass($gameUser->getDelta()) }}">
-                                {{ $gameUser->getDelta() }} points
+    <div ng-app="kickerApp" ng-controller="GamesCtrl">
+        <div class="row games-container" ng-repeat="game in games">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 game-container">
+                <div class="game-graphic">
+                    <div class="team team-a">
+                        <div class="team-user" ng-repeat="gameUser in game.games_users_a">
+                            <div class="info">
+                                <div class="name"><% gameUser.user.name %></div>
+                                <div class="rating-delta <% gameUser.userPointsClass() %>">
+                                    <% gameUser.getDelta() %> points
+                                </div>
+                                <div>
+                                    <% gameUser.rating_before %>
+                                    <i class="fa fa-long-arrow-right"></i>
+                                    <% gameUser.rating_after %>
+                                </div>
                             </div>
-                            <div>{{ $gameUser->rating_before }} <i class="fa fa-long-arrow-right"></i>
-                                {{ $gameUser->rating_after }}</div>
-                        </div>
-                        <div class="user-avatar">
-                            <img src="{{ $gameUser->user->getAvatarUrl() }}" />
-                            <div class="stat">
-                                <span class="wins">{{
-                                    $gameUser->user->count_wins
-                                }}</span>/<span class="loses">{{
-                                    $gameUser->user->count_looses
-                                }}</span>/<span class="draws">{{
-                                    $gameUser->user->count_draws
-                                }}</span>
+                            <div class="user-avatar">
+                                <img ng-src="<% gameUser.user.avatarUrl() %>" />
+                                <div class="stat">
+                                    <span class="wins"><%
+                                        gameUser.user.count_wins
+                                    %></span>/<span class="loses"><%
+                                        gameUser.user.count_looses
+                                    %></span>/<span class="draws"><%
+                                        gameUser.user.count_draws
+                                    %></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                </div>
-                <div class="result-container">
-                    <div class="versus">VS</div>
-                    <div class="result">
-                        <div class="point {{
-                            gamePointClass($game->team_a_points, $game->team_b_points)
-                        }}">{{ $game->team_a_points }}</div>
-                        <div class="point">:</div>
-                        <div class="point {{
-                            gamePointClass($game->team_b_points, $game->team_a_points)
-                        }}">{{ $game->team_b_points }}</div>
-                    </div>
-                </div>
-                <div class="team team-b">
-                    @foreach ($game->gamesUsersB as $gameUser)
-                    <div class="team-user">
-                        <div class="user-avatar">
-                            <img src="{{ $gameUser->user->getAvatarUrl() }}" />
-                            <div class="stat">
-                                <span class="wins">{{
-                                    $gameUser->user->count_wins
-                                }}</span>/<span class="loses">{{
-                                    $gameUser->user->count_looses
-                                }}</span>/<span class="draws">{{
-                                    $gameUser->user->count_draws
-                                }}</span>
-                            </div>
-                        </div>
-                        <div class="info">
-                            <div class="name">{{ $gameUser->user->name }}</div>
-                            <div class="rating-delta {{ userPointsClass($gameUser->getDelta()) }}">
-                                {{ $gameUser->getDelta() }} points
-                            </div>
-                            <div>{{ $gameUser->rating_before }} <i class="fa fa-long-arrow-right"></i>
-                                {{ $gameUser->rating_after }}</div>
+                    <div class="result-container">
+                        <div class="versus">VS</div>
+                        <div class="result">
+                            <div class="point <% game.gamePointClass() %>"><% game.team_a_points %></div>
+                            <div class="point">:</div>
+                            <div class="point <% game.gamePointClass('b') %>"><% game.team_b_points %></div>
                         </div>
                     </div>
-                    @endforeach
+                    <div class="team team-b">
+                        <div class="team-user" ng-repeat="gameUser in game.games_users_b">
+                            <div class="user-avatar">
+                                <img ng-src="<% gameUser.user.avatarUrl() %>" />
+                                <div class="stat">
+                                    <span class="wins"><%
+                                        gameUser.user.count_wins
+                                    %></span>/<span class="loses"><%
+                                        gameUser.user.count_looses
+                                    %></span>/<span class="draws"><%
+                                        gameUser.user.count_draws
+                                    %></span>
+                                </div>
+                            </div>
+                            <div class="info">
+                                <div class="name"><% gameUser.user.name %></div>
+                                <div class="rating-delta <% gameUser.userPointsClass() %>">
+                                    <% gameUser.getDelta() %> points
+                                </div>
+                                <div>
+                                    <% gameUser.rating_before %>
+                                    <i class="fa fa-long-arrow-right"></i>
+                                    <% gameUser.rating_after %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="game-information">
-                @if (Auth::check())
-                <div class="controls">
-                    @if(App\User::findMe()->isAdmin())
-                    <a href="{{ route('updateGame', ['id' => $game->id]) }}"
-                       class="btn btn-default btn-xs control-button"><i class="fa fa-pencil"></i></a>
-                    <a href="{{ route('deleteGame', ['id' => $game->id]) }}"
-                       class="btn btn-danger btn-xs control-button"><i class="fa fa-ban"></i></a>
-                    @else
-                        <a href="{{ route('complain', ['id' => $game->id]) }}" class="btn btn-danger btn-xs control-button"><i class="fa fa-flag"></i></a>
+                <div class="game-information">
+                    @if ($user)
+                        <div class="controls">
+                            @if($user->isAdmin())
+                                <a href="#"
+                                   class="btn btn-default btn-xs control-button"
+                                   ng-href="/game/<% game.id %>/update"
+                                ><i class="fa fa-pencil"></i></a>
+                                <a href="#"
+                                   ng-href="/game/<% game.id %>/delete"
+                                   class="btn btn-danger btn-xs control-button"
+                                ><i class="fa fa-ban"></i></a>
+                            @else
+                                <a href="#"
+                                   ng-click="complain(game.id)"
+                                   onclick="return false"
+                                   class="btn btn-danger btn-xs control-button"
+                                ><i class="fa fa-flag"></i></a>
+                            @endif
+                        </div>
                     @endif
-                </div>
-                @endif
-                <div>Played at: {{ $game->getPlayedAt() }}</div>
-                <div class="additional-info">
-                    <div class="complaints">
-                    @if(!$game->complaints->isEmpty())
-                        complaints: {{ $game->complaints->count() }}
-                    @endif
+                    <div>Played at: <% game.played_at %></div>
+                    <div class="additional-info">
+                        <div ng-if="game.complaints.length > 0" class="complaints">
+                            complaints: <% game.complaints.length %>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @endforeach
-    <div class="row games-pages">
-        {!! $games->render() !!}
     </div>
 @stop

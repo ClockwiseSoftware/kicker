@@ -28,10 +28,25 @@ class GameController extends Controller
             ->orderBy('played_at', 'desc')
             ->orderBy('id', 'desc')->paginate();
 
+        if ($request->wantsJson()) {
+            return response()->json($games);
+        }
+
         return view('games.index', [
-            'user' => $request->user(),
-            'games' => $games
+            'user' => $request->user()
         ]);
+    }
+
+    public function getOne(Request $request, $id)
+    {
+        $game = Game::with(['complaints', 'gamesUsersA.user', 'gamesUsersB.user'])
+            ->where('id', $id)
+            ->orderBy('played_at', 'desc')
+            ->firstOrFail();
+
+        if ($request->wantsJson()) {
+            return response()->json($game);
+        }
     }
 
     public function getCreate(Request $request)

@@ -34,8 +34,14 @@ elixir(function(mix) {
     // Angular application
     mix.scripts([
         'app.js',
+        // Chart
         'services/UserService.js',
-        'controllers/ChartsCtrl.js'
+        'controllers/ChartsCtrl.js',
+
+        // Games
+        'services/GameUserService.js',
+        'services/GameService.js',
+        'controllers/GamesCtrl.js'
     ], 'public/js/app.js', 'resources/assets/app');
 
     // Create game assets

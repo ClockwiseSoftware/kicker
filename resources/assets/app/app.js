@@ -4,7 +4,7 @@ var app = angular
         function ($httpProvider, $interpolateProvider) {
             $interpolateProvider.startSymbol('<%');
             $interpolateProvider.endSymbol('%>');
-            $httpProvider.defaults.headers
-                .common['X-Requested-With'] = 'XMLHttpRequest';
+            // $httpProvider.defaults.headers
+            //     .common['X-Requested-With'] = 'XMLHttpRequest';
         }
     ]);

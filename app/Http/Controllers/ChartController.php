@@ -9,7 +9,7 @@ class ChartController extends Controller
 {
     public function getIndex(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             $users = User::orderBy('rating', SORT_DESC)->get();
             return response()->json($users);
         }
