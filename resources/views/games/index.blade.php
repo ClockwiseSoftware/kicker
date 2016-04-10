@@ -99,5 +99,11 @@
                 </div>
             </div>
         </div>
+        <div class="row games-pages">
+            <button class="btn btn-primary" ng-if="currentpage < lastpage" ng-click="loadMore()">
+                <span ng-if="loading"><i class="fa fa-refresh fa-spin"></i></span>
+                <span ng-if="!loading"><i class="fa fa-refresh"></i></span> more...
+            </button>
+        </div>
     </div>
 @stop

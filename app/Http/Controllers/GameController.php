@@ -26,7 +26,7 @@ class GameController extends Controller
     {
         $games = Game::with(['complaints', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->orderBy('played_at', 'desc')
-            ->orderBy('id', 'desc')->paginate();
+            ->orderBy('id', 'desc')->paginate(5);
 
         if ($request->wantsJson()) {
             return response()->json($games);

@@ -1,18 +1,50 @@
 app.controller('GamesCtrl', ['$scope', '$http', 'Game',
     function($scope, $http, Game) {
+        $scope.lastpage = 1;
+        $scope.currentpage = 0;
         $scope.games = [];
+        $scope.loading = false;
+
         var map = {};
 
-        $scope.init = function() {
-            $http.get('/')
-                .success(function(response) {
-                    angular.forEach(response.data, function(data, index) {
-                        var game = new Game(data);
-                        this.push(game);
+        function addGames(data) {
+            angular.forEach(data, function(data) {
+                var game = new Game(data);
+                this.push(game);
 
-                        map[game.id] = index;
-                    }, $scope.games);
-                });
+                map[game.id] = this.length - 1;
+            }, $scope.games);
+        }
+
+        $scope.init = function() {
+            $http({
+                url: '/',
+                method: 'GET',
+                params: {page: $scope.currentpage}
+            })
+            .success(function(response) {
+                $scope.currentpage = response.current_page;
+                $scope.lastpage = response.last_page;
+
+                addGames(response.data);
+            });
+        };
+
+        $scope.loadMore = function() {
+            $scope.loading = true;
+
+            $http({
+                url: '/',
+                method: 'GET',
+                params: {page: $scope.currentpage + 1}
+            })
+            .success(function(response) {
+                $scope.currentpage = response.current_page;
+                $scope.lastpage = response.last_page;
+
+                addGames(response.data);
+                $scope.loading = false;
+            });
         };
 
         $scope.complain = function(id) {
