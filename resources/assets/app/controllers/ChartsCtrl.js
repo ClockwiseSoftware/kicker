@@ -1,21 +1,19 @@
 app.controller('ChartsCtrl', ['$scope', '$http', 'User',
     function($scope, $http, User) {
-        $scope.todos = [];
-        $scope.loading = false;
+        $scope.users = [];
 
         $scope.init = function() {
             $scope.loading = true;
             $http.get('/chart')
-                .success(function(data) {
-                    $scope.users = [];
-                    for (var i = 0; i < data.length; i++) {
-                        var user = new User(data[i]);
-                        $scope.users.push(user);
-                    }
-                    $scope.loading = false;
+                .success(function(users) {
+                    angular.forEach(users, function(userData, index) {
+                        userData.index = index + 1;
+                        var user = new User(userData);
+
+                        this.push(user);
+                    }, $scope.users);
                 });
         };
-
 
         $scope.init();
     }

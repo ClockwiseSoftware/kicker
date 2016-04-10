@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in users">
-                    <td><% user.id %></td>
+                    <td><% user.index %></td>
                     <td><% user.name %></td>
                     <td><% user.email %></td>
                     <td><% user.rating %></td>
