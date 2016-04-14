@@ -2,15 +2,21 @@
 
 namespace App;
 
+use App\Models\GameProcessor;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
+    const ROLE_GUEST = 'guest';
+    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 'admin';
+
     protected static $user;
+
     public $defaults = [
-        'rating' => 1200,
+        'rating' => GameProcessor::DEFAULT_RATING,
         'count_wins' => 0,
         'count_draws' => 0,
         'count_looses' => 0,

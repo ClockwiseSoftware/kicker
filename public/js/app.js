@@ -1,1 +1,213 @@
-var app=angular.module("kickerApp",[]).config(["$httpProvider","$interpolateProvider",function(t,a){a.startSymbol("<%"),a.endSymbol("%>")}]);app.factory("User",["$http",function(t){function a(t){var a=this;return this.setData=function(t){angular.extend(this,t)},this.countGames=function(){return a.count_looses+a.count_wins+a.count_draws},this.avatarUrl=function(){return a.avatar_url?a.avatar_url:"/img/no-avatar.min.png"},t&&this.setData(t),this}return a}]),app.controller("ChartsCtrl",["$scope","$http","User",function(t,a,n){t.users=[],t.init=function(){t.loading=!0,a.get("/chart").success(function(a){angular.forEach(a,function(t,a){t.index=a+1;var e=new n(t);this.push(e)},t.users)})},t.init()}]),app.factory("GameUser",["$http","User",function(t,a){function n(t){var n=this;return this.setData=function(t){angular.extend(this,t),n.user=new a(n.user)},this.getDelta=function(){return n.rating_after-n.rating_before},this.userPointsClass=function(){return n.getDelta()>0?"win":"lose"},t&&this.setData(t),this}return n}]),app.factory("Game",["$http","GameUser",function(t,a){function n(t){var n=this;return this.setData=function(t){angular.extend(this,t);for(var e=0;e<n.games_users_a.length;e++)n.games_users_a[e]=new a(n.games_users_a[e]);for(e=0;e<n.games_users_b.length;e++)n.games_users_b[e]=new a(n.games_users_b[e])},this.gamePointClass=function(t){var a=n.team_a_points,e=n.team_b_points;return"b"===t&&(a=n.team_b_points,e=n.team_a_points),a>e?"win":e>a?"lose":"draw"},t&&this.setData(t),this}return n}]),app.controller("GamesCtrl",["$scope","$http","Game",function(t,a,n){function e(a){angular.forEach(a,function(t){var a=new n(t);this.push(a),r[a.id]=this.length-1},t.games)}t.lastpage=1,t.currentpage=0,t.games=[],t.loading=!1;var r={};t.init=function(){a({url:"/",method:"GET",params:{page:t.currentpage}}).success(function(a){t.currentpage=a.current_page,t.lastpage=a.last_page,e(a.data)})},t.loadMore=function(){t.loading=!0,a({url:"/",method:"GET",params:{page:t.currentpage+1}}).success(function(a){t.currentpage=a.current_page,t.lastpage=a.last_page,e(a.data),t.loading=!1})},t.complain=function(e){a.get("/game/"+e+"/complain").success(function(s){a.get("/game/"+e).success(function(a){var e=new n(a),s=r[e.id];t.games[s]=e})})},t.init()}]);
+var app = angular
+    .module('kickerApp', ['ngRoute'])
+    .config(['$httpProvider', '$interpolateProvider', '$routeProvider',
+        function ($httpProvider, $interpolateProvider, $routeProvider) {
+            $interpolateProvider.startSymbol('<%');
+            $interpolateProvider.endSymbol('%>');
+
+            $routeProvider
+                .when('/signup', {
+                    templateUrl: 'html/views/auth/signup.html'
+                })
+                .when('/', {
+                    templateUrl: 'html/views/games/index.html'
+                })
+                .when('/chart', {
+                    templateUrl: 'html/views/chart/index.html'
+                });
+        }
+    ]);
+app.factory('User', ['$http', function($http) {
+    function User(userData) {
+        var obj = this;
+
+        this.setData = function(userData) {
+            angular.extend(this, userData);
+        };
+
+        this.countGames = function() {
+            return obj.count_looses + obj.count_wins + obj.count_draws;
+        };
+
+        this.avatarUrl = function() {
+            if (obj.avatar_url)
+                return obj.avatar_url;
+
+            return '/img/no-avatar.min.png';
+        };
+
+        if (userData) {
+            this.setData(userData);
+        }
+
+        return this;
+    }
+
+    return User;
+}]);
+app.controller('ChartsCtrl', ['$scope', '$http', 'User',
+    function($scope, $http, User) {
+        $scope.users = [];
+
+        $scope.init = function() {
+            $scope.loading = true;
+            $http.get('/chart')
+                .success(function(users) {
+                    angular.forEach(users, function(userData, index) {
+                        userData.index = index + 1;
+                        var user = new User(userData);
+
+                        this.push(user);
+                    }, $scope.users);
+                });
+        };
+
+        $scope.init();
+    }
+]);
+app.factory('GameUser', ['$http', 'User', function($http, User) {
+    function GameUser(data) {
+        var obj = this;
+
+        this.setData = function(data) {
+            angular.extend(this, data);
+
+            obj.user = new User(obj.user);
+        };
+        
+        this.getDelta = function() {
+            return obj.rating_after - obj.rating_before;
+        };
+
+        this.userPointsClass = function() {
+            return obj.getDelta() > 0 ? 'win' : 'lose';
+        };
+
+        if (data) {
+            this.setData(data);
+        }
+
+        return this;
+    }
+
+    return GameUser;
+}]);
+app.factory('Game', ['$http', 'GameUser', function($http, GameUser) {
+    function Game(data) {
+        var obj = this;
+
+        this.setData = function(data) {
+            angular.extend(this, data);
+
+            for (var i = 0; i < obj.games_users_a.length; i++) {
+                obj.games_users_a[i] = new GameUser(obj.games_users_a[i]);
+            }
+
+            for (i = 0; i < obj.games_users_b.length; i++) {
+                obj.games_users_b[i] = new GameUser(obj.games_users_b[i]);
+            }
+        };
+
+        this.gamePointClass = function(team) {
+            var firstTeamsPoints = obj.team_a_points,
+                secondTeamsPoints = obj.team_b_points;
+
+            if (team === 'b') {
+                firstTeamsPoints = obj.team_b_points;
+                secondTeamsPoints = obj.team_a_points;
+            }
+
+            if (firstTeamsPoints > secondTeamsPoints)
+                return 'win';
+            else if (firstTeamsPoints < secondTeamsPoints)
+                return 'lose';
+            else
+                return 'draw';
+        };
+
+        if (data) {
+            this.setData(data);
+        }
+
+        return this;
+    }
+
+    return Game;
+}]);
+app.controller('GamesCtrl', ['$scope', '$http', 'Game',
+    function($scope, $http, Game) {
+        $scope.lastpage = 1;
+        $scope.currentpage = 0;
+        $scope.games = [];
+        $scope.loading = false;
+        $scope.userRole = null;
+
+        var map = {};
+
+        function addGames(data) {
+            angular.forEach(data, function(data) {
+                var game = new Game(data);
+                this.push(game);
+
+                map[game.id] = this.length - 1;
+            }, $scope.games);
+        }
+
+        function getUserRole() {
+            $http({
+                url: '/user/role',
+                method: 'GET'
+            }).success(function(role) {
+                $scope.userRole = role;
+            });
+        }
+
+        $scope.userRole = getUserRole();
+
+        $scope.init = function() {
+            $http({
+                url: '/',
+                method: 'GET',
+                params: {page: $scope.currentpage}
+            })
+            .success(function(response) {
+                $scope.currentpage = response.current_page;
+                $scope.lastpage = response.last_page;
+
+                addGames(response.data);
+            });
+        };
+
+        $scope.loadMore = function() {
+            $scope.loading = true;
+
+            $http({
+                url: '/',
+                method: 'GET',
+                params: {page: $scope.currentpage + 1}
+            })
+            .success(function(response) {
+                $scope.currentpage = response.current_page;
+                $scope.lastpage = response.last_page;
+
+                addGames(response.data);
+                $scope.loading = false;
+            });
+        };
+
+        $scope.complain = function(id) {
+            $http.get('/game/' + id + '/complain')
+                .success(function(response) {
+                    $http.get('/game/' + id)
+                        .success(function(response) {
+                            var game = new Game(response),
+                                scopeIndex = map[game.id];
+
+                            $scope.games[scopeIndex] = game;
+                        });
+                });
+        };
+
+        $scope.init();
+    }
+]);

@@ -22,6 +22,9 @@ class GameProcessor
 
     const DEFAULT_RATING = 1200;
 
+    const POINTS_MIN = 0;
+    const POINTS_MAX = 10;
+
     /**
      * @param $ratingA
      * @param $ratingB

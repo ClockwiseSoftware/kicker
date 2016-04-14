@@ -18,20 +18,23 @@ elixir(function(mix) {
 
     // Main assets
     mix.styles([
+        'resources/assets/bower/angular/angular-csp.css',
         'bower/bootstrap/dist/css/bootstrap.css',
         'css/main.css',
-        'resources/assets/bower/angular/angular-csp.css'
+        'css/sign.css'
     ], 'public/css/main.css', 'resources/assets');
 
     mix.scripts([
         'bower/jquery/dist/jquery.js',
         'bower/bootstrap/dist/js/bootstrap.js',
-        'bower/angular/angular.js'
+        'bower/angular/angular.js',
+        'resources/assets/bower/angular-route/angular-route.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
 
     // Angular application
+    mix.copy('resources/assets/app/views', 'public/html/views');
     mix.scripts([
         'app.js',
         // Chart
@@ -56,9 +59,4 @@ elixir(function(mix) {
         'bower/select2/dist/css/select2.min.css',
         'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
     ], 'public/css/game.css', 'resources/assets');
-
-    // Sign-up and Sign-in
-    mix.styles([
-        'css/sign.css'
-    ], 'public/css/sign.css', 'resources/assets');
 });

@@ -4,6 +4,7 @@ app.controller('GamesCtrl', ['$scope', '$http', 'Game',
         $scope.currentpage = 0;
         $scope.games = [];
         $scope.loading = false;
+        $scope.userRole = null;
 
         var map = {};
 
@@ -15,6 +16,17 @@ app.controller('GamesCtrl', ['$scope', '$http', 'Game',
                 map[game.id] = this.length - 1;
             }, $scope.games);
         }
+
+        function getUserRole() {
+            $http({
+                url: '/user/role',
+                method: 'GET'
+            }).success(function(role) {
+                $scope.userRole = role;
+            });
+        }
+
+        $scope.userRole = getUserRole();
 
         $scope.init = function() {
             $http({

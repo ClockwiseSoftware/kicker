@@ -26,8 +26,8 @@
                 <div class="col-sm-10">
                     {{ Form::number('team_a_points', old('team_a_points', 0), [
                         'class' => 'form-control',
-                        'min' => 0,
-                        'max' => 100,
+                        'min' => \App\Models\GameProcessor::POINTS_MIN,
+                        'max' => \App\Models\GameProcessor::POINTS_MAX,
                         'required' => 'required'
                     ]) }}
                     <div class="error">{{ $errors->first('team_a_points') }}</div>
@@ -56,8 +56,8 @@
                 <div class="col-sm-10">
                     {{ Form::number('team_b_points', old('team_b_points', 0), [
                         'class' => 'form-control',
-                        'min' => 0,
-                        'max' => 100,
+                        'min' => \App\Models\GameProcessor::POINTS_MIN,
+                        'max' => \App\Models\GameProcessor::POINTS_MAX,
                         'required' => 'required'
                     ]) }}
                     <div class="error">{{ $errors->first('team_b_points') }}</div>

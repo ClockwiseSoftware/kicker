@@ -1,8 +1,10 @@
 {
-  "name": "YourApp.com",
+  "name": "Kicker",
   "dependencies": {
     "bootstrap": "^3.3.6",
     "select2": "*",
-    "eonasdan-bootstrap-datetimepicker": "*"
+    "eonasdan-bootstrap-datetimepicker": "*",
+    "angular": "*",
+    "angular-route": "*"
   }
 }

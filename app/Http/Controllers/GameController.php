@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\GameProcessor;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,11 @@ class GameController extends Controller
     {
         return [
             'games_users_a' => 'required|users_ids:2',
-            'team_a_points' => 'required|min:0|max:100|integer',
+            'team_a_points' => 
+                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
             'games_users_b' => 'required|users_ids:2',
-            'team_b_points' => 'required|min:0|max:100|integer',
+            'team_b_points' => 
+                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
             'played_at' => 'required|date',
         ];
     }

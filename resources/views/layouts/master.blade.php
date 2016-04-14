@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="kickerApp">
     <head>
         <title>@yield('title')</title>
 
@@ -27,14 +27,14 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav navbar-center">
-                        <li><a href="{{ route('home') }}">Games</a></li>
-                        <li><a href="{{ route('chart') }}">Chart</a></li>
+                        <li><a href="/#/">Games</a></li>
+                        <li><a href="/#/chart">Chart</a></li>
                         @if(!Auth::check())
-                            <li><a href="{{ route('login') }}">Sign In</a></li>
-                            <li><a href="{{ route('register') }}">Sign Up</a></li>
+                            <li><a href="/#/signin">Sign In</a></li>
+                            <li><a href="/#/signup">Sign Up</a></li>
                         @else
-                            <li><a href="{{ route('createGame') }}">Add game</a></li>
-                            <li><a href="{{ route('logout') }}">Logout ({{ App\User::findMe()->email }})</a></li>
+                            <li><a href="/game/create">Add game</a></li>
+                            <li><a href="/logout">Logout ({{ App\User::findMe()->email }})</a></li>
                         @endif
                     </ul>
                 </div>
@@ -42,7 +42,7 @@
         </nav>
         <div class="container main-container">
             <div class="content">
-                @yield('content')
+                <div ng-view></div>
             </div>
         </div>
 

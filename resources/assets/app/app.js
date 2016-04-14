@@ -1,10 +1,19 @@
 var app = angular
-    .module('kickerApp', [])
-    .config(['$httpProvider', '$interpolateProvider',
-        function ($httpProvider, $interpolateProvider) {
+    .module('kickerApp', ['ngRoute'])
+    .config(['$httpProvider', '$interpolateProvider', '$routeProvider',
+        function ($httpProvider, $interpolateProvider, $routeProvider) {
             $interpolateProvider.startSymbol('<%');
             $interpolateProvider.endSymbol('%>');
-            // $httpProvider.defaults.headers
-            //     .common['X-Requested-With'] = 'XMLHttpRequest';
+
+            $routeProvider
+                .when('/signup', {
+                    templateUrl: 'html/views/auth/signup.html'
+                })
+                .when('/', {
+                    templateUrl: 'html/views/games/index.html'
+                })
+                .when('/chart', {
+                    templateUrl: 'html/views/chart/index.html'
+                });
         }
     ]);
