@@ -24,6 +24,10 @@ var app = angular
                     templateUrl: 'html/views/games/create.html',
                     controller: 'CreateGameCtrl'
                 })
+                .when('/game/:id/update', {
+                    templateUrl: 'html/views/games/update.html',
+                    controller: 'UpdateGameCtrl'
+                })
 
                 // Chart pages
                 .when('/chart', {

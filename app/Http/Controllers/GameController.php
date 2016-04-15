@@ -59,48 +59,8 @@ class GameController extends Controller
         return redirect('/');
     }
 
-    public function getUpdate(Request $request, $id)
-    {
-        $user = User::findMe();
-
-        if (!$user || !$user->isAdmin()) {
-            return redirect('/');
-        }
-
-        $game = Game::where(['id' => $id])->with([
-            'gamesUsersA.user', 'gamesUsersB.user'
-        ])->first();
-
-        if (!$game)
-            abort(404);
-
-        if ($usersAIds = old('games_users_a')) {
-            $usersA = User::whereIn('id', $usersAIds)->get();
-        } else {
-            $usersA = $game->usersA();
-        }
-
-        if ($usersBIds = old('games_users_b')) {
-            $usersB = User::whereIn('id', $usersBIds)->get();
-        } else {
-            $usersB = $game->usersB();
-        }
-
-        return view('games.update', [
-            'usersA' => $usersA,
-            'usersB' => $usersB,
-            'game' => $game
-        ]);
-    }
-
     public function postUpdate(Request $request, $id)
     {
-        $user = User::findMe();
-
-        if (!$user || !$user->isAdmin()) {
-            return redirect('/');
-        }
-
         $this->validate($request, $this->validationRules());
         $game = Game::where('id', $id)->first();
 
@@ -115,12 +75,6 @@ class GameController extends Controller
 
     public function getDelete(Request $request, $id)
     {
-        $user = User::findMe();
-
-        if (!$user || !$user->isAdmin()) {
-            return redirect('/');
-        }
-
         $game = Game::findOrFail($id);
         $game->delete();
 

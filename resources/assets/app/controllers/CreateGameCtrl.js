@@ -18,16 +18,9 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
         };
 
         $scope.create = function() {
-            var data = {
-                games_users_a: $scope.game.teamIds('a'),
-                team_a_points: $scope.game.points.a,
-                games_users_b: $scope.game.teamIds('b'),
-                team_b_points: $scope.game.points.b,
-                played_at: $scope.game.playedAt
-            };
             $scope.errors = {};
 
-            $http.post('/game/create', data).error(function(response) {
+            $http.post('/game/create', $scope.game.getFormData()).error(function(response) {
                 $scope.errors = response;
             }).then(function() {
                 $location.path('/');

@@ -1,5 +1,8 @@
 app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
     function CreateGameService(data) {
+        var $this = this;
+
+        this.id = null;
         this.users = {
             a: [],
             b: []
@@ -27,8 +30,37 @@ app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
             return this.teamIds('a').concat(this.teamIds('b'));
         };
 
+        this.exportUsers = function (data, teamIndex) {
+            var users = [];
+
+            angular.forEach(data['games_users_' + teamIndex], function(game_user) {
+                this.push(game_user.user);
+            }, users);
+
+            return users;
+        };
+
         this.setData = function(data) {
-            angular.extend(this, data);
+            $this.users = {
+                a: $this.exportUsers(data, 'a'),
+                b: $this.exportUsers(data, 'b')
+            };
+            $this.points = {
+                a: data.team_a_points,
+                b: data.team_b_points
+            };
+            $this.playedAt = data.played_at;
+            $this.id = data.id;
+        };
+
+        this.getFormData = function () {
+            return {
+                games_users_a: $this.teamIds('a'),
+                team_a_points: $this.points.a,
+                games_users_b: $this.teamIds('b'),
+                team_b_points: $this.points.b,
+                played_at: $this.playedAt
+            }
         };
 
         if (data) {
