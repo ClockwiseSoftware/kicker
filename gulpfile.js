@@ -44,7 +44,12 @@ elixir(function(mix) {
         // Games
         'services/GameUserService.js',
         'services/GameService.js',
-        'controllers/GamesCtrl.js'
+        'controllers/GamesCtrl.js',
+
+        // Signup
+        'services/AuthUserService.js',
+        'controllers/SignupCtrl.js'
+
     ], 'public/js/app.js', 'resources/assets/app');
 
     // Create game assets

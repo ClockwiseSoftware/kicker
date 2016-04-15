@@ -7,7 +7,8 @@ var app = angular
 
             $routeProvider
                 .when('/signup', {
-                    templateUrl: 'html/views/auth/signup.html'
+                    templateUrl: 'html/views/auth/signup.html',
+                    controller: 'SignupCtrl'
                 })
                 .when('/', {
                     templateUrl: 'html/views/games/index.html'
