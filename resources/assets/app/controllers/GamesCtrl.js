@@ -1,5 +1,6 @@
 app.controller('GamesCtrl', ['$scope', '$http', 'Game',
     function($scope, $http, Game) {
+        $scope.loading = false;
         $scope.lastpage = 1;
         $scope.currentpage = 0;
         $scope.games = [];
