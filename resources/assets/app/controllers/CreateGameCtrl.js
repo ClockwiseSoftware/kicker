@@ -1,5 +1,6 @@
 app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService',
     function($scope, $http, $location, $filter, CreateGameService) {
+        $scope.loading = false;
         $scope.usersSearch = [];
         $scope.game = new CreateGameService();
         $scope.errors = {};
@@ -19,11 +20,15 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
 
         $scope.create = function() {
             $scope.errors = {};
+            $scope.loading = true;
 
             $http.post('/game/create', $scope.game.getFormData()).error(function(response) {
                 $scope.errors = response;
             }).then(function() {
+                $scope.loading = false;
                 $location.path('/');
+            }, function () {
+                $scope.loading = false;
             });
         };
 

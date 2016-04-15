@@ -1,5 +1,6 @@
 app.controller('UpdateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', '$routeParams',
     function($scope, $http, $location, $filter, CreateGameService, $routeParams) {
+        $scope.loading = false;
         $scope.gameId = $routeParams.id;
         $scope.game = null;
 
@@ -10,7 +11,7 @@ app.controller('UpdateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
         $scope.findUsers = function(search) {
             var params = {
                 search: search,
-                'exceptIds[]': $scope.game.getSelectedIds()
+                'exceptIds[]': $scope.game ? $scope.game.getSelectedIds() : []
             };
 
             return $http.get('/user/search', {
@@ -22,10 +23,13 @@ app.controller('UpdateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
 
         $scope.update = function() {
             $scope.errors = {};
+            $scope.loading = true;
 
             $http.post('/game/' + $scope.game.id + '/update', $scope.game.getFormData()).error(function(response) {
+                $scope.loading = false;
                 $scope.errors = response;
             }).then(function() {
+                $scope.loading = false;
                 $location.path('/');
             });
         };
