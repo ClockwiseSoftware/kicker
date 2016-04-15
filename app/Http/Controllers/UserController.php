@@ -40,6 +40,6 @@ class UserController extends Controller
             $role = $user->isAdmin() ? User::ROLE_ADMIN : User::ROLE_USER;
         }
 
-        return response()->json('user');
+        return response()->json($role);
     }
 }

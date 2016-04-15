@@ -66,22 +66,22 @@
                 </div>
             </div>
             <div class="game-information">
-                <div class="controls" ng-if="role === 'user'">
+                <div class="controls" ng-if="user.isGuest === false">
                     <a href="#"
                        class="btn btn-default btn-xs control-button"
                        ng-href="/game/<% game.id %>/update"
-                       ng-if="role === 'admin'"
+                       ng-if="user.isAdmin"
                     ><i class="fa fa-pencil"></i></a>
                     <a href="#"
                        ng-href="/game/<% game.id %>/delete"
                        class="btn btn-danger btn-xs control-button"
-                       ng-if="role === 'admin'"
+                       ng-if="user.isAdmin"
                     ><i class="fa fa-ban"></i></a>
                     <a href="#"
                        ng-click="complain(game.id)"
                        onclick="return false"
                        class="btn btn-danger btn-xs control-button"
-                       ng-if="role === 'user'"
+                       ng-if="user.isUser"
                     ><i class="fa fa-flag"></i></a>
                 </div>
                 <div>Played at: <% game.played_at %></div>

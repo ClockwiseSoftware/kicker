@@ -4,7 +4,11 @@ app.controller('GamesCtrl', ['$scope', '$http', 'Game',
         $scope.currentpage = 0;
         $scope.games = [];
         $scope.loading = false;
-        $scope.userRole = null;
+        $scope.user = {
+            isGuest: false,
+            isUser: false,
+            isAdmin: false
+        };
 
         var map = {};
 
@@ -22,7 +26,13 @@ app.controller('GamesCtrl', ['$scope', '$http', 'Game',
                 url: '/user/role',
                 method: 'GET'
             }).success(function(role) {
-                $scope.userRole = role;
+                if (role === 'guest') {
+                    $scope.user.isGuest = true;
+                } else if (role === 'user') {
+                    $scope.user.isUser = true;
+                } else if (role === 'admin') {
+                    $scope.user.isAdmin = true;
+                }
             });
         }
 
