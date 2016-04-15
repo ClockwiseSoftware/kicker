@@ -10,11 +10,20 @@ var app = angular
                     templateUrl: 'html/views/auth/signup.html',
                     controller: 'SignupCtrl'
                 })
+                .when('/signin', {
+                    templateUrl: 'html/views/auth/signin.html',
+                    controller: 'SigninCtrl'
+                })
                 .when('/', {
                     templateUrl: 'html/views/games/index.html'
                 })
                 .when('/chart', {
                     templateUrl: 'html/views/chart/index.html'
+                })
+
+                // Because Facebook adds this parameter in hash after successful login
+                .when('/_=_', {
+                    templateUrl: 'html/views/games/index.html'
                 });
         }
     ]);
@@ -233,8 +242,8 @@ app.factory('AuthUser', ['$http', function($http) {
 
     return AuthUser;
 }]);
-app.controller('SignupCtrl', ['$scope', '$http', '$location', 'AuthUser',
-    function($scope, $http, $location, AuthUser) {
+app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser',
+    function($scope, $http, $location, $window, AuthUser) {
         $scope.user = new AuthUser();
         $scope.errors = [];
 
@@ -244,7 +253,34 @@ app.controller('SignupCtrl', ['$scope', '$http', '$location', 'AuthUser',
                 method: 'POST',
                 data: $scope.user
             }).success(function() {
-                $location.path('/');
+                $window.location.href = '/';
+            }).error(function(res) {
+                $scope.errors = [];
+
+                for (var attr in res) {
+                    if (!res.hasOwnProperty(attr))
+                        continue;
+
+                    for (var i = 0; i < res[attr].length; i++) {
+                        $scope.errors.push(res[attr][i]);
+                    }
+                }
+            });
+        }
+    }
+]);
+app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser',
+    function($scope, $http, $location, $window, AuthUser) {
+        $scope.user = new AuthUser();
+        $scope.errors = [];
+
+        $scope.signin = function (user) {
+            $http({
+                url: '/signin',
+                method: 'POST',
+                data: $scope.user
+            }).success(function(res) {
+                $window.location.href = '/';
             }).error(function(res) {
                 $scope.errors = [];
 

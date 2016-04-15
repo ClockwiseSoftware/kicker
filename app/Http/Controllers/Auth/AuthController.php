@@ -52,6 +52,13 @@ class AuthController extends Controller
         ]);
     }
 
+    protected function sendFailedLoginResponse($request)
+    {
+        return response()->json([
+            $this->loginUsername() => [$this->getFailedLoginMessage()]
+        ], 422);
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *

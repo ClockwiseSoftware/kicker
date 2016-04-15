@@ -48,7 +48,10 @@ elixir(function(mix) {
 
         // Signup
         'services/AuthUserService.js',
-        'controllers/SignupCtrl.js'
+        'controllers/SignupCtrl.js',
+
+        // Signin
+        'controllers/SigninCtrl.js'
 
     ], 'public/js/app.js', 'resources/assets/app');
 
