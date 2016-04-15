@@ -1,5 +1,5 @@
-app.controller('SignupCtrl', ['$scope', '$http', '$location', 'AuthUser',
-    function($scope, $http, $location, AuthUser) {
+app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser',
+    function($scope, $http, $location, $window, AuthUser) {
         $scope.user = new AuthUser();
         $scope.errors = [];
 
@@ -9,7 +9,7 @@ app.controller('SignupCtrl', ['$scope', '$http', '$location', 'AuthUser',
                 method: 'POST',
                 data: $scope.user
             }).success(function() {
-                $location.path('/');
+                $window.location.href = '/';
             }).error(function(res) {
                 $scope.errors = [];
 
