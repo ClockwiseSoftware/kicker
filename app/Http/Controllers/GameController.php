@@ -52,23 +52,6 @@ class GameController extends Controller
         }
     }
 
-    public function getCreate(Request $request)
-    {
-        $usersA = $usersB = [];
-
-        if ($usersAIds = old('games_users_a')) {
-            $usersA = User::whereIn('id', $usersAIds)->get();
-        }
-        if ($usersBIds = old('games_users_b')) {
-            $usersB = User::whereIn('id', $usersBIds)->get();
-        }
-
-        return view('games.create', [
-            'usersA' => $usersA,
-            'usersB' => $usersB,
-        ]);
-    }
-
     public function postCreate(Request $request)
     {
         $this->validate($request, $this->validationRules());

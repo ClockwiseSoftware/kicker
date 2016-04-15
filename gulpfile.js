@@ -18,8 +18,12 @@ elixir(function(mix) {
 
     // Main assets
     mix.styles([
-        'resources/assets/bower/angular/angular-csp.css',
         'bower/bootstrap/dist/css/bootstrap.css',
+        'bower/ui-select/dist/select.css',
+        'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+
+        'resources/assets/bower/angular/angular-csp.css',
+
         'css/main.css',
         'css/sign.css'
     ], 'public/css/main.css', 'resources/assets');
@@ -27,8 +31,16 @@ elixir(function(mix) {
     mix.scripts([
         'bower/jquery/dist/jquery.js',
         'bower/bootstrap/dist/js/bootstrap.js',
+        'bower/moment/min/moment.min.js',
+        'bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+
+        // Angular
         'bower/angular/angular.js',
-        'resources/assets/bower/angular-route/angular-route.js'
+
+        // Angular derivatives
+        'resources/assets/bower/angular-route/angular-route.js',
+        'resources/assets/bower/angular-sanitize/angular-sanitize.js',
+        'resources/assets/bower/ui-select/dist/select.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
@@ -44,7 +56,9 @@ elixir(function(mix) {
         // Games
         'services/GameUserService.js',
         'services/GameService.js',
+        'services/CreateGameService.js',
         'controllers/GamesCtrl.js',
+        'controllers/CreateGameCtrl.js',
 
         // Signup
         'services/AuthUserService.js',
@@ -54,17 +68,4 @@ elixir(function(mix) {
         'controllers/SigninCtrl.js'
 
     ], 'public/js/app.js', 'resources/assets/app');
-
-    // Create game assets
-    mix.scripts([
-        'bower/select2/dist/js/select2.full.min.js',
-        'bower/moment/min/moment.min.js',
-        'bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-        'js/game.create.js'
-    ], 'public/js/game.js', 'resources/assets');
-
-    mix.styles([
-        'bower/select2/dist/css/select2.min.css',
-        'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
-    ], 'public/css/game.css', 'resources/assets');
 });

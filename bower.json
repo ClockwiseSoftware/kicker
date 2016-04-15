@@ -5,6 +5,8 @@
     "select2": "*",
     "eonasdan-bootstrap-datetimepicker": "*",
     "angular": "*",
-    "angular-route": "*"
+    "angular-route": "*",
+    "angular-ui-select": "*",
+    "angular-sanitize": "*"
   }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function postSearch(Request $request)
+    public function getSearch(Request $request)
     {
         $search = $request->get('search');
         $exceptIds = $request->get('exceptIds');

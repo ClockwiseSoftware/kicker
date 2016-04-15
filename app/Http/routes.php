@@ -57,7 +57,7 @@ Route::group(['middleware' => ['web']], function () {
         ->where('id', '[0-9]+')->name('complain');
 
     // Users routes
-    Route::post('/user/search', 'UserController@postSearch')->name('userSearch');
+    Route::get('/user/search', 'UserController@getSearch')->name('userSearch');
     Route::get('/user/role', 'UserController@getRole')->name('userRole');
 
     // Users routes
