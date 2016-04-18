@@ -79,6 +79,7 @@ app.controller('GamesCtrl', ['$scope', '$http', 'Game',
                                 scopeIndex = map[game.id];
 
                             $scope.games[scopeIndex] = game;
+                            game.tooltipIsVisible = true;
                         });
                 });
         };

@@ -74,6 +74,7 @@
                        ng-if="user.isUser"
                        tooltip-placement="top"
                        tooltip-popup-close-delay="1000"
+                       tooltip-is-open="game.tooltipIsVisible"
                        uib-tooltip-html="game.complaintsHtml"
                     ><i class="fa fa-flag"></i> <span ng-if="game.complaints.length > 0"><% game.complaints.length %></span></a>
                 </div>
