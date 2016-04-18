@@ -360,3 +360,7 @@ body {
     display: block;
     margin: 0 auto;
 }
+
+.users-chart .current-user td {
+    background-color: rgba(140, 161, 220, 0.45);
+}

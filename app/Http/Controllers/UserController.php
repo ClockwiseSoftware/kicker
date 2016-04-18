@@ -42,4 +42,13 @@ class UserController extends Controller
 
         return response()->json($role);
     }
+
+    public function getUser(Request $request)
+    {
+        $user = User::findMe();
+
+        if ($request->wantsJson()) {
+            return response()->json($user);
+        }
+    }
 }
