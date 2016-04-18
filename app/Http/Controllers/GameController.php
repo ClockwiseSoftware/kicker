@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Complaint;
 use App\Models\Game;
 use App\Models\GameProcessor;
 use App\User;
@@ -69,6 +70,7 @@ class GameController extends Controller
 
         /* @var $game Game */
         $game->updateWith($request->all());
+        Complaint::where('game_id', $game->id)->delete();
 
         return redirect('/');
     }
