@@ -1,4 +1,4 @@
-app.factory('Game', ['$http', '$filter', 'GameUser', 'User', function($http, $filter, GameUser, User) {
+app.factory('Game', ['$http', '$filter', '$sce', 'GameUser', 'User', function($http, $filter, $sce, GameUser, User) {
     function Game(data) {
         var obj = this;
         this.complaintsHtml = '';
@@ -15,9 +15,39 @@ app.factory('Game', ['$http', '$filter', 'GameUser', 'User', function($http, $fi
                 obj.games_users_b[i] = new GameUser(obj.games_users_b[i]);
             }
 
+            for (i = 0; i < obj.complaints.length; i++) {
+                obj.complaints[i].user = new User(obj.complaints[i].user);
+            }
+
             obj.played_at = (function(date) {
                 return $filter('date')(date, 'MM/dd/yyyy HH:mm');
             })(new Date(obj.played_at));
+
+            obj.complaintsHtml = (function (complaints) {
+                var maxComplainers = 5,
+                    html = '',
+                    iterations = complaints.length > maxComplainers ? maxComplainers : complaints.length;
+
+                if (complaints.length <= 0)
+                    return null;
+
+
+                for (var i = 0; i < iterations; i++) {
+                    var user = obj.complaints[i].user;
+
+                    if (!user)
+                        continue;
+
+                    html +=
+                        '<span class="complain-user">' +
+                        '<img src="' + user.avatarUrl() + '" />' +
+                        '</span>';
+                }
+
+                html += '<div><a href="#/game/' + obj.id + '/complainers" class="see-all-complainers">See all</a></div>';
+
+                return $sce.trustAsHtml(html);
+            })(obj.complaints);
         };
 
         this.gamePointClass = function(team) {
@@ -39,19 +69,6 @@ app.factory('Game', ['$http', '$filter', 'GameUser', 'User', function($http, $fi
 
         if (data) {
             this.setData(data);
-
-            for (var i = 0; i < obj.complaints.length; i++) {
-                var user = obj.complaints[i].user;
-
-                if (!user)
-                    continue;
-
-                user = new User(obj.complaints[i].user);
-                obj.complaintsHtml +=
-                    '<span class="complain-user">' +
-                        '<img src="' + user.avatarUrl() + '" />' +
-                    '</span>';
-            }
         }
 
         return this;

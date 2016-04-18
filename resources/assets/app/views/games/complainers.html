@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 game-container">
+        <h2 class="text-center">Complained users</h2>
+        <div ng-repeat="complaint in game.complaints" ng-if="$index % 4 == 0" class="row">
+            <div class="col-md-3 complain-user-list">
+                <div class="avatar"><img ng-src="<% game.complaints[$index].user.avatarUrl() %>"></div>
+                <div class="name"><% game.complaints[$index].user.name %></div>
+                <div class="email"><% game.complaints[$index].user.email %></div>
+            </div>
+            <div class="col-md-3 complain-user-list">
+                <div class="avatar"><img ng-src="<% game.complaints[$index + 1].user.avatarUrl() %>"></div>
+                <div class="name"><% game.complaints[$index + 1].user.name %></div>
+                <div class="email"><% game.complaints[$index + 1].user.email %></div>
+            </div>
+            <div class="col-md-3 complain-user-list">
+                <div class="avatar"><img ng-src="<% game.complaints[$index + 2].user.avatarUrl() %>"></div>
+                <div class="name"><% game.complaints[$index + 2].user.name %></div>
+                <div class="email"><% game.complaints[$index + 2].user.email %></div>
+            </div>
+            <div class="col-md-3 complain-user-list">
+                <div class="avatar"><img ng-src="<% game.complaints[$index + 3].user.avatarUrl() %>"></div>
+                <div class="name"><% game.complaints[$index + 3].user.name %></div>
+                <div class="email"><% game.complaints[$index + 3].user.email %></div>
+            </div>
+        </div>
+    </div>
+</div>

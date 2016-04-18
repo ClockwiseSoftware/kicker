@@ -332,4 +332,31 @@ body {
 .tooltip-inner {
     white-space: nowrap;
     padding: 5px;
+    max-width: 250px;
+}
+
+.see-all-complainers {
+    color: rgba(230, 229, 231, 0.8);
+}
+
+.see-all-complainers:hover {
+    color: #e6e5e7;
+}
+
+.complain-user-list {
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+}
+
+.complain-user-list .avatar {
+    display: block;
+    height: 80px;
+}
+
+.complain-user-list .avatar img {
+    max-width: 80px;
+    max-height: 80px;
+    display: block;
+    margin: 0 auto;
 }

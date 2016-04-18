@@ -74,14 +74,15 @@
                        ng-if="user.isUser || user.isAdmin"
                        tooltip-placement="top"
                        tooltip-popup-close-delay="1000"
+                       tooltip-trigger="none"
                        tooltip-is-open="game.tooltipIsVisible"
+                       ng-mouseover="game.tooltipIsVisible = true"
+                       ng-mouseleave="game.tooltipIsVisible = false"
                        uib-tooltip-html="game.complaintsHtml"
                     ><i class="fa fa-flag"></i> <span ng-if="game.complaints.length > 0"><% game.complaints.length %></span></a>
                 </div>
                 <div>Played at: <% game.played_at %></div>
-                <div class="additional-info">
-                    <!--<button tooltip-placement="bottom" uib-tooltip-html="tooltipHtml" type="button" class="btn btn-default">Tooltip qwe</button>-->
-                </div>
+                <div class="additional-info"></div>
             </div>
         </div>
     </div>

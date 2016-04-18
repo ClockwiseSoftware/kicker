@@ -28,6 +28,10 @@ var app = angular
                     templateUrl: 'html/views/games/update.html',
                     controller: 'UpdateGameCtrl'
                 })
+                .when('/game/:id/complainers', {
+                    templateUrl: 'html/views/games/complainers.html',
+                    controller: 'ComplainersCtrl'
+                })
 
                 // Chart pages
                 .when('/chart', {

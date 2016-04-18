@@ -63,6 +63,7 @@ elixir(function(mix) {
         'controllers/GamesCtrl.js',
         'controllers/CreateGameCtrl.js',
         'controllers/UpdateGameCtrl.js',
+        'controllers/ComplainersCtrl.js',
 
         // Signup
         'services/AuthUserService.js',
