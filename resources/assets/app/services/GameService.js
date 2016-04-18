@@ -46,7 +46,11 @@ app.factory('Game', ['$http', '$filter', 'GameUser', 'User', function($http, $fi
                     continue;
 
                 user = new User(obj.complaints[i].user);
-                obj.complaintsHtml += '<span class="complain-user"><img src="' + user.avatarUrl() + '" /></span>';
+                obj.complaintsHtml +=
+                    '<span class="complain-user">' +
+                        '<img src="' + user.avatarUrl() + '" />' +
+                        '<span class="complain-user-name">' + user.name + '</span>' +
+                    '</span>';
             }
         }
 

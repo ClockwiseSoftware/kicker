@@ -315,6 +315,8 @@ body {
 
 .complain-user {
     margin-left: 5px;
+    text-align: center;
+    display: inline-block;
 }
 
 .complain-user:first-of-type {
@@ -322,10 +324,23 @@ body {
 }
 
 .complain-user img {
-    display: inline-block !important;
-    white-space: nowrap;
     max-height: 40px;
     max-width: 40px;
+    display: block;
+}
+
+.complain-user .complain-user-name {
+    display: block;
+    font-size: 12px;
+    max-width: 40px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.complain-user .complain-user-name:hover {
+    max-width: 100%;
+    overflow-x: visible;
 }
 
 .tooltip-inner {
