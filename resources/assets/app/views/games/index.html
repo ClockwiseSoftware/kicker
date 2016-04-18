@@ -71,7 +71,7 @@
                        ng-click="complain(game.id)"
                        onclick="return false"
                        class="btn btn-danger btn-xs control-button"
-                       ng-if="user.isUser"
+                       ng-if="user.isUser || user.isAdmin"
                        tooltip-placement="top"
                        tooltip-popup-close-delay="1000"
                        tooltip-is-open="game.tooltipIsVisible"
