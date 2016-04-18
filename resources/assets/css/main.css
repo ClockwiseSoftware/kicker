@@ -329,20 +329,6 @@ body {
     display: block;
 }
 
-.complain-user .complain-user-name {
-    display: block;
-    font-size: 12px;
-    max-width: 40px;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.complain-user .complain-user-name:hover {
-    max-width: 100%;
-    overflow-x: visible;
-}
-
 .tooltip-inner {
     white-space: nowrap;
     padding: 5px;
