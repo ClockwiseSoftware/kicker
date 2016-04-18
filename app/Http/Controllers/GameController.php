@@ -27,7 +27,7 @@ class GameController extends Controller
 
     public function getIndex(Request $request)
     {
-        $games = Game::with(['complaints', 'gamesUsersA.user', 'gamesUsersB.user'])
+        $games = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->orderBy('played_at', 'desc')
             ->orderBy('id', 'desc')->paginate(5);
 
@@ -42,7 +42,7 @@ class GameController extends Controller
 
     public function getOne(Request $request, $id)
     {
-        $game = Game::with(['complaints', 'gamesUsersA.user', 'gamesUsersB.user'])
+        $game = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->where('id', $id)
             ->orderBy('played_at', 'desc')
             ->firstOrFail();

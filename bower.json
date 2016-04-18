@@ -1,5 +1,5 @@
 {
-  "name": "Kicker",
+  "name": "kicker",
   "dependencies": {
     "bootstrap": "^3.3.6",
     "select2": "*",
@@ -7,6 +7,7 @@
     "angular": "*",
     "angular-route": "*",
     "angular-ui-select": "*",
-    "angular-sanitize": "*"
+    "angular-sanitize": "*",
+    "angular-bootstrap": "*"
   }
 }

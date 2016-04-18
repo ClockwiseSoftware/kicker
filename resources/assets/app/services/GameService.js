@@ -1,6 +1,7 @@
-app.factory('Game', ['$http', '$filter', 'GameUser', function($http, $filter, GameUser) {
+app.factory('Game', ['$http', '$filter', 'GameUser', 'User', function($http, $filter, GameUser, User) {
     function Game(data) {
         var obj = this;
+        this.complaintsHtml = '';
 
         this.setData = function(data) {
             angular.extend(this, data);
@@ -37,6 +38,16 @@ app.factory('Game', ['$http', '$filter', 'GameUser', function($http, $filter, Ga
 
         if (data) {
             this.setData(data);
+
+            for (var i = 0; i < obj.complaints.length; i++) {
+                var user = obj.complaints[i].user;
+
+                if (!user)
+                    continue;
+
+                user = new User(obj.complaints[i].user);
+                obj.complaintsHtml += '<span class="complain-user"><img src="' + user.avatarUrl() + '" /></span>';
+            }
         }
 
         return this;

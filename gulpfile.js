@@ -21,6 +21,7 @@ elixir(function(mix) {
         'bower/bootstrap/dist/css/bootstrap.css',
         'bower/ui-select/dist/select.css',
         'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+        'bower/angular-bootstrap/ui-bootstrap-csp.css',
 
         'resources/assets/bower/angular/angular-csp.css',
 
@@ -40,7 +41,9 @@ elixir(function(mix) {
         // Angular derivatives
         'resources/assets/bower/angular-route/angular-route.js',
         'resources/assets/bower/angular-sanitize/angular-sanitize.js',
-        'resources/assets/bower/ui-select/dist/select.js'
+        'resources/assets/bower/ui-select/dist/select.js',
+        'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
+        'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');

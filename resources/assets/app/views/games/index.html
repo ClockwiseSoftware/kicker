@@ -72,13 +72,13 @@
                        onclick="return false"
                        class="btn btn-danger btn-xs control-button"
                        ng-if="user.isUser"
-                    ><i class="fa fa-flag"></i></a>
+                       tooltip-placement="top"
+                       uib-tooltip-html="game.complaintsHtml"
+                    ><i class="fa fa-flag"></i> <span ng-if="game.complaints.length > 0"><% game.complaints.length %></span></a>
                 </div>
                 <div>Played at: <% game.played_at %></div>
                 <div class="additional-info">
-                    <div ng-if="game.complaints.length > 0" class="complaints">
-                        complaints: <% game.complaints.length %>
-                    </div>
+                    <!--<button tooltip-placement="bottom" uib-tooltip-html="tooltipHtml" type="button" class="btn btn-default">Tooltip qwe</button>-->
                 </div>
             </div>
         </div>
