@@ -8,6 +8,7 @@
     "angular-route": "*",
     "angular-ui-select": "*",
     "angular-sanitize": "*",
-    "angular-bootstrap": "*"
+    "angular-bootstrap": "*",
+    "ng-dialog": "*"
   }
 }

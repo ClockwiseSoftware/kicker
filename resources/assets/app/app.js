@@ -1,6 +1,6 @@
 var app = angular
     .module('kickerApp', [
-        'ngRoute', 'ui.select', 'ngSanitize', 'ui.bootstrap'
+        'ngRoute', 'ui.select', 'ngSanitize', 'ngDialog', 'ui.bootstrap'
     ]).config(['$httpProvider', '$interpolateProvider', '$routeProvider',
         function ($httpProvider, $interpolateProvider, $routeProvider) {
             $interpolateProvider.startSymbol('<%');

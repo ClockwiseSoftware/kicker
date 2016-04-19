@@ -1,9 +1,13 @@
-app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', 'User',
-    function($scope, $http, $location, $filter, CreateGameService, User) {
+app.controller('CreateGameCtrl', [
+    '$scope', '$http', '$location', '$filter', 'ngDialog',
+    'CreateGameService', 'User',
+    function($scope, $http, $location, $filter, ngDialog, CreateGameService, User) {
         $scope.loading = false;
         $scope.usersSearch = [];
         $scope.game = new CreateGameService();
         $scope.errors = {};
+
+        // ngDialog.open({ template: 'public/html/views/admin/users.html', className: 'ngdialog-theme-default' });
 
         $scope.findUsers = function (search) {
             User.findUsers(search, $scope);

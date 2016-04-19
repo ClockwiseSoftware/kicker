@@ -22,8 +22,10 @@ elixir(function(mix) {
         'bower/ui-select/dist/select.css',
         'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
         'bower/angular-bootstrap/ui-bootstrap-csp.css',
+        'bower/ng-dialog/css/ngDialog.css',
+        'bower/ng-dialog/css/ngDialog-theme-default.css',
 
-        'resources/assets/bower/angular/angular-csp.css',
+        'bower/angular/angular-csp.css',
 
         'css/main.css',
         'css/sign.css'
@@ -43,7 +45,8 @@ elixir(function(mix) {
         'resources/assets/bower/angular-sanitize/angular-sanitize.js',
         'resources/assets/bower/ui-select/dist/select.js',
         'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
-        'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js'
+        'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js',
+        'resources/assets/bower/ng-dialog/js/ngDialog.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
