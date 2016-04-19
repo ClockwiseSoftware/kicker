@@ -1,25 +1,21 @@
-app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService',
-    function($scope, $http, $location, $filter, CreateGameService) {
+app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', 'User',
+    function($scope, $http, $location, $filter, CreateGameService, User) {
         $scope.loading = false;
         $scope.usersSearch = [];
         $scope.game = new CreateGameService();
         $scope.errors = {};
 
-        $scope.findUsers = function(search) {
-            var params = {
-                search: search,
-                'exceptIds[]': $scope.game.getSelectedIds()
-            };
+        $scope.findUsers = function (search) {
+            User.findUsers(search, $scope);
+        };
 
-            return $http.get('/user/search', {
-                params: params
-            }).then(function(response) {
-                if (response.data.length === 0) {
-                    $scope.usersSearch = [{name: 'No results...'}];
-                } else {
-                    $scope.usersSearch = response.data;
+        $scope.onSelectUser = function (user, model) {
+            for (var i = 0; i < $scope.usersSearch.length; i++) {
+                if (user.id === $scope.usersSearch[i].id) {
+                    $scope.usersSearch.splice(i, 1);
+                    break;
                 }
-            });
+            }
         };
 
         $scope.create = function() {

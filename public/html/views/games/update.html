@@ -10,6 +10,7 @@
                                    ng-model="game.users.a"
                                    theme="bootstrap" sortable="true"
                                    limit="2"
+                                   on-select="onSelectUser($item, $model)"
                                    ng-disabled="disabled" title="Players of Team A">
                             <ui-select-match placeholder="Select players..."><% $item.name %></ui-select-match>
                             <ui-select-choices repeat="user in usersSearch track by $index"
@@ -50,6 +51,7 @@
                         <ui-select multiple id="usersB"
                                    ng-model="game.users.b"
                                    limit="2"
+                                   on-select="onSelectUser($item, $model)"
                                    theme="bootstrap" sortable="true"
                                    ng-disabled="disabled"  title="Players of Team B">
                             <ui-select-match placeholder="Select players..."><% $item.name %></ui-select-match>
