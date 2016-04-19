@@ -34,7 +34,8 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
 
         var $playedAt = $('#playedAt');
         $playedAt.datetimepicker({
-            format: 'MM/DD/YYYY HH:mm'
+            format: 'MM/DD/YYYY HH:mm',
+            maxDate: (new Date())
         });
         $playedAt.on('dp.change', function() {
             $scope.game.playedAt = $(this).val();
