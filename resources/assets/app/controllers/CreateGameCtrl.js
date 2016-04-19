@@ -14,7 +14,11 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
             return $http.get('/user/search', {
                 params: params
             }).then(function(response) {
-                $scope.usersSearch = response.data;
+                if (response.data.length === 0) {
+                    $scope.usersSearch = [{name: 'No results...'}];
+                } else {
+                    $scope.usersSearch = response.data;
+                }
             });
         };
 
