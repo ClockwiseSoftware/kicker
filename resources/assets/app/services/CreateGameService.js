@@ -70,5 +70,8 @@ app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
         return this;
     }
 
+    CreateGameService.prototype.MAX_POINTS = 10;
+    CreateGameService.prototype.MIN_POINTS = 0;
+
     return CreateGameService;
 }]);

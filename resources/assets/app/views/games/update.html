@@ -29,7 +29,9 @@
                     <label for="pointsA" class="col-sm-2 control-label">Points</label>
                     <div class="col-sm-10">
                         <input id="pointsA" ng-model="game.points.a" type="number" class="form-control"
-                               min="0"
+                               min="<% game.MIN_POINTS %>"
+                               max="<% game.MAX_POINTS %>"
+                               ng-required="required"
                                required="required">
                         <div class="error">
                             <div ng-repeat="error in errors.team_a_points"><% error %></div>
@@ -66,7 +68,9 @@
                     <label for="pointsB" class="col-sm-2 control-label">Points</label>
                     <div class="col-sm-10">
                         <input id="pointsB" ng-model="game.points.b" type="number" class="form-control"
-                               min="0"
+                               min="<% game.MIN_POINTS %>"
+                               max="<% game.MAX_POINTS %>"
+                               ng-required="required"
                                required="required">
                         <div class="error">
                             <div ng-repeat="error in errors.team_b_points"><% error %></div>

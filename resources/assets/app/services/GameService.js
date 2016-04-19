@@ -74,5 +74,8 @@ app.factory('Game', ['$http', '$filter', '$sce', 'GameUser', 'User', function($h
         return this;
     }
 
+    Game.prototype.MAX_POINTS = 10;
+    Game.prototype.MIN_POINTS = 0;
+
     return Game;
 }]);
