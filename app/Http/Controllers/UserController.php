@@ -13,6 +13,7 @@ class UserController extends Controller
         $exceptIds = $request->get('exceptIds');
 
         $users = [];
+        $query = null;
 
         if ($search) {
             $query = User::where(function ($query) use ($search) {
@@ -24,9 +25,11 @@ class UserController extends Controller
 
             if ($exceptIds)
                 $query = $query->whereNotIn('id', $exceptIds);
-
-            $users = $query->get();
+        } else {
+            $query = User::take(100)->orderBy('rating', 'desc');
         }
+
+        $users = $query->get();
 
         return response()->json($users);
     }
