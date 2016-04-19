@@ -39,7 +39,10 @@ Route::group(['middleware' => ['web']], function () {
     // Games routes
     Route::get('/', 'GameController@getIndex')->name('home');
 
-    Route::post('game/create', 'GameController@postCreate')->name('createGameCheck');
+    Route::post('game/create', [
+        'middleware' => [\App\Http\Middleware\PermissionRequired::class . ':user'],
+        'uses' => 'GameController@postCreate'
+    ])->name('createGameCheck');
 
     Route::get('game/{id}', 'GameController@getOne')
         ->where('id', '[0-9]+')->name('oneGame');

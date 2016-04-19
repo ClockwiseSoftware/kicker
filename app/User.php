@@ -99,6 +99,16 @@ class User extends Authenticatable
         return (bool) $this->is_admin;
     }
 
+    public function hasRole($role)
+    {
+        if ($role === 'admin')
+            return $this->isAdmin();
+        elseif ($role === 'user')
+            return true;
+
+        return false;
+    }
+
     public function getFirstGameId()
     {
         $game = DB::table('games')
