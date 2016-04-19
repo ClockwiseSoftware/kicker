@@ -1,28 +1,28 @@
-app.controller('UpdateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', '$routeParams',
-    function($scope, $http, $location, $filter, CreateGameService, $routeParams) {
+app.controller('UpdateGameCtrl', ['$scope', '$http', '$location', '$filter', '$routeParams', 'CreateGameService', 'User',
+    function($scope, $http, $location, $filter, $routeParams, CreateGameService, User) {
         $scope.loading = false;
         $scope.gameId = $routeParams.id;
         $scope.game = null;
 
         $http.get('/game/' + $scope.gameId).then(function(response) {
             $scope.game = new CreateGameService(response.data);
+            $scope.findUsers();
         });
 
-        $scope.findUsers = function(search) {
-            var params = {
-                search: search,
-                'exceptIds[]': $scope.game ? $scope.game.getSelectedIds() : []
-            };
+        $scope.findUsers = function (search) {
+            if (!$scope.game)
+                return false;
 
-            return $http.get('/user/search', {
-                params: params
-            }).then(function(response) {
-                if (response.data.length === 0) {
-                    $scope.usersSearch = [{name: 'No results...'}];
-                } else {
-                    $scope.usersSearch = response.data;
+            User.findUsers(search, $scope);
+        };
+
+        $scope.onSelectUser = function (user, model) {
+            for (var i = 0; i < $scope.usersSearch.length; i++) {
+                if (user.id === $scope.usersSearch[i].id) {
+                    $scope.usersSearch.splice(i, 1);
+                    break;
                 }
-            });
+            }
         };
 
         $scope.update = function() {

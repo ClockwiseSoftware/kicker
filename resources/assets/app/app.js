@@ -1,6 +1,7 @@
 var app = angular
-    .module('kickerApp', ['ngRoute', 'ui.select', 'ngSanitize', 'ui.bootstrap'])
-    .config(['$httpProvider', '$interpolateProvider', '$routeProvider',
+    .module('kickerApp', [
+        'ngRoute', 'ui.select', 'ngSanitize', 'ui.bootstrap'
+    ]).config(['$httpProvider', '$interpolateProvider', '$routeProvider',
         function ($httpProvider, $interpolateProvider, $routeProvider) {
             $interpolateProvider.startSymbol('<%');
             $interpolateProvider.endSymbol('%>');
@@ -44,3 +45,29 @@ var app = angular
                 });
         }
     ]);
+
+app.directive('numberOnly', function() {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attr, modelCtrl) {
+            modelCtrl.$parsers.push(function (text) {
+                var temp = parseInt(text),
+                    min = attr.min,
+                    max = attr.max,
+                    result = min;
+
+                if (temp === text && temp >= min) {
+                    if (temp > max)
+                        result = max;
+                    else
+                        result = temp;
+                }
+
+                modelCtrl.$setViewValue(result);
+                modelCtrl.$render();
+
+                return result;
+            });
+        }
+    };
+});
