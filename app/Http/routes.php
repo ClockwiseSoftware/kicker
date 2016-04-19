@@ -58,7 +58,8 @@ Route::group(['middleware' => ['web']], function () {
     // Users routes
     Route::get('/user/search', 'UserController@getSearch')->name('userSearch');
     Route::get('/user/role', 'UserController@getRole')->name('userRole');
-    Route::get('/user/me', 'UserController@getUser');
+    Route::get('/user/me', 'UserController@getOne');
+    Route::get('/users', 'UserController@getIndex');
 
     // Users routes
     Route::get('/chart', 'ChartController@getIndex')->name('chart');

@@ -38,6 +38,12 @@ var app = angular
                     templateUrl: 'html/views/chart/index.html'
                 })
 
+                // admin pages
+                .when('/admin/users', {
+                    templateUrl: 'html/views/admin/users.html',
+                    controller: 'UsersEditCtrl'
+                })
+
                 // Because Facebook adds this parameter in hash after successful login
                 .when('/_=_', {
                     templateUrl: 'html/views/games/index.html'

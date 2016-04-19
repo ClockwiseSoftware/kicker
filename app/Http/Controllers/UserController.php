@@ -46,12 +46,21 @@ class UserController extends Controller
         return response()->json($role);
     }
 
-    public function getUser(Request $request)
+    public function getOne(Request $request)
     {
         $user = User::findMe();
 
         if ($request->wantsJson()) {
             return response()->json($user);
+        }
+    }
+
+    public function getIndex(Request $request)
+    {
+        $users = User::paginate(1000);
+
+        if ($request->wantsJson()) {
+            return response()->json($users);
         }
     }
 }
