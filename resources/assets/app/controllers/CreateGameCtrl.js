@@ -4,8 +4,6 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
         $scope.usersSearch = [];
         $scope.game = new CreateGameService();
         $scope.errors = {};
-        $scope.number = 0;
-        $scope.numberPattern = /^[0-1]?[0-9]{0,3}$/;
 
         $scope.findUsers = function (search) {
             User.findUsers(search, $scope);
