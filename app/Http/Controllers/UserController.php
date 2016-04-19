@@ -12,7 +12,6 @@ class UserController extends Controller
         $search = $request->get('search');
         $exceptIds = $request->get('exceptIds');
 
-        $users = [];
         $query = null;
 
         if ($search) {
@@ -22,12 +21,12 @@ class UserController extends Controller
 
                 return $query;
             });
-
-            if ($exceptIds)
-                $query = $query->whereNotIn('id', $exceptIds);
         } else {
             $query = User::take(100)->orderBy('rating', 'desc');
         }
+
+        if ($exceptIds)
+            $query = $query->whereNotIn('id', $exceptIds);
 
         $users = $query->get();
 

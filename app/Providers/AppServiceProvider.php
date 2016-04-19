@@ -39,6 +39,27 @@ class AppServiceProvider extends ServiceProvider
 
             return $usersCount === $usersIdsCount;
         });
+
+        // @TODO refactoring of validation rule
+        Validator::extend('unique_compare_to', function($attribute, $value, $parameters, $validator) {
+            $allData = $validator->getData();
+            $compareTo = $parameters[0];
+            $compareValue = $allData[$compareTo];
+
+            if (is_array($value)) {
+                for ($i = 0; $i < count($value); $i++) {
+                    $currentValue = $value[$i];
+
+                    for ($j = 0; $j< count($compareValue); $j++) {
+                        if ($currentValue === $compareValue[$j]) {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        });
     }
 
     /**

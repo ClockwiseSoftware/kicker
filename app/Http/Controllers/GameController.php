@@ -16,10 +16,10 @@ class GameController extends Controller
     protected function validationRules()
     {
         return [
-            'games_users_a' => 'required|users_ids:2',
+            'games_users_a' => 'required|users_ids:2|unique_compare_to:games_users_b',
             'team_a_points' => 
                 "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
-            'games_users_b' => 'required|users_ids:2',
+            'games_users_b' => 'required|users_ids:2|unique_compare_to:games_users_a',
             'team_b_points' => 
                 "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
             'played_at' => 'required|date',

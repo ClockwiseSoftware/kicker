@@ -81,6 +81,7 @@ return [
     'url'                  => 'The :attribute format is invalid.',
 
     'users_ids'            => 'At least 2 users must be selected',
+    'unique_compare_to'    => 'Users must be unique for each team',
 
     /*
     |--------------------------------------------------------------------------

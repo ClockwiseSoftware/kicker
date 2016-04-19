@@ -10,6 +10,7 @@
                                    ng-model="game.users.a"
                                    theme="bootstrap" sortable="true"
                                    limit="2"
+                                   on-select="onSelectUser($item, $model)"
                                    ng-disabled="disabled" title="Players of Team A">
                             <ui-select-match placeholder="Select players..."><% $item.name %></ui-select-match>
                             <ui-select-choices repeat="user in usersSearch track by $index"
@@ -31,6 +32,7 @@
                     <label for="pointsA" class="col-sm-2 control-label">Points</label>
                     <div class="col-sm-10">
                         <input id="pointsA" ng-model="game.points.a" type="number" class="form-control"
+                               number-only
                                min="<% game.MIN_POINTS %>"
                                max="<% game.MAX_POINTS %>"
                                ng-required="required"
@@ -50,6 +52,7 @@
                         <ui-select multiple id="usersB"
                                    ng-model="game.users.b"
                                    limit="2"
+                                   on-select="onSelectUser($item, $model)"
                                    theme="bootstrap" sortable="true"
                                    ng-disabled="disabled"  title="Players of Team B">
                             <ui-select-match placeholder="Select players..."><% $item.name %></ui-select-match>
@@ -72,6 +75,7 @@
                     <label for="pointsB" class="col-sm-2 control-label">Points</label>
                     <div class="col-sm-10">
                         <input id="pointsB" ng-model="game.points.b" type="number" class="form-control"
+
                                min="<% game.MIN_POINTS %>"
                                max="<% game.MAX_POINTS %>"
                                ng-required="required"
