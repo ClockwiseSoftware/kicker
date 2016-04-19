@@ -52,15 +52,16 @@ app.directive('numberOnly', function() {
         link: function (scope, element, attr, modelCtrl) {
             modelCtrl.$parsers.push(function (text) {
                 var temp = parseInt(text),
-                    min = attr.min,
-                    max = attr.max,
+                    min = parseInt(attr.min),
+                    max = parseInt(attr.max),
                     result = min;
 
-                if (temp === text && temp >= min) {
-                    if (temp > max)
-                        result = max;
-                    else
-                        result = temp;
+                if (temp > max) {
+                    result = max;
+                } else if (temp >= min) {
+                    result = temp;
+                } else {
+                    result = min;
                 }
 
                 modelCtrl.$setViewValue(result);
