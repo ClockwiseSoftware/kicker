@@ -37,5 +37,14 @@ app.controller('UpdateGameCtrl', ['$scope', '$http', '$location', '$filter', '$r
                 $location.path('/');
             });
         };
+
+        var $playedAt = $('#playedAt');
+        $playedAt.datetimepicker({
+            format: 'MM/DD/YYYY HH:mm',
+            maxDate: (new Date())
+        });
+        $playedAt.on('dp.change', function() {
+            $scope.game.playedAt = $(this).val();
+        });
     }
 ]);

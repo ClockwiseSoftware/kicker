@@ -11,9 +11,12 @@ app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
             a: 0,
             b: 0
         };
-        this.playedAt = (function(date) {
+
+        function transformDate(date) {
             return $filter('date')(date, 'MM/dd/yyyy HH:mm');
-        })(new Date());
+        }
+
+        this.playedAt = transformDate(new Date());
 
         this.teamIds = function (teamIndex) {
             var users = this.users[teamIndex],
@@ -49,7 +52,7 @@ app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
                 a: data.team_a_points,
                 b: data.team_b_points
             };
-            $this.playedAt = data.played_at;
+            $this.playedAt = transformDate(new Date(data.played_at));
             $this.id = data.id;
         };
 
