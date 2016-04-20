@@ -1,21 +1,19 @@
-app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', 'User',
-    function($scope, $http, $location, $filter, CreateGameService, User) {
+app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', 'UserSearch',
+    function($scope, $http, $location, $filter, CreateGameService, UserSearch) {
         $scope.loading = false;
-        $scope.usersSearch = [];
         $scope.game = new CreateGameService();
         $scope.errors = {};
 
         $scope.findUsers = function (search) {
-            User.findUsers(search, $scope);
+            UserSearch.find(search, $scope);
         };
 
-        $scope.onSelectUser = function (user, model) {
-            for (var i = 0; i < $scope.usersSearch.length; i++) {
-                if (user.id === $scope.usersSearch[i].id) {
-                    $scope.usersSearch.splice(i, 1);
-                    break;
-                }
-            }
+        $scope.onSelectUser = function (user) {
+            UserSearch.remove(user, $scope);
+        };
+
+        $scope.onRemoveUser = function (user) {
+            UserSearch.add(user, $scope);
         };
 
         $scope.create = function() {

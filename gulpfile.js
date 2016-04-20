@@ -60,6 +60,7 @@ elixir(function(mix) {
         'services/GameUserService.js',
         'services/GameService.js',
         'services/CreateGameService.js',
+        'services/UserSearchService.js',
         'controllers/GamesCtrl.js',
         'controllers/CreateGameCtrl.js',
         'controllers/UpdateGameCtrl.js',
