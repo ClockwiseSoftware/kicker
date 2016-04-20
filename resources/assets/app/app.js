@@ -43,6 +43,11 @@ var app = angular
                 .when('/_=_', {
                     templateUrl: 'html/views/games/index.html'
                 });
+
+            // Close navbar on link click
+            $('body').on('click', '.navbar-collapse li', function() {
+                $(this).closest('.navbar-collapse').collapse('hide');
+            });
         }
     ]);
 

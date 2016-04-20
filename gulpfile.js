@@ -18,7 +18,8 @@ elixir(function(mix) {
     mix.less([
         'main.less',
         'navbar.less',
-        'games.less'
+        'games.less',
+        'chart.less'
     ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets

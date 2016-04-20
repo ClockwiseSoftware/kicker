@@ -20,6 +20,7 @@ body {
   border-radius: 6px;
   margin-bottom: 10px;
   display: table;
+  max-width: 768px;
 }
 
 /* Creating of a game */
@@ -184,4 +185,52 @@ body {
 
 .users-chart .current-user td {
   background-color: rgba(140, 161, 220, 0.45);
+}
+
+/* XS */
+@media (max-width: @screen-xs-max) {
+  .content-wrap {
+    padding: 0;
+  }
+
+  .normal-text {
+    display: none;
+  }
+
+  .collapsed-text {
+    display: inline;
+  }
+}
+
+/* SM */
+@media (min-device-width: @screen-sm-min) {
+  .normal-text {
+    display: inline;
+  }
+
+  .collapsed-text {
+    display: none;
+  }
+}
+
+/* MD */
+@media (min-device-width: @screen-md-min) {
+  .normal-text {
+    display: inline;
+  }
+
+  .collapsed-text {
+    display: none;
+  }
+}
+
+/* LG */
+@media (min-device-width: @screen-lg-min) {
+  .normal-text {
+    display: inline;
+  }
+
+  .collapsed-text {
+    display: none;
+  }
 }
