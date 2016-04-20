@@ -15,6 +15,11 @@ elixir.config.sourcemaps = false;
  */
 
 elixir(function(mix) {
+    mix.less([
+        'main.less',
+        'navbar.less',
+        'games.less'
+    ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets
     mix.styles([
@@ -25,8 +30,8 @@ elixir(function(mix) {
 
         'resources/assets/bower/angular/angular-csp.css',
 
-        'css/main.css',
-        'css/sign.css'
+        'css/sign.css',
+        'css/main.css'
     ], 'public/css/main.css', 'resources/assets');
 
     mix.scripts([

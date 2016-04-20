@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="kickerApp">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@yield('title')</title>
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
@@ -40,7 +41,7 @@
                 </div>
             </div>
         </nav>
-        <div class="container main-container">
+        <div class="container-fluid main-container">
             <div class="content">
                 <div ng-view></div>
             </div>

@@ -1,6 +1,6 @@
 <div ng-app="kickerApp" ng-controller="GamesCtrl">
     <div class="row games-container" ng-repeat="game in games">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 game-container">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container col-centered">
             <div class="game-graphic">
                 <div class="team team-a">
                     <div class="team-user" ng-repeat="gameUser in game.games_users_a">
@@ -81,7 +81,7 @@
                        uib-tooltip-html="game.complaintsHtml"
                     ><i class="fa fa-flag"></i> <span ng-if="game.complaints.length > 0"><% game.complaints.length %></span></a>
                 </div>
-                <div>Played at: <% game.played_at %></div>
+                <div class="game-date">Played at: <% game.played_at %></div>
                 <div class="additional-info"></div>
             </div>
         </div>
