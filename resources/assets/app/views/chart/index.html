@@ -1,7 +1,7 @@
 <div class="row" ng-controller="ChartsCtrl">
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap">
         <h3 class="text-center">User's chart</h3>
-        <table class="table table-bordered table-condensed users-chart">
+        <table class="table table-condensed users-chart">
             <thead>
             <tr>
                 <th><a href="#" onclick="return false;" ng-click="orderByField = 'index'; reverseSort = !reverseSort">#</a></th>
@@ -44,7 +44,7 @@
                 <td class="user-email"><% user.email %></td>
                 <td><% user.rating %></td>
                 <td><% user.countGames() %></td>
-                <td><% user.count_looses %></td>
+                <td class="games-win"><% user.count_looses %></td>
                 <td><% user.count_wins %></td>
             </tr>
             </tbody>

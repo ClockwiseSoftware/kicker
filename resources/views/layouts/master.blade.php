@@ -31,8 +31,8 @@
                         <li><a href="/#/">Games</a></li>
                         <li><a href="/#/chart">Chart</a></li>
                         @if(!Auth::check())
-                            <li><a href="/#/signin">Sign In</a></li>
-                            <li><a href="/#/signup">Sign Up</a></li>
+                            <li><a href="/#/signin">Login</a></li>
+                            <li><a href="/#/signup">Register</a></li>
                         @else
                             <li><a href="/#/game/create">Add game</a></li>
                             <li><a href="/logout">Logout ({{ App\User::findMe()->email }})</a></li>
