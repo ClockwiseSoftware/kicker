@@ -41,6 +41,11 @@ var app = angular
                     templateUrl: 'html/views/games/index.html'
                 });
 
+            // Close navbar on navigate event
+            $(window).on('popstate', function() {
+                $('.navbar-collapse').collapse('hide');
+            });
+
             // Close navbar on link click
             $('body').on('click', '.navbar-collapse li', function() {
                 $(this).closest('.navbar-collapse').collapse('hide');
