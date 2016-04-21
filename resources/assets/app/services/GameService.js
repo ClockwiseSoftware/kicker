@@ -21,7 +21,7 @@ app.factory('Game', ['$http', '$filter', '$sce', 'GameUser', 'User', function($h
 
             obj.played_at = (function(date) {
                 return $filter('date')(date, 'MM/dd/yyyy HH:mm');
-            })(new Date(obj.played_at));
+            })(Date.parseISO(obj.played_at));
 
             obj.complaintsHtml = (function (complaints) {
                 var maxComplainers = 5,
