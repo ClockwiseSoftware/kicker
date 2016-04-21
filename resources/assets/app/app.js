@@ -1,11 +1,8 @@
 var app = angular
     .module('kickerApp', [
         'ngRoute', 'ui.select', 'ngSanitize', 'ui.bootstrap'
-    ]).config(['$httpProvider', '$interpolateProvider', '$routeProvider',
-        function ($httpProvider, $interpolateProvider, $routeProvider) {
-            $interpolateProvider.startSymbol('<%');
-            $interpolateProvider.endSymbol('%>');
-
+    ]).config(['$httpProvider', '$routeProvider',
+        function ($httpProvider, $routeProvider) {
             $routeProvider
                 // Signup and Signin pages
                 .when('/signup', {

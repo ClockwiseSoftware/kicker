@@ -39,13 +39,13 @@
             </thead>
             <tbody>
             <tr ng-repeat="user in users|orderBy:orderByField:reverseSort" ng-class="me.id === user.id ? 'current-user' : ''">
-                <td><% user.index %></td>
-                <td><% user.name %></td>
-                <td class="user-email"><% user.email %></td>
-                <td><% user.rating %></td>
-                <td><% user.countGames() %></td>
-                <td class="games-lost"><% user.count_looses %></td>
-                <td class="games-win"><% user.count_wins %></td>
+                <td>{{ user.index }}</td>
+                <td>{{ user.name }}</td>
+                <td class="user-email">{{ user.email }}</td>
+                <td>{{ user.rating }}</td>
+                <td>{{ user.countGames() }}</td>
+                <td class="games-lost">{{ user.count_looses }}</td>
+                <td class="games-win">{{ user.count_wins }}</td>
             </tr>
             </tbody>
         </table>
