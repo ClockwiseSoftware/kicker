@@ -1,0 +1,31 @@
+@import "variables";
+
+.user-avatar-container {
+  width: 80px;
+  height: 80px;
+}
+
+.user-avatar-container img {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.btn-danger {
+  background-color: @color-loser;
+  border-color: @color-loser;
+}
+
+.btn-danger:hover {
+  background-color: fadeout(@color-loser, 20%);
+  border-color: fadeout(@color-loser, 20%);
+}
+
+.btn-success {
+  background-color: @color-winner;
+  border-color: @color-winner;
+}
+
+.btn-success:hover {
+  background-color: fadeout(@color-winner, 20%);
+  border-color: fadeout(@color-winner, 20%);
+}

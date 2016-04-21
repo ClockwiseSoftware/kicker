@@ -4,9 +4,22 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Validator;
 
 class UserController extends Controller
 {
+    /**
+     * @return array
+     */
+    protected function validationRules($user)
+    {
+        return [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'min:1',
+        ];
+    }
+
     public function getSearch(Request $request)
     {
         $search = $request->get('search');
@@ -60,6 +73,22 @@ class UserController extends Controller
 
         if ($request->wantsJson()) {
             return response()->json($users);
+        }
+    }
+
+    public function putUpdate(Request $request, $id)
+    {
+        $user = User::where('id', $id)->first();
+
+        if (!$user)
+            abort(404);
+
+        $this->validate($request, $this->validationRules($user));
+        $user->fill($request->all());
+        $user->save();
+
+        if ($request->wantsJson()) {
+            return response()->json($user);
         }
     }
 }

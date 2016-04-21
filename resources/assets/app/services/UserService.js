@@ -1,6 +1,7 @@
 app.factory('User', ['$http', function($http) {
     function User(userData) {
         var obj = this;
+        this.editing = false;
 
         this.setData = function(userData) {
             angular.extend(this, userData);
@@ -15,6 +16,18 @@ app.factory('User', ['$http', function($http) {
                 return obj.avatar_url;
 
             return '/img/no-avatar.min.png';
+        };
+
+        this.getFormData = function () {
+            var data = {
+                name: obj.name,
+                email: obj.email
+            };
+
+            if (obj.password)
+                data.password = obj.password;
+
+            return data;
         };
 
         if (userData) {

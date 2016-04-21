@@ -31,6 +31,12 @@ var app = angular
                     controller: 'ComplainersCtrl'
                 })
 
+                // Admin's pages
+                .when('/admin/users', {
+                    templateUrl: 'html/views/admin/users.html',
+                    controller: 'UsersEditCtrl'
+                })
+
                 // Chart pages
                 .when('/chart', {
                     templateUrl: 'html/views/chart/index.html'
