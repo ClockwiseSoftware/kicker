@@ -171,6 +171,29 @@
   font-size: 1em;
 }
 
+.create-game-container {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: table;
+}
+
+.create-game-container .team-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 0 0 20px 0;
+}
+
+.create-game-container .error {
+  color: @color-error;
+}
+
+.games-container .game-container, .create-game-container {
+  max-width: 760px !important;
+}
+
 /* XS */
 @media (max-device-width: @screen-xs-max) {
   .game-graphic {
@@ -233,10 +256,6 @@
 
 /* LG */
 @media (min-device-width: @screen-lg-min) {
-  .games-container .game-container {
-    max-width: 760px !important;
-  }
-
   .game-information {
     display: table-cell;
   }
