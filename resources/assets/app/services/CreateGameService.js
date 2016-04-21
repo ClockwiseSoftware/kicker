@@ -52,7 +52,7 @@ app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
                 a: data.team_a_points,
                 b: data.team_b_points
             };
-            $this.playedAt = transformDate(new Date(data.played_at));
+            $this.playedAt = transformDate(Date.parseISO(data.played_at));
             $this.id = data.id;
         };
 

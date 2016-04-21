@@ -90,3 +90,25 @@ app.directive('backImg', function(){
         });
     };
 });
+
+Date.parseISO = function (string) {
+    var date = new Date(string);
+
+    // For Safari
+    if (Object.prototype.toString.call(date) !== "[object Date]") {
+        var test = string.split(' '),
+            dateParts = test[0].split('-'),
+            timeParts = test[1].split(':');
+
+        for (var i = 0; i < dateParts.length; i++) {
+            dateParts[i] = parseInt(dateParts[i]);
+        }
+        for (i = 0; i < timeParts.length; i++) {
+            timeParts[i] = parseInt(timeParts[i]);
+        }
+
+        date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
+    }
+
+    return date;
+};
