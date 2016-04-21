@@ -24,22 +24,5 @@ app.factory('User', ['$http', function($http) {
         return this;
     }
 
-    User.findUsers = function(search, $scope) {
-        var params = {
-            search: search,
-            'exceptIds[]': $scope.game.getSelectedIds()
-        };
-
-        return $http.get('/user/search', {
-            params: params
-        }).then(function(response) {
-            if (response.data.length === 0) {
-                $scope.usersSearch = [{name: 'No results...'}];
-            } else {
-                $scope.usersSearch = response.data;
-            }
-        });
-    };
-
     return User;
 }]);

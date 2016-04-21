@@ -1,11 +1,8 @@
 var app = angular
     .module('kickerApp', [
-        'ngRoute', 'ui.select', 'ngSanitize', 'ngDialog', 'ui.bootstrap'
-    ]).config(['$httpProvider', '$interpolateProvider', '$routeProvider',
-        function ($httpProvider, $interpolateProvider, $routeProvider) {
-            $interpolateProvider.startSymbol('<%');
-            $interpolateProvider.endSymbol('%>');
-
+        'ngRoute', 'ui.select', 'ngSanitize', 'ui.bootstrap'
+    ]).config(['$httpProvider', '$routeProvider',
+        function ($httpProvider, $routeProvider) {
             $routeProvider
                 // Signup and Signin pages
                 .when('/signup', {
@@ -39,16 +36,20 @@ var app = angular
                     templateUrl: 'html/views/chart/index.html'
                 })
 
-                // admin pages
-                .when('/admin/users', {
-                    templateUrl: 'html/views/admin/users.html',
-                    controller: 'UsersEditCtrl'
-                })
-
                 // Because Facebook adds this parameter in hash after successful login
                 .when('/_=_', {
                     templateUrl: 'html/views/games/index.html'
                 });
+
+            // Close navbar on navigate event
+            $(window).on('popstate', function() {
+                $('.navbar-collapse').collapse('hide');
+            });
+
+            // Close navbar on link click
+            $('body').on('click', '.navbar-collapse li', function() {
+                $(this).closest('.navbar-collapse').collapse('hide');
+            });
         }
     ]);
 

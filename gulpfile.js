@@ -15,6 +15,12 @@ elixir.config.sourcemaps = false;
  */
 
 elixir(function(mix) {
+    mix.less([
+        'main.less',
+        'navbar.less',
+        'games.less',
+        'chart.less'
+    ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets
     mix.styles([
@@ -27,8 +33,8 @@ elixir(function(mix) {
 
         'bower/angular/angular-csp.css',
 
-        'css/main.css',
-        'css/sign.css'
+        'css/sign.css',
+        'css/main.css'
     ], 'public/css/main.css', 'resources/assets');
 
     mix.scripts([
@@ -63,6 +69,7 @@ elixir(function(mix) {
         'services/GameUserService.js',
         'services/GameService.js',
         'services/CreateGameService.js',
+        'services/UserSearchService.js',
         'controllers/GamesCtrl.js',
         'controllers/CreateGameCtrl.js',
         'controllers/UpdateGameCtrl.js',

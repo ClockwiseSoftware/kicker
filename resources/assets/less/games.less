@@ -1,0 +1,266 @@
+@import "variables";
+
+.game-container {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 0.42em;
+  margin-bottom: 0.7em;
+  display: table;
+}
+
+.games-pages {
+  text-align: center;
+}
+
+.game-graphic .team {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.result-container {
+  display: inline-block;
+  font-size: 1.7em;
+  /*line-height: 48px;*/
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 1.5em;
+  vertical-align: top;
+}
+
+.team-user > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.team-user .user-avatar {
+  background-color: @color-winner;
+  position: relative;
+}
+
+.team-user .user-avatar .stat {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  text-align: right;
+  padding: 0 2px;
+  display: none;
+  font-weight: 600;
+}
+
+.team-user .user-avatar:hover .stat {
+  display: block;
+}
+
+.team-user .user-avatar .stat .wins {
+  color: @color-winner;
+}
+
+.team-user .user-avatar .stat .loses {
+  color: @color-loser;
+}
+
+.team-user .user-avatar .stat .draws {
+  color: rgb(136, 136, 136);
+}
+
+.team-user:last-of-type {
+  margin-top: 5px;
+}
+
+.result .point {
+  display: inline-block;
+}
+
+.result .point.win {
+  font-weight: bold;
+  color: @color-winner;
+}
+
+.result .point.lose {
+  color: @color-loser;
+}
+
+.result-container .versus {
+  text-align: center;
+}
+
+.team-b {
+  text-align: left;
+}
+
+.team-b .info {
+  padding-left: 10px;
+}
+
+.team .info .rating-delta {
+  font-size: 0.92em;
+}
+
+.team .info .rating-delta.lose {
+  font-weight: bold;
+  color: @color-loser;
+}
+
+.team .info .rating-delta.win {
+  font-weight: bold;
+  color: @color-winner;
+}
+
+.team-a {
+  text-align: right;
+}
+
+.team-a .info {
+  padding-right: 10px;
+}
+
+.game-graphic {
+  display: inline-block;
+  text-align: center;
+}
+
+.game-information {
+  position: relative;
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+}
+
+.game-information .game-name {
+  font-size: 25px;
+  text-align: center;
+}
+
+.team-user .user-avatar {
+  width: 80px;
+  height: 80px;
+}
+
+.team-user .user-avatar img {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.game-information .controls {
+  position: absolute;
+  right: 0;
+}
+
+.game-information .additional-info {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: right;
+}
+
+.game-information .additional-info .complaints {
+  color: @color-loser;
+}
+
+.game-information .controls .control-button {
+  min-width: 2em;
+  height: 2em;
+  font-size: 0.85em;
+  text-align: center;
+}
+
+.game-information .controls .control-button > * {
+  vertical-align: middle;
+  font-size: 1em;
+}
+
+.create-game-container {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: table;
+}
+
+.create-game-container .team-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 0 0 20px 0;
+}
+
+.create-game-container .error {
+  color: @color-error;
+}
+
+.games-container .game-container, .create-game-container {
+  max-width: 760px !important;
+}
+
+/* XS */
+@media (max-device-width: @screen-xs-max) {
+  .game-graphic {
+    display: block;
+  }
+
+  .game-information {
+    display: block;
+    padding: 2em 0 2em;
+  }
+
+  .result-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .game-graphic .team-user {
+    width: 100px;
+  }
+
+  .team-user .user-avatar {
+    display: none;
+  }
+
+  .game-information .controls {
+    bottom: 0;
+  }
+}
+
+/* SM */
+@media (min-device-width: @screen-sm-min) {
+  .game-graphic {
+    display: block;
+  }
+
+  .game-information {
+    display: block;
+    padding: 2em 0 2em;
+  }
+
+  .game-information .controls {
+    bottom: 0;
+  }
+}
+
+/* MD */
+@media (min-device-width: @screen-md-min) {
+  .game-graphic {
+    display: inline-block;
+  }
+
+  .game-information {
+    display: table-cell;
+  }
+
+  .game-information .controls {
+    top: 0;
+  }
+}
+
+/* LG */
+@media (min-device-width: @screen-lg-min) {
+  .game-information {
+    display: table-cell;
+  }
+
+  .game-information .controls {
+    top: 0;
+  }
+}

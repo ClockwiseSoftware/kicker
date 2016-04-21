@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="kickerApp">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@yield('title')</title>
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
@@ -30,8 +31,8 @@
                         <li><a href="/#/">Games</a></li>
                         <li><a href="/#/chart">Chart</a></li>
                         @if(!Auth::check())
-                            <li><a href="/#/signin">Sign In</a></li>
-                            <li><a href="/#/signup">Sign Up</a></li>
+                            <li><a href="/#/signin">Login</a></li>
+                            <li><a href="/#/signup">Register</a></li>
                         @else
                             <li><a href="/#/game/create">Add game</a></li>
                             <li><a href="/logout">Logout ({{ App\User::findMe()->email }})</a></li>
@@ -40,7 +41,7 @@
                 </div>
             </div>
         </nav>
-        <div class="container main-container">
+        <div class="container-fluid main-container">
             <div class="content">
                 <div ng-view></div>
             </div>

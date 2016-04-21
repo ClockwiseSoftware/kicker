@@ -1,5 +1,5 @@
 <div class="alert alert-danger sign-errors" ng-if="errors.length > 0">
-    <div ng-repeat="error in errors"><% error %></div>
+    <div ng-repeat="error in errors">{{ error }}</div>
 </div>
 
 <form class="form-sign" method="POST" action="/signin">
