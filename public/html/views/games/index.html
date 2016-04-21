@@ -5,6 +5,7 @@
                 <div class="team team-a">
                     <div class="team-user" ng-repeat="gameUser in game.games_users_a">
                         <div class="info">
+                            <!--<img ng-src="{{ gameUser.user.avatarUrl() }}" style="max-height: 40px; position: absolute; left: 0" />-->
                             <div class="name">{{ gameUser.user.name }}</div>
                             <div class="rating-delta {{ gameUser.userPointsClass() }}">
                                 {{ gameUser.getDelta() }} points
@@ -15,7 +16,7 @@
                                 {{ gameUser.rating_after }}
                             </div>
                         </div>
-                        <div class="user-avatar">
+                        <div class="user-avatar" back-img="{{ gameUser.user.avatarUrl() }}">
                             <img ng-src="{{ gameUser.user.avatarUrl() }}" />
                             <div class="stat">
                                 <span class="wins">{{ gameUser.user.count_wins }}</span> /
@@ -24,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="result-container">
+                <div class="result-container main">
                     <div class="versus">VS</div>
                     <div class="result">
                         <div class="point {{ game.gamePointClass() }}">{{ game.team_a_points }}</div>
@@ -34,7 +35,7 @@
                 </div>
                 <div class="team team-b">
                     <div class="team-user" ng-repeat="gameUser in game.games_users_b">
-                        <div class="user-avatar">
+                        <div class="user-avatar" back-img="{{ gameUser.user.avatarUrl() }}">
                             <img ng-src="{{ gameUser.user.avatarUrl() }}" />
                             <div class="stat">
                                 <span class="wins">{{ gameUser.user.count_wins }}</span> /
@@ -80,6 +81,13 @@
                        ng-mouseleave="game.tooltipIsVisible = false"
                        uib-tooltip-html="game.complaintsHtml"
                     ><i class="fa fa-flag"></i> <span ng-if="game.complaints.length > 0">{{ game.complaints.length }}</span></a>
+                </div>
+                <div class="result-container additional">
+                    <div class="result">
+                        <div class="point {{ game.gamePointClass() }}">{{ game.team_a_points }}</div>
+                        <div class="point">:</div>
+                        <div class="point {{ game.gamePointClass('b') }}">{{ game.team_b_points }}</div>
+                    </div>
                 </div>
                 <div class="game-date">Played at: {{ game.played_at }}</div>
                 <div class="additional-info"></div>

@@ -1,4 +1,8 @@
 // Extra small screen / phone
+
+@screen-xxs: 320px;
+@screen-xxs-max: @screen-xxs;
+
 //** Deprecated `@screen-xs` as of v3.0.1
 @screen-xs:                  480px;
 //** Deprecated `@screen-xs-min` as of v3.2.0
@@ -33,10 +37,9 @@
 @screen-md-max:              (@screen-lg-min - 1);
 
 @base-font-size: 14px;
-@result-container-font-size: 24px;
-@team-user-width: 190px;
-@user-name-max-width: 103px;
-@user-avatar-max-size: 70px;
+@avatar-max-size: 80px;
+@avatar-border-radius: @avatar-max-size;
+@little-avatar-max-size: 45px;
 
 @color-winner: #8ca1dc;
 @color-loser: #c90000;
