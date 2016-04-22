@@ -95,7 +95,7 @@ Date.parseISO = function (string) {
     var date = new Date(string);
 
     // For Safari
-    if (Object.prototype.toString.call(date) !== "[object Date]") {
+    if (isNaN(date.getDate())) {
         var test = string.split(' '),
             dateParts = test[0].split('-'),
             timeParts = test[1].split(':');
