@@ -14,7 +14,7 @@
 
 .game-graphic .team {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .result-container {
@@ -23,8 +23,7 @@
   /*line-height: 48px;*/
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 1.5em;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .result-container.additional {
@@ -204,6 +203,13 @@
   max-width: 760px !important;
 }
 
+.game-graphic .name {
+  width: 130px;
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
+}
+
 /* XS */
 @media (max-width: @screen-xs-max) {
   .game-graphic {
@@ -234,9 +240,6 @@
 
   .game-graphic .name {
     width: 100px;
-    white-space: nowrap;
-    overflow:hidden !important;
-    text-overflow: ellipsis;
   }
 
   .team-a .info {
@@ -274,9 +277,6 @@
 @media (max-width: @screen-xxs-max) {
   .game-graphic .name {
     width: 80px;
-    white-space: nowrap;
-    overflow:hidden !important;
-    text-overflow: ellipsis;
   }
 
   .game-graphic .team-b {
@@ -311,6 +311,10 @@
     display: inline-block;
   }
 
+  .game-graphic .name {
+    width: 100px;
+  }
+
   .game-information {
     display: table-cell;
   }
@@ -324,6 +328,14 @@
 @media (min-width: @screen-lg-min) {
   .game-information {
     display: table-cell;
+  }
+
+  .games-container .game-container, .create-game-container {
+    width: 760px;
+  }
+
+  .game-graphic .name {
+    width: 100px;
   }
 
   .game-information .controls {
