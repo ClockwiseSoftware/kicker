@@ -29,7 +29,7 @@ class PermissionRequired
         }
 
         if ($hasPermission)
-            $next($request);
+            return $next($request);
 
         return response(['Permission denied'], 401);
     }

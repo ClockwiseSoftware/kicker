@@ -32,10 +32,10 @@ var app = angular
                 })
 
                 // Admin's pages
-                .when('/admin/users', {
-                    templateUrl: 'html/views/admin/users.html',
-                    controller: 'UsersEditCtrl'
-                })
+                // .when('/admin/users', {
+                //     templateUrl: 'html/views/admin/users.html',
+                //     controller: 'UsersEditCtrl'
+                // })
 
                 // Chart pages
                 .when('/chart', {

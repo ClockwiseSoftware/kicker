@@ -78,6 +78,9 @@ elixir(function(mix) {
         'services/CreateGameService.js',
         'services/UserSearchService.js',
 
+        // Repositories
+        'repositories/GamesRepository.js',
+
         // Controllers
         'controllers/GamesCtrl.js',
         'controllers/CreateGameCtrl.js',
