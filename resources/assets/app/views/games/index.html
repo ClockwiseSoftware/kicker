@@ -69,10 +69,11 @@
                        ng-if="user.isAdmin"
                     ><i class="fa fa-ban"></i></a>
                     <a href="#"
-                       ng-click="complain(game.id)"
+                       ng-click="game.loading === false ? complain(game.id) : false"
                        onclick="return false"
                        class="btn btn-danger btn-xs control-button"
                        ng-if="user.isUser || user.isAdmin"
+                       ng-disabled="game.loading"
                        tooltip-placement="top"
                        tooltip-popup-close-delay="2000"
                        tooltip-trigger="none"
@@ -80,7 +81,11 @@
                        ng-mouseover="game.tooltipIsVisible = true"
                        ng-mouseleave="game.tooltipIsVisible = false"
                        uib-tooltip-html="game.complaintsHtml"
-                    ><i class="fa fa-flag"></i> <span ng-if="game.complaints.length > 0">{{ game.complaints.length }}</span></a>
+                    >
+                        <i class="fa fa-refresh fa-spin" ng-show="game.loading"></i>
+                        <i class="fa fa-flag" ng-hide="game.loading"></i>
+                        <span ng-if="game.complaints.length > 0">{{ game.complaints.length }}</span>
+                    </a>
                 </div>
                 <div class="result-container additional">
                     <div class="result">

@@ -49,8 +49,6 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
 
                     $this.add(response.data);
                 }
-                
-                console.log($this.currentpage, $this.lastpage);
 
                 $this.loading = false;
             });

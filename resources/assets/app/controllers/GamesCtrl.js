@@ -28,10 +28,14 @@ app.controller('GamesCtrl', ['$scope', '$http', 'Game', 'GamesRepository',
         $scope.userRole = getUserRole();
 
         $scope.complain = function(id) {
+            var game = $scope.gamesRepository.get(id);
+            game.loading = true;
+
             $http.get('/game/' + id + '/complain')
                 .success(function(response) {
                     $http.get('/game/' + id)
                         .success(function(response) {
+                            game.loading = false;
                             $scope.gamesRepository.update(response.id, response);
                         });
                 });

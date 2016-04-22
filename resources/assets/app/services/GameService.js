@@ -3,6 +3,7 @@ app.factory('Game', ['$http', '$filter', '$sce', 'GameUser', 'User', function($h
         var obj = this;
         this.complaintsHtml = '';
         this.tooltipIsVisible = false;
+        this.loading = false;
 
         this.setData = function(data) {
             angular.extend(this, data);
