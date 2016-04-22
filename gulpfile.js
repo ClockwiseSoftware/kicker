@@ -31,8 +31,6 @@ elixir(function(mix) {
         'bower/ui-select/dist/select.css',
         'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
         'bower/angular-bootstrap/ui-bootstrap-csp.css',
-        'bower/ng-dialog/css/ngDialog.css',
-        'bower/ng-dialog/css/ngDialog-theme-default.css',
 
         'bower/angular/angular-csp.css',
 
@@ -55,7 +53,7 @@ elixir(function(mix) {
         'resources/assets/bower/ui-select/dist/select.js',
         'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
         'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js',
-        'resources/assets/bower/ng-dialog/js/ngDialog.js'
+        'resources/assets/bower/ng-file-upload/ng-file-upload.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
@@ -65,15 +63,22 @@ elixir(function(mix) {
     mix.html('**/*.html', 'public/html/views', 'resources/assets/app/views');
     mix.scripts([
         'app.js',
+
+        // Custom directive
+        'directives/BackImgDirective.js',
+        'directives/NumberOnlyDirective.js',
+
         // Chart
         'services/UserService.js',
         'controllers/ChartsCtrl.js',
 
-        // Games
+        // Services
         'services/GameUserService.js',
         'services/GameService.js',
         'services/CreateGameService.js',
         'services/UserSearchService.js',
+
+        // Controllers
         'controllers/GamesCtrl.js',
         'controllers/CreateGameCtrl.js',
         'controllers/UpdateGameCtrl.js',

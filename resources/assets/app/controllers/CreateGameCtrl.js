@@ -4,8 +4,6 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
         $scope.game = new CreateGameService();
         $scope.errors = {};
 
-        // ngDialog.open({ template: 'public/html/views/admin/users.html', className: 'ngdialog-theme-default' });
-
         $scope.findUsers = function (search) {
             UserSearch.find(search, $scope);
         };

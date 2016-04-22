@@ -59,44 +59,6 @@ var app = angular
         }
     ]);
 
-app.directive('numberOnly', function() {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attr, modelCtrl) {
-            modelCtrl.$parsers.push(function (text) {
-                var temp = parseInt(text),
-                    min = parseInt(attr.min),
-                    max = parseInt(attr.max),
-                    result = min;
-
-                if (temp > max) {
-                    result = max;
-                } else if (temp >= min) {
-                    result = temp;
-                } else {
-                    result = min;
-                }
-
-                modelCtrl.$setViewValue(result);
-                modelCtrl.$render();
-
-                return result;
-            });
-        }
-    };
-});
-
-app.directive('backImg', function(){
-    return function(scope, element, attrs){
-        attrs.$observe('backImg', function(value) {
-            element.css({
-                'background-image': 'url(' + value +')',
-                'background-size' : 'cover'
-            });
-        });
-    };
-});
-
 Date.parseISO = function (string) {
     var date = new Date(string);
 
