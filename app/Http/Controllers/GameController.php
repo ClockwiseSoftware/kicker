@@ -21,8 +21,8 @@ class GameController extends Controller
                 "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
             'games_users_b' => 'required|users_ids:2|unique_compare_to:games_users_a',
             'team_b_points' => 
-                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
-            'played_at' => 'required|date',
+                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer|game_unique",
+            'played_at' => 'required|date'
         ];
     }
 

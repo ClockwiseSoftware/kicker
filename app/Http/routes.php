@@ -40,7 +40,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'GameController@getIndex')->name('home');
 
     Route::post('game/create', [
-        'middleware' => [\App\Http\Middleware\PermissionRequired::class . ':user'],
         'uses' => 'GameController@postCreate'
     ])->name('createGameCheck');
 

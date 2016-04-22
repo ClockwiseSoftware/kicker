@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Game;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,6 +59,29 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
             }
+
+            return true;
+        });
+
+        Validator::extend('game_unique', function($attribute, $value, $parameters, $validator) {
+            $data = $validator->getData();
+
+            $usersAIds = $data['games_users_a'];
+            $usersBIds = $data['games_users_b'];
+            $createdAt = time();
+            $teamAPoints = $data['team_a_points'];
+            $teamBPoints = $data['team_b_points'];
+
+            $game = Game::where('team_a_points', $teamAPoints)
+                ->where('team_b_points', $teamBPoints)
+                ->where(DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $createdAt - 5 * 60)
+                ->with(['gamesUsersA', 'gamesUsersB'])
+                ->first();
+
+            echo "<pre>"; print_r($game); echo "</pre>"; die();
+
+            if ($game)
+                return false;
 
             return true;
         });
