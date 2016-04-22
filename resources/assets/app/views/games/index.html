@@ -99,6 +99,14 @@
             </div>
         </div>
     </div>
+    <div class="row" ng-show="!gamesRepository.loading && games.length <= 0">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 col-centered content-wrap text-center">
+            <div>There is no games yet...</div>
+            <div ng-show="user.isAdmin || user.isUser">
+                Go ahead and <a href="#/game/create/">add new one</a>!
+            </div>
+        </div>
+    </div>
     <div class="row games-pages" ng-show="gamesRepository.currentpage < gamesRepository.lastpage">
         <button class="btn btn-primary" ng-if="gamesRepository.loading" disabled="disabled">
             <span><i class="fa fa-refresh fa-spin"></i></span> more...

@@ -1,7 +1,7 @@
 app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
     function GamesRepository() {
         this.storage = [];
-        this.loading = false;
+        this.loading = true;
         this.lastpage = 0;
         this.currentpage = 0;
 
