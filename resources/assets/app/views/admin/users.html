@@ -15,8 +15,14 @@
             <tbody>
             <tr ng-repeat="user in users">
                 <td>{{ user.id }}</td>
-                <td><div class="user-avatar-container">
-                    <img ng-src="{{ user.avatarUrl() }}" /></div>
+                <td>
+                    <input type="file" ngf-select ng-model="picFile" name="file"
+                           accept="image/*" ngf-max-size="2MB" required
+                           ngf-model-invalid="errorFile">
+                    <button ng-click="uploadPic(picFile, user)">Submit</button>
+                    <div class="user-avatar" back-img="{{ user.avatarUrl() }}">
+                        <img ng-src="{{ user.avatarUrl() }}" />
+                    </div>
                 </td>
                 <td>
                     <span ng-show="!user.editing">{{ user.name }}</span>

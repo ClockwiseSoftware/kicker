@@ -1,8 +1,21 @@
-app.controller('UsersEditCtrl', ['$scope', '$http', 'User',
-    function($scope, $http, User) {
+app.controller('UsersEditCtrl', [
+    '$scope', '$http', 'Upload', 'User',
+    function($scope, $http, Upload, User) {
         $scope.users = [];
         $scope.inEditing = {};
         $scope.errors = {};
+
+        $scope.uploadPic = function(file, user) {
+            file.upload = Upload.upload({
+                url: '/user/' + user.id + '/avatar',
+                method: 'POST',
+                data: {
+                    avatar: file
+                }
+            });
+            
+            console.log(1);
+        };
 
         function updateUser(id, user) {
             for (var i in $scope.users) {

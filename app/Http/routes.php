@@ -65,6 +65,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/users', 'UserController@getIndex');
     Route::put('/user/{id}', 'UserController@putUpdate')
         ->where('id', '[0-9]+');
+    Route::post('/user/{id}/avatar', 'UserController@postUpdateAvatar')
+        ->where('id', '[0-9]+');
 
     // Users routes
     Route::get('/chart', 'ChartController@getIndex')->name('chart');

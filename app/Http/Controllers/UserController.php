@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Validator;
+use Input;
 
 class UserController extends Controller
 {
@@ -14,8 +15,8 @@ class UserController extends Controller
     protected function validationRules($user)
     {
         return [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'name' => 'max:255',
+            'email' => 'email|max:255|unique:users,email,' . $user->id,
             'password' => 'min:1',
         ];
     }
@@ -90,5 +91,19 @@ class UserController extends Controller
         if ($request->wantsJson()) {
             return response()->json($user);
         }
+    }
+
+    public function postUpdateAvatar(Request $request, $id)
+    {
+        $avatar = $request->file('avatar');
+        $rules = ['avatar' => 'required|mimes:jpeg,bmp,png'];
+        $validator = Validator::make($avatar, $rules);
+        echo "<pre>"; print_r($avatar); echo "</pre>"; die();
+        $this->validate($image, ['image' => 'required']);
+        $destinationPath = storage_path() . '/uploads';
+        if(!$image->move($destinationPath, $image->getClientOriginalName())) {
+            return $this->errors(['message' => 'Error saving the file.', 'code' => 400]);
+        }
+        return response()->json(['success' => true], 200);
     }
 }
