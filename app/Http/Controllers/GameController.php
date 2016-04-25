@@ -55,7 +55,6 @@ class GameController extends Controller
     {
         $this->validate($request, $this->validationRules());
         Game::create($request->all());
-        return redirect('/');
     }
 
     public function postUpdate(Request $request, $id)

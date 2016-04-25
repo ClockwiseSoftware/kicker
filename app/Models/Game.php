@@ -120,47 +120,50 @@ class Game extends Model
 
     protected function setUsers($teamAUsers, $teamBUsers)
     {
-        if (!$this->gamesUsersA->isEmpty())
-            return false;
-
         if (count($teamAUsers) === 0 || count($teamBUsers) === 0)
             return false;
 
         $gameResult = $this->getGameResult();
-
         list($teamARatings, $teamBRatings) = GameProcessor::calculateRatingForTeams(
             $teamAUsers, $teamBUsers, $gameResult
         );
 
-        foreach ($teamAUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $this->id,
-                'user_id' => $user->id,
-                'team_index' => $this::TEAM_A_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamARatings)
-            ]);
+        $teams = [
+            [
+                'teamIndex' => $this::TEAM_A_INDEX,
+                'users' => $teamAUsers,
+                'ratings' => $teamARatings,
+                'gameResult' => $gameResult
+            ], [
+                'teamIndex' => $this::TEAM_B_INDEX,
+                'users' => $teamBUsers,
+                'ratings' => $teamBRatings,
+                'gameResult' => GameProcessor::oppositeResult($gameResult)
+            ]
+        ];
 
-            $user->rating = $gameUser->rating_after;
+        foreach ($teams as $team) {
+            $teamIndex = $team['teamIndex'];
+            $users = $team['users'];
+            $ratings = $team['ratings'];
+            $gameResult = $team['gameResult'];
 
-            if (!$user->save()) {
-                // do something...
-            }
-        }
+            foreach ($users as $user) {
+                $gameUser = GameUser::create([
+                    'game_id' => $this->id,
+                    'user_id' => $user->id,
+                    'team_index' => $teamIndex,
+                    'rating_before' => $user->rating,
+                    'rating_after' => array_shift($ratings)
+                ]);
 
-        foreach ($teamBUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $this->id,
-                'user_id' => $user->id,
-                'team_index' => $this::TEAM_B_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamBRatings)
-            ]);
+                /* @var User $user */
+                $user->rating = $gameUser->rating_after;
+                $user->changeStats($gameResult);
 
-            $user->rating = $gameUser->rating_after;
-
-            if (!$user->save()) {
-                // do something...
+                if (!$user->save()) {
+                    // do something...
+                }
             }
         }
 
@@ -177,8 +180,8 @@ class Game extends Model
 
     public static function findByPosition($position)
     {
-        return Game::orderBy('played_at', 'asc')
-            ->skip((int) $position);
+        return Game::skip((int) $position)
+            ->orderBy('played_at', 'asc');
     }
 
     public function recountFromPosition($position)
@@ -234,19 +237,28 @@ class Game extends Model
     {
         $self = parent::create($attributes);
 
-        /* @var $self Game */
-        $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
-        $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
+        if (!$self)
+            return null;
 
-        $self->setUsers($usersATeam, $usersBTeam);
-        $position = $self->currentPosition();
+        /* @var static $self */
+        $countAllGames = self::count();
+        $currentPosition = $self->currentPosition();
+        $isLastGame = ($currentPosition + 1 === $countAllGames) ? true : false;
 
-        if ($position !== $self::count() - 1) {
-            $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
-            $self->recountFromPosition($prevPosition);
+        if ($isLastGame) {
+            $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
+            $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
+            $self->setUsers($usersATeam, $usersBTeam);
+
+            return $self;
+        } else {
+            $games = static::where('played_at', '>', $self->played_at)->chunk(1, function($games) {
+                echo "<pre>"; print_r(count($games)); echo "</pre>";
+            });
+            die();
         }
 
-        return $self;
+        return null;
     }
 
     public function delete()
