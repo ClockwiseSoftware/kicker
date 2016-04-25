@@ -33,7 +33,7 @@ class GameController extends Controller
             ->orderBy('id', 'desc')->paginate(5);
 
         if ($request->wantsJson()) {
-            return response()->json($games);
+            return response($games);
         }
 
         return view('games.index', [
@@ -48,9 +48,7 @@ class GameController extends Controller
             ->orderBy('played_at', 'desc')
             ->firstOrFail();
 
-        if ($request->wantsJson()) {
-            return response()->json($game);
-        }
+        return response($game);
     }
 
     public function postCreate(Request $request)

@@ -5,7 +5,7 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
         this.lastpage = 0;
         this.currentpage = 0;
 
-        var $this = this,
+        var self = this,
             indexesMap = {};
 
         this.add = function (data) {
@@ -14,43 +14,43 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
                 this.push(game);
 
                 indexesMap[game.id] = this.length - 1;
-            }, $this.storage);
+            }, self.storage);
         };
 
         this.get = function (id) {
             var storageIndex = indexesMap[id];
 
-            if ($this.storage.hasOwnProperty(storageIndex))
-                return $this.storage[storageIndex];
+            if (self.storage.hasOwnProperty(storageIndex))
+                return self.storage[storageIndex];
 
             return null;
         };
 
         this.update = function (id, data) {
-            var game = $this.get(id);
+            var game = self.get(id);
             angular.copy(new Game(data), game);
 
             return game;
         };
 
         this.load = function (callback) {
-            $this.loading = true;
+            self.loading = true;
 
             $http({
                 url: '/',
                 method: 'GET',
                 params: {
-                    page: ($this.currentpage + 1)
+                    page: (self.currentpage + 1)
                 }
             }).success(function(response) {
                 if (response.data.length > 0) {
-                    $this.currentpage = response.current_page;
-                    $this.lastpage = response.last_page;
+                    self.currentpage = response.current_page;
+                    self.lastpage = response.last_page;
 
-                    $this.add(response.data);
+                    self.add(response.data);
                 }
 
-                $this.loading = false;
+                self.loading = false;
             });
 
             if (callback)
