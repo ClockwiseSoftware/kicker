@@ -6,6 +6,7 @@
   border-radius: 0.42em;
   margin-bottom: 0.7em;
   display: table;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .games-pages {
@@ -98,7 +99,25 @@
 }
 
 .team .info .rating-delta {
-  font-size: 0.92em;
+  font-size: 12px;
+  position: absolute;
+  left: 156px;
+  z-index: 88;
+  background: #0C2283;
+  border-radius: 50%;
+  top: 32px;
+  padding: 8px 8px;
+  color: #ccc!important;
+  text-align: center;
+  min-width: 36px;
+}
+
+.team .info .rating-delta.negative {
+  background: #C01935;
+}
+
+.team-b .rating-delta{
+  left: -32px !important
 }
 
 .team .info .rating-delta.lose {
@@ -119,16 +138,25 @@
   padding-right: 10px;
 }
 
+.team .info {
+  position: relative;
+}
+
 .game-graphic {
-  display: inline-block;
+  display: block;
+  float: left;
   text-align: center;
+  width: 70%;
+  border-right: 1px solid #E8E8E8;
 }
 
 .game-information {
   position: relative;
   vertical-align: middle;
-  display: table-cell;
+  display: block;
+  float: left;
   text-align: center;
+  width: 30%;
 }
 
 .game-information .game-name {
@@ -208,6 +236,18 @@
   white-space: nowrap;
   overflow:hidden !important;
   text-overflow: ellipsis;
+  color: #0C2283;
+  font-weight: bold;
+}
+
+.game-information .game-date {
+  font-size: 18px;
+}
+.game-information .game-date-text {
+  font-size: 30px;
+  line-height: 1.2;
+  padding-top: 24px;
+  text-transform: uppercase;
 }
 
 /* XS */
@@ -237,7 +277,6 @@
   .game-information .game-date {
     margin-top: 10px;
   }
-
   .game-graphic .name {
     width: 100px;
   }

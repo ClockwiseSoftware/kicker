@@ -41,7 +41,7 @@
                 </div>
             </div>
         </nav>
-        <div class="container-fluid main-container">
+        <div class="container main-container">
             <div class="content">
                 <div ng-view></div>
             </div>
