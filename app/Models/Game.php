@@ -244,6 +244,8 @@ class Game extends Model
         if ($position !== $self::count() - 1) {
             $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
             $self->recountFromPosition($prevPosition);
+        } else {
+            User::updateStat();
         }
 
         return $self;
