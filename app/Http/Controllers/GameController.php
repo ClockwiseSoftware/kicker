@@ -28,9 +28,11 @@ class GameController extends Controller
 
     public function getIndex(Request $request)
     {
-        $games = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
+        $games = Game::where('status', Game::STATUS_ACTIVE)
+            ->with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->orderBy('played_at', 'desc')
-            ->orderBy('id', 'desc')->paginate(5);
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
         if ($request->wantsJson()) {
             return response($games);
@@ -45,7 +47,6 @@ class GameController extends Controller
     {
         $game = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->where('id', $id)
-            ->orderBy('played_at', 'desc')
             ->firstOrFail();
 
         return response($game);
@@ -54,7 +55,9 @@ class GameController extends Controller
     public function postCreate(Request $request)
     {
         $this->validate($request, $this->validationRules());
-        Game::create($request->all());
+        $game = Game::create($request->all());
+
+        return response($game);
     }
 
     public function postUpdate(Request $request, $id)

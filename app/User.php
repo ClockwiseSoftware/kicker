@@ -99,6 +99,19 @@ class User extends Authenticatable
         return $this;
     }
 
+    public function rollbackStats($gameResult)
+    {
+        if ($gameResult === GameProcessor::WIN) {
+            $this->count_wins--;
+        } elseif ($gameResult === GameProcessor::LOSE) {
+            $this->count_looses--;
+        } elseif ($gameResult === GameProcessor::DRAW) {
+            $this->count_draws--;
+        }
+
+        return $this;
+    }
+
     public static function findMe()
     {
         if (!static::$user) {
