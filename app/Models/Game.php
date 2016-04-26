@@ -129,10 +129,13 @@ class Game extends Model
         return $this;
     }
 
-    protected function activate()
+    protected function activate($usersATeam = null, $usersBTeam = null)
     {
-        $usersATeam = User::whereIn('id', $this->gamesUsersA()->pluck('user_id'))->get();
-        $usersBTeam = User::whereIn('id', $this->gamesUsersB()->pluck('user_id'))->get();
+        if ($usersATeam === null)
+            $usersATeam = User::whereIn('id', $this->gamesUsersA()->pluck('user_id'))->get();
+        if ($usersBTeam === null)
+            $usersBTeam = User::whereIn('id', $this->gamesUsersB()->pluck('user_id'))->get();
+
         $this->gamesUsers()->delete();
 
         $this->setUsers($usersATeam, $usersBTeam);
@@ -248,5 +251,55 @@ class Game extends Model
         }
 
         return $self;
+    }
+
+    public function update(array $attributes = [], array $options = [])
+    {
+        $chunkSize = 50;
+        $currentGameId = $this->id;
+        $usersAIds = $attributes['games_users_a'];
+        $usersBIds = $attributes['games_users_b'];
+        $oldPlayedAt = strtotime($this->played_at);
+        $this->fill($attributes);
+        $newPlayedAt = strtotime($this->played_at);
+        $playedAt = date('c', min($oldPlayedAt, $newPlayedAt));
+
+//        static::where('id', '>=', $this->id)
+//            ->orderBy('played_at', 'DESC')
+//            ->chunk($chunkSize, function($games) {
+//                foreach ($games as $game) {
+//                    $game->cancel();
+//                }
+//            });
+
+//        static::where('id', '>=', $this->id)
+//            ->orderBy('played_at', 'DESC')
+//            ->chunk($chunkSize, function($games) {
+//                foreach ($games as $game) {
+//                    $game->cancel();
+//                }
+//            });
+//
+//        $this->fill($attributes);
+//        if (!$this->save()) {
+//            // do something ...
+//        }
+//
+//        static::where('status', static::STATUS_CANCELED)
+//            ->orderBy('played_at', 'ASC')
+//            ->chunk($chunkSize, function($games) use ($currentGameId, $usersAIds, $usersBIds) {
+//                foreach ($games as $game) {
+//                    echo $game->id;
+////                    $usersATeam = null;
+////                    $usersBTeam = null;
+////
+//////                    if ($game->id == $currentGameId) {
+//////                        $usersATeam = User::whereIn('id', $usersAIds)->get();
+//////                        $usersBTeam = User::whereIn('id', $usersBIds)->get();
+//////                    }
+////
+////                    $game->activate($usersATeam, $usersBTeam);
+//                }
+//            });
     }
 }

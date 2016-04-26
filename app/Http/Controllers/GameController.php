@@ -60,19 +60,15 @@ class GameController extends Controller
         return response($game);
     }
 
-    public function postUpdate(Request $request, $id)
+    public function putUpdate(Request $request, $id)
     {
         $this->validate($request, $this->validationRules());
-        $game = Game::where('id', $id)->first();
-
-        if (!$game)
-            abort(404);
+        $game = Game::findOrFail($id);
 
         /* @var $game Game */
-        $game->updateWith($request->all());
-        Complaint::where('game_id', $game->id)->delete();
+        $game->update($request->all());
 
-        return redirect('/');
+        return response($game);
     }
 
     public function getDelete(Request $request, $id)
