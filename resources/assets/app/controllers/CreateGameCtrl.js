@@ -20,7 +20,7 @@ app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'Cr
             $scope.errors = {};
             $scope.loading = true;
 
-            $http.post('/game/create', $scope.game.getFormData()).error(function(response) {
+            $http.post('/game', $scope.game.getFormData()).error(function(response) {
                 $scope.errors = response;
             }).then(function() {
                 $scope.loading = false;

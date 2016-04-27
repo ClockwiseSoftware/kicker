@@ -26,11 +26,13 @@ class GameController extends Controller
         ];
     }
 
-    public function getIndex(Request $request)
+    public function index(Request $request)
     {
-        $games = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
+        $games = Game::where('status', Game::STATUS_ACTIVE)
+            ->with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->orderBy('played_at', 'desc')
-            ->orderBy('id', 'desc')->paginate(5);
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
         if ($request->wantsJson()) {
             return response($games);
@@ -41,39 +43,35 @@ class GameController extends Controller
         ]);
     }
 
-    public function getOne(Request $request, $id)
+    public function one(Request $request, $id)
     {
         $game = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->where('id', $id)
-            ->orderBy('played_at', 'desc')
             ->firstOrFail();
 
         return response($game);
     }
 
-    public function postCreate(Request $request)
+    public function create(Request $request)
     {
         $this->validate($request, $this->validationRules());
-        Game::create($request->all());
-        return redirect('/');
+        $game = Game::create($request->all());
+
+        return response($game);
     }
 
-    public function postUpdate(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, $this->validationRules());
-        $game = Game::where('id', $id)->first();
-
-        if (!$game)
-            abort(404);
+        $game = Game::findOrFail($id);
 
         /* @var $game Game */
-        $game->updateWith($request->all());
-        Complaint::where('game_id', $game->id)->delete();
+        $game->update($request->all());
 
-        return redirect('/');
+        return response($game);
     }
 
-    public function getDelete(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $game = Game::findOrFail($id);
         $game->delete();
