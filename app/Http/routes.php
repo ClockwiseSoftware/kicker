@@ -37,19 +37,15 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/signup', 'Auth\AuthController@postRegister')->name('checkRegister');
 
     // Games routes
-    Route::get('/', 'GameController@getIndex')->name('home');
-    Route::post('game', [
-//        'middleware' => [\App\Http\Middleware\PermissionRequired::class . ':user'],
-        'uses' => 'GameController@postCreate'
-    ]);
-    Route::get('game/{id}', 'GameController@getOne')
-        ->where('id', '[0-9]+')->name('oneGame');
-    Route::put('game/{id}', 'GameController@putUpdate')
-        ->where('id', '[0-9]+');
-    Route::get('game/{id}/delete', 'GameController@getDelete')
-        ->where('id', '[0-9]+')->name('deleteGame');
-    Route::get('game/{id}/complain', 'ComplaintController@create')
-        ->where('id', '[0-9]+')->name('complain');
+    Route::get('/', 'GameController@index')->name('home');
+    Route::get('game/{id}', 'GameController@one')->where('id', '[0-9]+');
+    Route::post('game', 'GameController@create');
+    Route::put('game/{id}', 'GameController@update')->where('id', '[0-9]+');
+
+    Route::delete('game/{id}', 'GameController@delete')->where('id', '[0-9]+');
+    Route::get('game/{id}/delete', 'GameController@delete')->where('id', '[0-9]+');
+
+    Route::get('game/{id}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
 
     // Users routes
     Route::get('/user/search', 'UserController@getSearch')->name('userSearch');

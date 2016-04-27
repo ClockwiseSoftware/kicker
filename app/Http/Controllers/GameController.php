@@ -26,7 +26,7 @@ class GameController extends Controller
         ];
     }
 
-    public function getIndex(Request $request)
+    public function index(Request $request)
     {
         $games = Game::where('status', Game::STATUS_ACTIVE)
             ->with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
@@ -43,7 +43,7 @@ class GameController extends Controller
         ]);
     }
 
-    public function getOne(Request $request, $id)
+    public function one(Request $request, $id)
     {
         $game = Game::with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
             ->where('id', $id)
@@ -52,7 +52,7 @@ class GameController extends Controller
         return response($game);
     }
 
-    public function postCreate(Request $request)
+    public function create(Request $request)
     {
         $this->validate($request, $this->validationRules());
         $game = Game::create($request->all());
@@ -60,7 +60,7 @@ class GameController extends Controller
         return response($game);
     }
 
-    public function putUpdate(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, $this->validationRules());
         $game = Game::findOrFail($id);
@@ -71,7 +71,7 @@ class GameController extends Controller
         return response($game);
     }
 
-    public function getDelete(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $game = Game::findOrFail($id);
         $game->delete();

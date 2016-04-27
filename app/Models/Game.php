@@ -295,4 +295,30 @@ class Game extends Model
 
         return true;
     }
+
+    public function delete()
+    {
+        $chunkSize = 50;
+        static::where('id', '>=', $this->id)
+            ->orderBy('played_at', 'DESC')
+            ->chunk($chunkSize, function($games) {
+                foreach ($games as $game) {
+                    $game->cancel();
+                }
+            });
+
+        if (!parent::delete()) {
+            // do something ...
+        }
+
+        static::where('status', static::STATUS_CANCELED)
+            ->orderBy('played_at', 'ASC')
+            ->chunk($chunkSize, function($games) {
+                foreach ($games as $game) {
+                    $game->activate();
+                }
+            });
+
+        return true;
+    }
 }
