@@ -216,10 +216,11 @@ class Game extends Model
         $newPosition = (int) $this->currentPosition();
         $this->save();
 
+        $this->cancel();
+        
         $usersATeam = User::whereIn('id', $newAttributes['games_users_a'])->get();
         $usersBTeam = User::whereIn('id', $newAttributes['games_users_b'])->get();
 
-        $this->cancel();
         $this->setUsers($usersATeam, $usersBTeam);
         $position = min([$currentPosition, $newPosition]);
         $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
@@ -240,8 +241,12 @@ class Game extends Model
         $self->setUsers($usersATeam, $usersBTeam);
         $position = $self->currentPosition();
 
-        $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
-        $self->recountFromPosition($prevPosition);
+        if ($position !== $self::count() - 1) {
+            $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
+            $self->recountFromPosition($prevPosition);
+        } else {
+            User::updateStat();
+        }
 
         return $self;
     }
