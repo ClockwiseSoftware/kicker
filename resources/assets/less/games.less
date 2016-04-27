@@ -143,7 +143,7 @@
 }
 
 .game-graphic {
-  display: block;
+  display: inline-block;
   float: left;
   text-align: center;
   width: 70%;
@@ -153,10 +153,11 @@
 .game-information {
   position: relative;
   vertical-align: middle;
-  display: block;
+  display: inline-block;
   float: left;
   text-align: center;
   width: 30%;
+  line-height: 20px;
 }
 
 .game-information .game-name {
@@ -243,24 +244,9 @@
 .game-information .game-date {
   font-size: 18px;
 }
-.game-information .game-date-text {
-  font-size: 30px;
-  line-height: 1.2;
-  padding-top: 24px;
-  text-transform: uppercase;
-}
 
 /* XS */
 @media (max-width: @screen-xs-max) {
-  .game-graphic {
-    display: block;
-  }
-
-  .game-information {
-    display: block;
-    padding: 2em 0 2em;
-  }
-
   .result-container.main {
     display: none;
   }
@@ -277,6 +263,7 @@
   .game-information .game-date {
     margin-top: 10px;
   }
+
   .game-graphic .name {
     width: 100px;
   }
@@ -330,15 +317,6 @@
 
 /* SM */
 @media (min-width: @screen-sm-min) {
-  .game-graphic {
-    display: block;
-  }
-
-  .game-information {
-    display: block;
-    padding: 2em 0 2em;
-  }
-
   .game-information .controls {
     bottom: 0;
   }
@@ -354,10 +332,6 @@
     width: 100px;
   }
 
-  .game-information {
-    display: table-cell;
-  }
-
   .result-container.main .result {
     width: 55px;
   }
@@ -369,10 +343,6 @@
 
 /* LG */
 @media (min-width: @screen-lg-min) {
-  .game-information {
-    display: table-cell;
-  }
-
   .games-container .game-container, .create-game-container {
     width: 760px;
   }
