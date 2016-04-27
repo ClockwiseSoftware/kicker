@@ -80,8 +80,9 @@ return [
     'unique'               => 'The :attribute has already been taken.',
     'url'                  => 'The :attribute format is invalid.',
 
-    'users_ids'            => 'At least 2 users must be selected',
-    'unique_compare_to'    => 'Users must be unique for each team',
+    'users_ids'            => 'At least 2 users must be selected.',
+    'unique_compare_to'    => 'Users must be unique for each team.',
+    'game_unique'          => 'The same game has been already added just now.',
 
     /*
     |--------------------------------------------------------------------------

@@ -63,25 +63,55 @@ class AppServiceProvider extends ServiceProvider
             return true;
         });
 
+        // @TODO refactoring of validation rule
         Validator::extend('game_unique', function($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
+            $createdAt = time();
+            $secondsDelta = (int) $parameters[0];
+
             $usersAIds = $data['games_users_a'];
             $usersBIds = $data['games_users_b'];
-            $createdAt = time();
-            $teamAPoints = $data['team_a_points'];
-            $teamBPoints = $data['team_b_points'];
+            $teamAPoints = (int) $data['team_a_points'];
+            $teamBPoints = (int) $data['team_b_points'];
 
-            $game = Game::where('team_a_points', $teamAPoints)
-                ->where('team_b_points', $teamBPoints)
-                ->where(DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $createdAt - 5 * 60)
+            $games = Game::where(
+                function($query) use ($teamAPoints, $teamBPoints) {
+                    // ... WHERE (
+                    //     (`team_a_points` = "$teamAPoints" AND `team_b_points` = "$teamBPoints")
+                    //     OR
+                    //     (`team_a_points` = "$teamBPoints" AND `team_b_points` = "$teamAPoints")
+                    // ) ...
+                    return $query->where(function($query) use ($teamAPoints, $teamBPoints) {
+                        return $query->where('team_a_points', $teamAPoints)
+                            ->where('team_b_points', $teamBPoints);
+                    })->orWhere(function($query) use ($teamAPoints, $teamBPoints) {
+                        return $query->where('team_a_points', $teamBPoints)
+                            ->where('team_b_points', $teamAPoints);
+                    });
+                })
+                ->where(DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $createdAt - $secondsDelta)
                 ->with(['gamesUsersA', 'gamesUsersB'])
-                ->first();
+                ->get();
 
-            echo "<pre>"; print_r($game); echo "</pre>"; die();
+            foreach ($games as $game) {
+                $gamesUsersA = $game->gamesUsersA;
+                $gamesUsersB = $game->gamesUsersB;
 
-            if ($game)
-                return false;
+                $usersAIdsOld = $gamesUsersA->pluck('user_id')->all();
+                $usersBIdsOld = $gamesUsersB->pluck('user_id')->all();
+
+                // If game points and players are the same validation will not be passed.
+                if ($game->team_a_points == $teamAPoints && $game->team_b_points == $teamBPoints) {
+                    if (empty(array_diff($usersAIds, $usersAIdsOld)) && empty(array_diff($usersBIds, $usersBIdsOld))) {
+                        return false;
+                    }
+                } else if ($game->team_a_points == $teamBPoints && $game->team_b_points == $teamAPoints) {
+                    if (empty(array_diff($usersAIds, $usersBIdsOld)) && empty(array_diff($usersBIds, $usersAIdsOld))) {
+                        return false;
+                    }
+                }
+            }
 
             return true;
         });

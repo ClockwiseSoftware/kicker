@@ -10,20 +10,31 @@ use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
+    const ACTION_CREATE = 'create';
+    const ACTION_UPDATE = 'update';
+
     /**
+     * @param string $action
      * @return array
      */
-    protected function validationRules()
+    protected function validationRules($action = self::ACTION_CREATE)
     {
-        return [
+        $rules = [
             'games_users_a' => 'required|users_ids:2|unique_compare_to:games_users_b',
-            'team_a_points' => 
+            'team_a_points' =>
                 "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
             'games_users_b' => 'required|users_ids:2|unique_compare_to:games_users_a',
-            'team_b_points' => 
-                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer|game_unique",
+            'team_b_points' =>
+                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
             'played_at' => 'required|date'
         ];
+
+        // Additional validation rules for creating of a game.
+        if ($action === self::ACTION_CREATE) {
+            $rules['team_b_points'] .= '|game_unique:300';
+        }
+        
+        return $rules;
     }
 
     public function getIndex(Request $request)
@@ -55,12 +66,11 @@ class GameController extends Controller
     {
         $this->validate($request, $this->validationRules());
         Game::create($request->all());
-        return redirect('/');
     }
 
     public function postUpdate(Request $request, $id)
     {
-        $this->validate($request, $this->validationRules());
+        $this->validate($request, $this->validationRules(self::ACTION_UPDATE));
         $game = Game::where('id', $id)->first();
 
         if (!$game)
