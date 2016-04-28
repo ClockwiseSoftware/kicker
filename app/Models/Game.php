@@ -299,7 +299,10 @@ class Game extends Model
     public function delete()
     {
         $chunkSize = 50;
-        static::where('id', '>=', $this->id)
+        $playedAt = date('c', strtotime($this->played_at));
+        
+        static::where('played_at', '>=', $playedAt)
+            ->orWhere('id', '=', $this->id)
             ->orderBy('played_at', 'DESC')
             ->chunk($chunkSize, function($games) {
                 foreach ($games as $game) {
