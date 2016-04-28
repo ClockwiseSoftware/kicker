@@ -20,8 +20,10 @@
                            accept="image/*" ngf-max-size="2MB" required
                            ngf-model-invalid="errorFile">
                     <button ng-click="uploadPic(picFile, user)">Submit</button>
-                    <div class="user-avatar" back-img="{{ user.avatarUrl() }}">
-                        <img ng-src="{{ user.avatarUrl() }}" />
+                    <div ngf-drop ngf-select
+                         ngf-drag-over-class="'dragover'"
+                         class="user-avatar" back-img="{{ user.avatar_url ? user.avatar_url : '/img/no-avatar.min.png'}}">
+                        <img ng-src="{{ user.avatar_url ? user.avatar_url : '/img/no-avatar.min.png'}}" />
                     </div>
                 </td>
                 <td>

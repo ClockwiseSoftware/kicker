@@ -85,6 +85,11 @@ class User extends Authenticatable
         return '/img/no-avatar.min.png';
     }
 
+    public function setAvatar($avatarUrl = null)
+    {
+        $this->avatar_url = '/uploads/' . $avatarUrl;
+    }
+
     public static function findMe()
     {
         if (!static::$user) {

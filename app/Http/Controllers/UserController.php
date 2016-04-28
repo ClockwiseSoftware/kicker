@@ -95,15 +95,28 @@ class UserController extends Controller
 
     public function postUpdateAvatar(Request $request, $id)
     {
+        $user = User::where('id', $id)->firstOrFail();
         $avatar = $request->file('avatar');
         $rules = ['avatar' => 'required|mimes:jpeg,bmp,png'];
-        $validator = Validator::make($avatar, $rules);
-        echo "<pre>"; print_r($avatar); echo "</pre>"; die();
-        $this->validate($image, ['image' => 'required']);
-        $destinationPath = storage_path() . '/uploads';
-        if(!$image->move($destinationPath, $image->getClientOriginalName())) {
-            return $this->errors(['message' => 'Error saving the file.', 'code' => 400]);
+        $validator = Validator::make(['avatar' => $avatar], $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response($errors, 402);
         }
-        return response()->json(['success' => true], 200);
+
+        $destinationPath = public_path() . '/uploads';
+        $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
+
+        if (!$avatar->move($destinationPath, $fileName)) {
+            return response(['avatar' => ['Error saving the file.']], 500);
+        }
+
+        $user->setAvatar($fileName);
+        $user->save();
+
+        return response([
+            'avatar_url' => $user->avatar_url
+        ]);
     }
 }

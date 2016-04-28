@@ -12,9 +12,16 @@ app.controller('UsersEditCtrl', [
                 data: {
                     avatar: file
                 }
+            }).then(function(res) {
+                for (var i in $scope.users) {
+                    if ($scope.users[i].id === user.id) {
+                        $scope.users[i].avatar_url = res.data.avatar_url;
+                        return true;
+                    }
+                }
+            }).catch(function() {
+
             });
-            
-            console.log(1);
         };
 
         function updateUser(id, user) {

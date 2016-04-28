@@ -22,7 +22,8 @@ elixir(function(mix) {
         'navbar.less',
         'games.less',
         'chart.less',
-        'edit-users.less'
+        'edit-users.less',
+        'profile.less'
     ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets
@@ -53,7 +54,8 @@ elixir(function(mix) {
         'resources/assets/bower/ui-select/dist/select.js',
         'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
         'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js',
-        'resources/assets/bower/ng-file-upload/ng-file-upload.js'
+        'resources/assets/bower/ng-file-upload/ng-file-upload.js',
+        'resources/assets/bower/angular-resource/angular-resource.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
@@ -64,7 +66,7 @@ elixir(function(mix) {
     mix.scripts([
         'app.js',
 
-        // Custom directive
+        // Custom directives
         'directives/BackImgDirective.js',
         'directives/NumberOnlyDirective.js',
 
@@ -78,6 +80,9 @@ elixir(function(mix) {
         'services/CreateGameService.js',
         'services/UserSearchService.js',
 
+        // Resources
+        'resources/Player.js',
+
         // Repositories
         'repositories/GamesRepository.js',
 
@@ -87,6 +92,7 @@ elixir(function(mix) {
         'controllers/UpdateGameCtrl.js',
         'controllers/ComplainersCtrl.js',
         'controllers/UsersEditCtrl.js',
+        'controllers/UserProfileCtrl.js',
 
         // Signup
         'services/AuthUserService.js',

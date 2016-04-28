@@ -1,6 +1,7 @@
 var app = angular
     .module('kickerApp', [
-        'ngRoute', 'ui.select', 'ngSanitize', 'ui.bootstrap', 'ngFileUpload'
+        'ngRoute', 'ui.select', 'ngSanitize',
+        'ui.bootstrap', 'ngFileUpload', 'ngResource'
     ]).config(['$httpProvider', '$routeProvider',
         function ($httpProvider, $routeProvider) {
             $routeProvider
@@ -35,6 +36,12 @@ var app = angular
                 .when('/admin/users', {
                     templateUrl: 'html/views/admin/users.html',
                     controller: 'UsersEditCtrl'
+                })
+
+                // User's pages
+                .when('/user/profile', {
+                    templateUrl: 'html/views/user/profile.html',
+                    controller: 'UserProfileCtrl'
                 })
 
                 // Chart pages

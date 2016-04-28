@@ -15,6 +15,27 @@ body {
   padding-bottom: 9px;
 }
 
+.user-avatar {
+  transition-duration: 400ms;
+  vertical-align: middle;
+  border-radius: @avatar-border-radius;
+  -webkit-border-radius: @avatar-border-radius;
+  -moz-border-radius: @avatar-border-radius;
+  width: @avatar-max-size;
+  height: @avatar-max-size;
+}
+
+.user-avatar.dragover {
+  opacity: 0.1;
+}
+
+.user-avatar img {
+  max-width: @avatar-max-size;
+  max-height: @avatar-max-size;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
 .content-wrap {
   background-color: rgb(255, 255, 255);
   padding: 20px;
