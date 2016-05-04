@@ -55,7 +55,8 @@ elixir(function(mix) {
         'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
         'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js',
         'resources/assets/bower/ng-file-upload/ng-file-upload.js',
-        'resources/assets/bower/angular-resource/angular-resource.js'
+        'resources/assets/bower/angular-resource/angular-resource.js',
+        'resources/assets/bower/angular-animate/angular-animate.js'
     ], 'public/js/vendors.js', 'resources/assets');
 
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');

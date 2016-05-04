@@ -9,6 +9,7 @@
     "angular-sanitize": "*",
     "angular-bootstrap": "*",
     "ng-file-upload": "*",
-    "angular-resource": "*"
+    "angular-resource": "*",
+    "angular-animate": "*"
   }
-}1
+}
