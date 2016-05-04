@@ -93,6 +93,15 @@ class User extends Authenticatable
         return '/img/no-avatar.min.png';
     }
 
+    public function deleteAvatar()
+    {
+        $fullPath = public_path() . $this->avatar_url;
+
+        if ($this->avatar_url && file_exists($fullPath)) {
+            unlink(public_path() . $this->avatar_url);
+        }
+    }
+    
     public function setAvatar($avatarUrl = null)
     {
         $this->avatar_url = '/uploads/' . $avatarUrl;

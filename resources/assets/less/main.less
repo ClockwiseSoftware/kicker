@@ -16,7 +16,6 @@ body {
 }
 
 .user-avatar {
-  transition-duration: 400ms;
   vertical-align: middle;
   border-radius: @avatar-border-radius;
   -webkit-border-radius: @avatar-border-radius;
@@ -24,6 +23,11 @@ body {
   width: @avatar-max-size;
   height: @avatar-max-size;
 }
+
+.preload.user-avatar {
+  transition-duration: 0;
+}
+
 
 .user-avatar.dragover {
   opacity: 0.1;

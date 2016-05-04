@@ -1,8 +1,14 @@
 <div class="row">
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap user-profile">
         <div class="user-avatar-container">
-            <div class="user-avatar" back-img="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}">
+            <div class="user-avatar preload"
+                 back-img="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}"
+                 ngf-drop ngf-select ng-model="avatar"
+            >
                 <img ng-src="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}" />
+            </div>
+            <div class="errors" ng-repeat="error in errors.avatar">
+                {{ error }}
             </div>
         </div>
 

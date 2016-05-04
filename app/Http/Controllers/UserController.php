@@ -109,6 +109,8 @@ class UserController extends Controller
             return response($errors, 402);
         }
 
+        $user->deleteAvatar();
+
         $destinationPath = public_path() . '/uploads';
         $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
 
@@ -120,7 +122,7 @@ class UserController extends Controller
         $user->save();
 
         return response([
-            'avatar_url' => $user->avatar_url
+            'avatar' => $user->avatar_url
         ]);
     }
 }

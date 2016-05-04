@@ -24,5 +24,26 @@ app.controller('UserProfileCtrl', [
                     $scope.errors = res.data;
                 });
         };
+
+        $scope.$watch('avatar', function () {
+            $scope.upload($scope.avatar);
+        });
+
+        $scope.upload = function (avatar) {
+            $scope.errors = {};
+            if (avatar && !avatar.$error) {
+                Upload.upload({
+                    url: '/user/' + $scope.player.id + '/avatar',
+                    data: {
+                        avatar: avatar
+                    }
+                }).then(function (res) {
+                    $scope.player.avatar_url = res.data.avatar + '?' + (new Date()).getTime();
+                }).catch(function (res) {
+                    $scope.errors = res.data;
+                    console.log(res);
+                });
+            }
+        };
     }
 ]);
