@@ -12,7 +12,6 @@ app.controller('ChartsCtrl', ['$scope', '$http', 'User',
                     angular.forEach(users, function(userData, index) {
                         userData.index = index + 1;
                         var user = new User(userData);
-                        user.countGamesPlayed = user.countGames();
 
                         this.push(user);
                     }, $scope.users);

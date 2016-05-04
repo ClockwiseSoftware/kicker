@@ -1,7 +1,10 @@
 app.factory('User', ['$http', function($http) {
     function User(userData) {
         var self = this;
+
         this.editing = false;
+        this.win_rate = 0.0;
+        this.count_games = 0;
 
         this.setData = function(userData) {
             angular.extend(this, userData);
@@ -13,10 +16,23 @@ app.factory('User', ['$http', function($http) {
                     self[statAttr[index]] = isNaN(self[statAttr[index]]) ? 0 : self[statAttr[index]];
                 }
             }
+
+            self.count_games = countGames();
+            self.win_rate = countWinRate();
         };
 
-        this.countGames = function() {
-            return self.count_looses + self.count_wins + self.count_draws;
+        var countGames = function() {
+            self.count_games = self.count_looses + self.count_wins + self.count_draws;
+            return self.count_games;
+        };
+
+        var countWinRate = function() {
+            if (!self.count_games || isNaN(self.count_games))
+                self.win_rate = 0;
+            else
+                self.win_rate = Math.floor(self.count_wins / self.count_games * 1000) / 1000;
+
+            return self.win_rate;
         };
 
         this.avatarUrl = function() {
