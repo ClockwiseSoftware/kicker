@@ -1,7 +1,8 @@
 var app = angular
     .module('kickerApp', [
         'ngRoute', 'ui.select', 'ngSanitize',
-        'ui.bootstrap', 'ngFileUpload', 'ngResource'
+        'ui.bootstrap', 'ngFileUpload', 'ngResource',
+        'ngAnimate'
     ]).config(['$httpProvider', '$routeProvider',
         function ($httpProvider, $routeProvider) {
             $routeProvider

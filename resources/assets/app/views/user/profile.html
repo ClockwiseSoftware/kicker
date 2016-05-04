@@ -50,6 +50,10 @@
             </div>
         </form>
 
+        <div class="alert alert-success text-center animate-show" ng-show="showAlert">
+            Changes have been saved!
+        </div>
+
         <div class="text-center">
             <button class="btn btn-primary" ng-click="saveChanges(player)" ng-disabled="loading">
                 <span ng-show="loading"><i class="fa fa-refresh fa-spin"></i>&nbsp;</span>

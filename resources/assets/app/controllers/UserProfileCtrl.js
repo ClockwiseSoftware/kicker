@@ -1,9 +1,10 @@
 app.controller('UserProfileCtrl', [
-    '$scope', '$http', 'Upload', 'Player',
-    function($scope, $http, Upload, Player) {
+    '$scope', '$http', '$timeout', 'Upload', 'Player',
+    function($scope, $http, $timeout, Upload, Player) {
         $scope.player = null;
         $scope.errors = {};
         $scope.loading = true;
+        $scope.showAlert = false;
 
         Player.get().$promise
             .then(function(player) {
@@ -18,6 +19,7 @@ app.controller('UserProfileCtrl', [
             Player.update({id: $scope.player.id}, player).$promise
                 .then(function(res) {
                     $scope.loading = false;
+                    showAlert();
                 })
                 .catch(function(res) {
                     $scope.loading = false;
@@ -39,11 +41,19 @@ app.controller('UserProfileCtrl', [
                     }
                 }).then(function (res) {
                     $scope.player.avatar_url = res.data.avatar + '?' + (new Date()).getTime();
+                    showAlert();
                 }).catch(function (res) {
                     $scope.errors = res.data;
-                    console.log(res);
                 });
             }
         };
+
+        function showAlert() {
+            $scope.showAlert = true;
+
+            $timeout(function() {
+                $scope.showAlert = false;
+            }, 2000);
+        }
     }
 ]);
