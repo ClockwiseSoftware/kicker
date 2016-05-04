@@ -6,7 +6,7 @@ use App\Models\Game;
 use App\Models\GameProcessor;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\FacadesDB;
 
 class User extends Authenticatable
 {
@@ -14,7 +14,7 @@ class User extends Authenticatable
     const ROLE_USER = 'user';
     const ROLE_ADMIN = 'admin';
 
-    const GAMES_PLAYED_EDGE = 0;
+    const GAMES_PLAYED_EDGE = 3;
 
     protected static $user;
 
