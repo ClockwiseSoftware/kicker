@@ -78,6 +78,14 @@ class User extends Authenticatable
             (int) $this->count_wins + (int) $this->count_draws + (int) $this->count_looses;
     }
 
+    /**
+     * @param $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = bcrypt($password);
+    }
+
     public function getAvatarUrl()
     {
         if ($this->avatar_url)
@@ -110,6 +118,20 @@ class User extends Authenticatable
         }
 
         return $this;
+    }
+
+    public function deleteAvatar()
+    {
+        $fullPath = public_path() . $this->avatar_url;
+
+        if ($this->avatar_url && file_exists($fullPath)) {
+            unlink(public_path() . $this->avatar_url);
+        }
+    }
+    
+    public function setAvatar($avatarUrl = null)
+    {
+        $this->avatar_url = '/uploads/' . $avatarUrl;
     }
 
     public static function findMe()
