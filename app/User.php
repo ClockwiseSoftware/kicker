@@ -14,6 +14,8 @@ class User extends Authenticatable
     const ROLE_USER = 'user';
     const ROLE_ADMIN = 'admin';
 
+    const GAMES_PLAYED_EDGE = 0;
+
     protected static $user;
 
     public $defaults = [
@@ -169,6 +171,14 @@ class User extends Authenticatable
             ->first();
 
         return isset($game->id) ? (int) $game->id : false;
+    }
+
+    public function scopePlayedGames($query)
+    {
+        $gamesPlayedEdge = static::GAMES_PLAYED_EDGE;
+
+        return $query->groupBy('users.id')
+            ->havingRaw("SUM(users.count_wins + users.count_looses + users.count_draws) >= {$gamesPlayedEdge}");
     }
 
     public static function updateStat()
