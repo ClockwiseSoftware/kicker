@@ -15,9 +15,9 @@ class UserController extends Controller
     protected function validationRules($user)
     {
         return [
-            'name' => 'max:255',
-            'email' => 'email|max:255|unique:users,email,' . $user->id,
-            'password' => 'min:1',
+            'name' => 'filled|max:255',
+            'email' => 'filled|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'filled|min:1',
         ];
     }
 
@@ -86,6 +86,10 @@ class UserController extends Controller
 
         $this->validate($request, $this->validationRules($user));
         $user->fill($request->all());
+
+        if ($request->get('password'))
+            $user->setPassword($request->get('password'));
+
         $user->save();
 
         if ($request->wantsJson()) {

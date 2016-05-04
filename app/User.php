@@ -77,6 +77,14 @@ class User extends Authenticatable
             (int) $this->count_wins + (int) $this->count_draws + (int) $this->count_looses;
     }
 
+    /**
+     * @param $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = bcrypt($password);
+    }
+
     public function getAvatarUrl()
     {
         if ($this->avatar_url)
