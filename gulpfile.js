@@ -23,7 +23,8 @@ elixir(function(mix) {
         'games.less',
         'chart.less',
         'edit-users.less',
-        'profile.less'
+        'profile.less',
+        'checkboxes.less'
     ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets
