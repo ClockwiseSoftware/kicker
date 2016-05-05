@@ -98,6 +98,11 @@ class Game extends Model
         return date('m/d/Y H:i', strtotime($this->attributes['played_at']));
     }
 
+    public function scopeForUser($query, $user)
+    {
+        return $query->whereRaw("`games`.`id` IN (SELECT `game_id` FROM `games_users` WHERE `user_id` = {$user->id})");
+    }
+
     protected function cancel()
     {
         $gamesUsers = $this->gamesUsers()->with('user')->get();

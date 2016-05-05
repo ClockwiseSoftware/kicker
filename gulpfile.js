@@ -22,7 +22,8 @@ elixir(function(mix) {
         'navbar.less',
         'games.less',
         'chart.less',
-        'edit-users.less'
+        'edit-users.less',
+        'checkboxes.less'
     ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets

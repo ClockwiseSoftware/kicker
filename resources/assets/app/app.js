@@ -6,29 +6,30 @@ var app = angular
             $routeProvider
                 // Signup and Signin pages
                 .when('/signup', {
-                    templateUrl: 'html/views/auth/signup.html',
-                    controller: 'SignupCtrl'
+                    controller: 'SignupCtrl',
+                    templateUrl: 'html/views/auth/signup.html'
                 })
                 .when('/signin', {
-                    templateUrl: 'html/views/auth/signin.html',
-                    controller: 'SigninCtrl'
+                    controller: 'SigninCtrl',
+                    templateUrl: 'html/views/auth/signin.html'
                 })
 
                 // Games pages
                 .when('/', {
+                    controller: 'GamesCtrl',
                     templateUrl: 'html/views/games/index.html'
                 })
                 .when('/game/create', {
-                    templateUrl: 'html/views/games/create.html',
-                    controller: 'CreateGameCtrl'
+                    controller: 'CreateGameCtrl',
+                    templateUrl: 'html/views/games/create.html'
                 })
                 .when('/game/:id/update', {
-                    templateUrl: 'html/views/games/update.html',
-                    controller: 'UpdateGameCtrl'
+                    controller: 'UpdateGameCtrl',
+                    templateUrl: 'html/views/games/update.html'
                 })
                 .when('/game/:id/complainers', {
-                    templateUrl: 'html/views/games/complainers.html',
-                    controller: 'ComplainersCtrl'
+                    controller: 'ComplainersCtrl',
+                    templateUrl: 'html/views/games/complainers.html'
                 })
 
                 // Admin's pages
@@ -44,6 +45,7 @@ var app = angular
 
                 // Because Facebook adds this parameter in hash after successful login
                 .when('/_=_', {
+                    controller: 'GamesCtrl',
                     templateUrl: 'html/views/games/index.html'
                 });
 

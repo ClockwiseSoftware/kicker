@@ -39,14 +39,20 @@ class GameController extends Controller
 
     public function index(Request $request)
     {
-        $games = Game::where('status', Game::STATUS_ACTIVE)
+        $query = Game::where('status', Game::STATUS_ACTIVE)
             ->with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
-            ->orderBy('played_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->orderBy('games.played_at', 'desc')
+            ->orderBy('games.id', 'desc');
+
+        $usersGames = (bool) $request->get('usersGames');
+        $user = $request->user();
+
+        if ($usersGames && $user) {
+            $query->forUser($user);
+        }
 
         if ($request->wantsJson()) {
-            return response($games);
+            return response($query->paginate(5));
         }
 
         return view('games.index', [
