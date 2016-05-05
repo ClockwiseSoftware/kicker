@@ -139,4 +139,14 @@ class GameProcessor
 
         return [$newTeamA, $newTeamB];
     }
+
+    public static function oppositeResult($gameResult)
+    {
+        if ($gameResult === static::WIN)
+            return static::LOSE;
+        else if ($gameResult === static::LOSE)
+            return static::WIN;
+
+        return static::DRAW;
+    }
 }

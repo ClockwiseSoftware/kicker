@@ -26,12 +26,16 @@ app.controller('UpdateGameCtrl', [
             $scope.errors = {};
             $scope.loading = true;
 
-            $http.post('/game/' + $scope.game.id + '/update', $scope.game.getFormData()).error(function(response) {
-                $scope.loading = false;
-                $scope.errors = response;
+            $http({
+                url: '/game/' + $scope.game.id,
+                method: 'PUT',
+                data: $scope.game.getFormData()
             }).then(function() {
                 $scope.loading = false;
                 $location.path('/');
+            }).catch(function(response) {
+                $scope.loading = false;
+                $scope.errors = response;
             });
         };
 

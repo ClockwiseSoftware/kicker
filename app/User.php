@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Game;
 use App\Models\GameProcessor;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +92,32 @@ class User extends Authenticatable
             return $this->avatar_url;
 
         return '/img/no-avatar.min.png';
+    }
+
+    public function changeStats($gameResult)
+    {
+        if ($gameResult === GameProcessor::WIN) {
+            $this->count_wins++;
+        } elseif ($gameResult === GameProcessor::LOSE) {
+            $this->count_looses++;
+        } elseif ($gameResult === GameProcessor::DRAW) {
+            $this->count_draws++;
+        }
+
+        return $this;
+    }
+
+    public function rollbackStats($gameResult)
+    {
+        if ($gameResult === GameProcessor::WIN) {
+            $this->count_wins--;
+        } elseif ($gameResult === GameProcessor::LOSE) {
+            $this->count_looses--;
+        } elseif ($gameResult === GameProcessor::DRAW) {
+            $this->count_draws--;
+        }
+
+        return $this;
     }
 
     public function deleteAvatar()

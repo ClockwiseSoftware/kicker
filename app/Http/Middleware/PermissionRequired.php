@@ -16,7 +16,7 @@ class PermissionRequired
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, ...$roles)
+    public function handle($request, Closure $next, $roles)
     {
         $user = $request->user();
         $hasPermission = false;
