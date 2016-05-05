@@ -9,52 +9,52 @@ var app = angular
                 // Signup and Signin pages
                 .when('/signup', {
                     controller: 'SignupCtrl',
-                    templateUrl: 'html/views/auth/signup.html'
+                    templateUrl: 'html/auth/signup.html'
                 })
                 .when('/signin', {
                     controller: 'SigninCtrl',
-                    templateUrl: 'html/views/auth/signin.html'
+                    templateUrl: 'html/auth/signin.html'
                 })
 
                 // Games pages
                 .when('/', {
                     controller: 'GamesCtrl',
-                    templateUrl: 'html/views/games/index.html'
+                    templateUrl: 'html/games/index.html'
                 })
                 .when('/game/create', {
                     controller: 'CreateGameCtrl',
-                    templateUrl: 'html/views/games/create.html'
+                    templateUrl: 'html/games/create.html'
                 })
                 .when('/game/:id/update', {
                     controller: 'UpdateGameCtrl',
-                    templateUrl: 'html/views/games/update.html'
+                    templateUrl: 'html/games/update.html'
                 })
                 .when('/game/:id/complainers', {
                     controller: 'ComplainersCtrl',
-                    templateUrl: 'html/views/games/complainers.html'
+                    templateUrl: 'html/games/complainers.html'
                 })
 
                 // Admin's pages
                 .when('/admin/users', {
-                    templateUrl: 'html/views/admin/users.html',
+                    templateUrl: 'html/admin/users.html',
                     controller: 'UsersEditCtrl'
                 })
 
                 // User's pages
                 .when('/user/profile', {
-                    templateUrl: 'html/views/user/profile.html',
+                    templateUrl: 'html/user/profile.html',
                     controller: 'UserProfileCtrl'
                 })
 
                 // Chart pages
                 .when('/chart', {
-                    templateUrl: 'html/views/chart/index.html'
+                    templateUrl: 'html/chart/index.html'
                 })
 
                 // Because Facebook adds this parameter in hash after successful login
                 .when('/_=_', {
                     controller: 'GamesCtrl',
-                    templateUrl: 'html/views/games/index.html'
+                    templateUrl: 'html/games/index.html'
                 });
 
             // Close navbar on navigate event

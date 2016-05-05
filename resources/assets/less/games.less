@@ -41,34 +41,6 @@
   position: relative;
 }
 
-.team-user .user-avatar .stat {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.9);
-  text-align: right;
-  padding: 0 2px;
-  display: none;
-  font-weight: 600;
-}
-
-.team-user .user-avatar:hover .stat {
-  display: block;
-}
-
-.team-user .user-avatar .stat .wins {
-  color: @color-winner;
-}
-
-.team-user .user-avatar .stat .loses {
-  color: @color-loser;
-}
-
-.team-user .user-avatar .stat .draws {
-  color: rgb(136, 136, 136);
-}
-
 .team-user:last-of-type {
   margin-top: 5px;
 }
@@ -98,36 +70,25 @@
   padding-left: 10px;
 }
 
-.team .info .rating-delta {
+.team .rating-delta {
   font-size: 12px;
+  font-weight: bold;
+  line-height: @rating-delta-size;
   position: absolute;
-  left: 156px;
-  z-index: 88;
-  background: #0C2283;
   border-radius: 50%;
-  top: 32px;
-  padding: 8px 8px;
-  color: #ccc!important;
+  color: #ccc;
   text-align: center;
-  min-width: 36px;
+  min-width: @rating-delta-size;
+  bottom: -8px;
+  right: -8px;
 }
 
-.team .info .rating-delta.negative {
-  background: #C01935;
+.team .rating-delta.lose {
+  background: @color-loser;
 }
 
-.team-b .rating-delta{
-  left: -32px !important
-}
-
-.team .info .rating-delta.lose {
-  font-weight: bold;
-  color: @color-loser;
-}
-
-.team .info .rating-delta.win {
-  font-weight: bold;
-  color: @color-winner;
+.team .rating-delta.win {
+  background: @color-winner;
 }
 
 .team-a {
@@ -143,17 +104,15 @@
 }
 
 .game-graphic {
-  display: inline-block;
   float: left;
   text-align: center;
   width: 70%;
-  border-right: 1px solid #E8E8E8;
+  border-right: 1px solid @color-separator;
 }
 
 .game-information {
   position: relative;
-  vertical-align: middle;
-  display: inline-block;
+  display: block;
   float: left;
   text-align: center;
   width: 30%;
@@ -170,17 +129,6 @@
   right: 0;
 }
 
-.game-information .additional-info {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  text-align: right;
-}
-
-.game-information .additional-info .complaints {
-  color: @color-loser;
-}
-
 .game-information .controls .control-button {
   min-width: 2em;
   height: 2em;
@@ -190,7 +138,6 @@
 
 .game-information .controls .control-button > * {
   vertical-align: middle;
-  font-size: 1em;
 }
 
 .create-game-container {
@@ -218,19 +165,20 @@
 
 .game-graphic .name {
   width: 130px;
-  white-space: nowrap;
-  overflow:hidden !important;
-  text-overflow: ellipsis;
-  color: #0C2283;
-  font-weight: bold;
+  color: @color-winner;
 }
 
 .game-information .game-date {
   font-size: 18px;
+  padding-top: 75px;
 }
 
 .filter-item {
   margin-left: 15px;
+}
+
+.align-helper {
+  min-height: 60px;
 }
 
 /* XS */
@@ -241,7 +189,7 @@
 
   .result-container.additional {
     display: block;
-    padding-top: 0;
+    padding-top: 5px;
   }
 
   .game-information {
@@ -249,7 +197,7 @@
   }
 
   .game-information .game-date {
-    margin-top: 10px;
+    margin-top: -5px;
   }
 
   .game-graphic .name {
@@ -285,6 +233,12 @@
   .game-graphic .team-a {
     padding-right: 10px;
   }
+
+  .team .rating-delta {
+    line-height: @rating-delta-size * 0.7;
+    min-width: @rating-delta-size * 0.7;
+    right: -3px;
+  }
 }
 
 /* XXS */
@@ -302,20 +256,30 @@
   }
 }
 
-
 /* SM */
-@media (min-width: @screen-sm-min) {
+@media (max-width: @screen-sm-max) {
   .game-information .controls {
     bottom: 0;
+  }
+
+  .game-graphic {
+    float: none;
+    width: 100%;
+    border-right: none;
+  }
+
+  .game-information {
+    float: none;
+    width: 100%;
+  }
+
+  .game-information .game-date {
+    padding-top: 15px;
   }
 }
 
 /* MD */
 @media (min-width: @screen-md-min) {
-  .game-graphic {
-    display: inline-block;
-  }
-
   .game-graphic .name {
     width: 100px;
   }

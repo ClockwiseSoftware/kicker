@@ -24,7 +24,8 @@ elixir(function(mix) {
         'chart.less',
         'edit-users.less',
         'profile.less',
-        'checkboxes.less'
+        'checkboxes.less',
+        'theme.less'
     ], 'resources/assets/css/main.css', 'resources/assets/less');
 
     // Main assets
@@ -63,8 +64,7 @@ elixir(function(mix) {
     mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');
 
     // Angular application
-    //mix.copy('resources/assets/app/views', 'public/html/views');
-    mix.html('**/*.html', 'public/html/views', 'resources/assets/app/views');
+    mix.html('**/*.html', 'public/html', 'resources/assets/app/html');
     mix.scripts([
         'app.js',
 

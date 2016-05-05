@@ -36,7 +36,7 @@
                         @else
                             <li><a href="/#/game/create">Add game</a></li>
                             <li><a href="/#/user/profile">Profile</a></li>
-                            <li><a href="/logout">Logout ({{ App\User::findMe()->email }})</a></li>
+                            <li><a href="/logout">Logout</a></li>
                         @endif
                     </ul>
                 </div>
