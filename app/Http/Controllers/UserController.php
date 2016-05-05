@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Validator;
 use Input;
+use Image;
 
 class UserController extends Controller
 {
@@ -102,7 +103,7 @@ class UserController extends Controller
         $user = User::where('id', $id)->firstOrFail();
         $avatar = $request->file('avatar');
         $rules = [
-            'avatar' => 'required|mimes:jpeg,bmp,png|image_size:50-1000,50-1000'
+            'avatar' => 'required|mimes:jpeg,bmp,png'
         ];
         $validator = Validator::make(['avatar' => $avatar], $rules);
 
@@ -115,6 +116,7 @@ class UserController extends Controller
 
         $destinationPath = public_path() . '/uploads';
         $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
+        Image::make($avatar->getRealPath())->fit(120, 120)->save($avatar->getRealPath());
 
         if (!$avatar->move($destinationPath, $fileName)) {
             return response([
