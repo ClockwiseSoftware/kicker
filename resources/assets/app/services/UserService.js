@@ -30,7 +30,7 @@ app.factory('User', ['$http', function($http) {
             if (!self.count_games || isNaN(self.count_games))
                 self.win_rate = 0;
             else
-                self.win_rate = Math.floor(self.count_wins / self.count_games * 1000) / 1000;
+                self.win_rate = Math.floor(self.count_wins / self.count_games * 10 * 100) / 10 ;
 
             return self.win_rate;
         };
