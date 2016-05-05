@@ -101,7 +101,9 @@ class UserController extends Controller
     {
         $user = User::where('id', $id)->firstOrFail();
         $avatar = $request->file('avatar');
-        $rules = ['avatar' => 'required|mimes:jpeg,bmp,png'];
+        $rules = [
+            'avatar' => 'required|mimes:jpeg,bmp,png|image_size:50-1000,50-1000'
+        ];
         $validator = Validator::make(['avatar' => $avatar], $rules);
 
         if ($validator->fails()) {
@@ -115,7 +117,9 @@ class UserController extends Controller
         $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
 
         if (!$avatar->move($destinationPath, $fileName)) {
-            return response(['avatar' => ['Error saving the file.']], 500);
+            return response([
+                'avatar' => ['Error saving the file.']
+            ], 500);
         }
 
         $user->setAvatar($fileName);
