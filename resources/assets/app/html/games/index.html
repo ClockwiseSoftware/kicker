@@ -91,7 +91,9 @@
                    ng-mouseleave="game.tooltipIsVisible = false"
                    uib-tooltip-html="game.complaintsHtml"
                 >
-                    <i class="fa fa-refresh fa-spin" ng-show="game.loading"></i>
+                    <span ng-if="game.loading">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </span>
                     <i class="fa fa-flag" ng-hide="game.loading"></i>
                     <span ng-if="game.complaints.length > 0">{{ game.complaints.length }}</span>
                 </a>

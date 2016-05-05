@@ -18,7 +18,7 @@
                                                refresh="findUsers($select.search)"
                                                ui-disable-choice="!user.id"
                                                refresh-delay="0">
-                                <span ng-if="user.id"> {{ user.name }} ({{ user.email }})</span>
+                                <span ng-if="user.id"> {{ user.name }}</span>
                                 <span ng-if="!user.id"> {{ user.name }}</span>
                             </ui-select-choices>
                         </ui-select>
@@ -62,7 +62,7 @@
                                                refresh="findUsers($select.search)"
                                                ui-disable-choice="!user.id"
                                                refresh-delay="0">
-                                <span ng-if="user.id"> {{ user.name }} ({{ user.email }})</span>
+                                <span ng-if="user.id"> {{ user.name }}</span>
                                 <span ng-if="!user.id"> {{ user.name }}</span>
                             </ui-select-choices>
                         </ui-select>
