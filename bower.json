@@ -8,6 +8,8 @@
     "angular-ui-select": "*",
     "angular-sanitize": "*",
     "angular-bootstrap": "*",
-    "ng-file-upload": "*"
+    "ng-file-upload": "*",
+    "angular-resource": "*",
+    "angular-animate": "*"
   }
 }

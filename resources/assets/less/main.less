@@ -5,6 +5,18 @@ body {
   font-family: TitilliumText, Helvetica, Arial, sans-serif;
 }
 
+.animate-show {
+  opacity: 1;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  opacity: 0;
+}
+
 .col-centered {
   float: none;
   margin: 0 auto;
@@ -13,6 +25,31 @@ body {
 .main-container {
   padding-top: 4.28em;
   padding-bottom: 9px;
+}
+
+.user-avatar {
+  vertical-align: middle;
+  border-radius: @avatar-border-radius;
+  -webkit-border-radius: @avatar-border-radius;
+  -moz-border-radius: @avatar-border-radius;
+  width: @avatar-max-size;
+  height: @avatar-max-size;
+}
+
+.preload.user-avatar {
+  transition-duration: 0;
+}
+
+
+.user-avatar.dragover {
+  opacity: 0.1;
+}
+
+.user-avatar img {
+  max-width: @avatar-max-size;
+  max-height: @avatar-max-size;
+  opacity: 0;
+  filter: alpha(opacity=0);
 }
 
 .content-wrap {

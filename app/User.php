@@ -2,16 +2,19 @@
 
 namespace App;
 
+use App\Models\Game;
 use App\Models\GameProcessor;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\FacadesDB;
 
 class User extends Authenticatable
 {
     const ROLE_GUEST = 'guest';
     const ROLE_USER = 'user';
     const ROLE_ADMIN = 'admin';
+
+    const GAMES_PLAYED_EDGE = 3;
 
     protected static $user;
 
@@ -77,12 +80,60 @@ class User extends Authenticatable
             (int) $this->count_wins + (int) $this->count_draws + (int) $this->count_looses;
     }
 
+    /**
+     * @param $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = bcrypt($password);
+    }
+
     public function getAvatarUrl()
     {
         if ($this->avatar_url)
             return $this->avatar_url;
 
         return '/img/no-avatar.min.png';
+    }
+
+    public function changeStats($gameResult)
+    {
+        if ($gameResult === GameProcessor::WIN) {
+            $this->count_wins++;
+        } elseif ($gameResult === GameProcessor::LOSE) {
+            $this->count_looses++;
+        } elseif ($gameResult === GameProcessor::DRAW) {
+            $this->count_draws++;
+        }
+
+        return $this;
+    }
+
+    public function rollbackStats($gameResult)
+    {
+        if ($gameResult === GameProcessor::WIN) {
+            $this->count_wins--;
+        } elseif ($gameResult === GameProcessor::LOSE) {
+            $this->count_looses--;
+        } elseif ($gameResult === GameProcessor::DRAW) {
+            $this->count_draws--;
+        }
+
+        return $this;
+    }
+
+    public function deleteAvatar()
+    {
+        $fullPath = public_path() . $this->avatar_url;
+
+        if ($this->avatar_url && file_exists($fullPath)) {
+            unlink(public_path() . $this->avatar_url);
+        }
+    }
+    
+    public function setAvatar($avatarUrl = null)
+    {
+        $this->avatar_url = '/uploads/' . $avatarUrl;
     }
 
     public static function findMe()
@@ -120,6 +171,14 @@ class User extends Authenticatable
             ->first();
 
         return isset($game->id) ? (int) $game->id : false;
+    }
+
+    public function scopePlayedGames($query)
+    {
+        $gamesPlayedEdge = static::GAMES_PLAYED_EDGE;
+
+        return $query->groupBy('users.id')
+            ->havingRaw("SUM(users.count_wins + users.count_looses + users.count_draws) >= {$gamesPlayedEdge}");
     }
 
     public static function updateStat()

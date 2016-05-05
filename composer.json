@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "laravel/socialite": "~2.0",
-        "laravelcollective/html": "5.2.*"
+        "laravelcollective/html": "5.2.*",
+        "intervention/image": "~2.3",
+        "ext-gd": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

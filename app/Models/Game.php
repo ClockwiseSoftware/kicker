@@ -10,8 +10,20 @@ class Game extends Model
     const TEAM_A_INDEX = 'a';
     const TEAM_B_INDEX = 'b';
 
+    const STATUS_CREATED = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_CANCELED = 2;
+
     protected $table = 'games';
     protected $fillable = ['played_at', 'team_a_points', 'team_b_points'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function gamesUsers()
+    {
+        return $this->hasMany(GameUser::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -86,33 +98,56 @@ class Game extends Model
         return date('m/d/Y H:i', strtotime($this->attributes['played_at']));
     }
 
-    protected function cancel(array $options = [])
+    public function scopeForUser($query, $user)
     {
-        $resetRating = isset($options['reset_rating']) ? (bool) $options['reset_rating'] : true;
+        return $query->whereRaw("`games`.`id` IN (SELECT `game_id` FROM `games_users` WHERE `user_id` = {$user->id})");
+    }
 
-        foreach ([&$this->gamesUsersA, &$this->gamesUsersB] as $gamesUsers) {
-            while (true) {
-                if ($gamesUsers->isEmpty())
-                    break;
+    protected function cancel()
+    {
+        $gamesUsers = $this->gamesUsers()->with('user')->get();
 
-                $gameUser = $gamesUsers->shift();
-                $user = $gameUser->user;
-                $userFirstGameId = $user->getFirstGameId();
+        foreach ($gamesUsers as $gameUser) {
+            $gameResult = $this->getGameResult();
 
-                if ($userFirstGameId === $this->id) {
-                    $user->rating = GameProcessor::DEFAULT_RATING;
-                } elseif ($resetRating) {
-                    $user->rating = $gameUser->rating_before;
-                }
-
-                if (!$user->save()) {
-                    // do something...
-                }
-
-                if (!$gameUser->delete()) {
-                    // do something...
-                }
+            if ($gameUser->team_index === static::TEAM_B_INDEX) {
+                $gameResult = GameProcessor::oppositeResult($gameResult);
             }
+
+            $ratingBefore = $gameUser->rating_before;
+            $user = $gameUser->user;
+
+            /* @var User $user */
+            $user->rating = $ratingBefore;
+            $user->rollbackStats($gameResult);
+
+            if (!$user->save()) {
+                // do something...
+            }
+        }
+
+        $this->status = static::STATUS_CANCELED;
+        if (!$this->save()) {
+            // do something...
+        }
+
+        return $this;
+    }
+
+    protected function activate($usersATeam = null, $usersBTeam = null)
+    {
+        if ($usersATeam === null)
+            $usersATeam = User::whereIn('id', $this->gamesUsersA()->pluck('user_id'))->get();
+        if ($usersBTeam === null)
+            $usersBTeam = User::whereIn('id', $this->gamesUsersB()->pluck('user_id'))->get();
+
+        $this->gamesUsers()->delete();
+
+        $this->setUsers($usersATeam, $usersBTeam);
+        $this->status = static::STATUS_ACTIVE;
+
+        if (!$this->save()) {
+            // do something ...
         }
 
         return $this;
@@ -120,47 +155,50 @@ class Game extends Model
 
     protected function setUsers($teamAUsers, $teamBUsers)
     {
-        if (!$this->gamesUsersA->isEmpty())
-            return false;
-
         if (count($teamAUsers) === 0 || count($teamBUsers) === 0)
             return false;
 
         $gameResult = $this->getGameResult();
-
         list($teamARatings, $teamBRatings) = GameProcessor::calculateRatingForTeams(
             $teamAUsers, $teamBUsers, $gameResult
         );
 
-        foreach ($teamAUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $this->id,
-                'user_id' => $user->id,
-                'team_index' => $this::TEAM_A_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamARatings)
-            ]);
+        $teams = [
+            [
+                'teamIndex' => $this::TEAM_A_INDEX,
+                'users' => $teamAUsers,
+                'ratings' => $teamARatings,
+                'gameResult' => $gameResult
+            ], [
+                'teamIndex' => $this::TEAM_B_INDEX,
+                'users' => $teamBUsers,
+                'ratings' => $teamBRatings,
+                'gameResult' => GameProcessor::oppositeResult($gameResult)
+            ]
+        ];
 
-            $user->rating = $gameUser->rating_after;
+        foreach ($teams as $team) {
+            $teamIndex = $team['teamIndex'];
+            $users = $team['users'];
+            $ratings = $team['ratings'];
+            $gameResult = $team['gameResult'];
 
-            if (!$user->save()) {
-                // do something...
-            }
-        }
+            foreach ($users as $user) {
+                $gameUser = GameUser::create([
+                    'game_id' => $this->id,
+                    'user_id' => $user->id,
+                    'team_index' => $teamIndex,
+                    'rating_before' => $user->rating,
+                    'rating_after' => array_shift($ratings)
+                ]);
 
-        foreach ($teamBUsers as $user) {
-            $gameUser = GameUser::create([
-                'game_id' => $this->id,
-                'user_id' => $user->id,
-                'team_index' => $this::TEAM_B_INDEX,
-                'rating_before' => $user->rating,
-                'rating_after' => array_shift($teamBRatings)
-            ]);
+                /* @var User $user */
+                $user->rating = $gameUser->rating_after;
+                $user->changeStats($gameResult);
 
-            $user->rating = $gameUser->rating_after;
-
-            if (!$user->save()) {
-                // do something...
+                if (!$user->save()) {
+                    // do something...
+                }
             }
         }
 
@@ -175,88 +213,120 @@ class Game extends Model
             ->count();
     }
 
-    public static function findByPosition($position)
-    {
-        return Game::orderBy('played_at', 'asc')
-            ->skip((int) $position);
-    }
-
-    public function recountFromPosition($position)
-    {
-        $games = Game::findByPosition($position)
-            ->with(['gamesUsersA.user', 'gamesUsersB.user'])
-            ->limit(100000000000)
-            ->get();
-
-        if (!$games->isEmpty()) {
-            $games->each(function ($game, $key) use ($position) {
-                $usersIdsA = $game->gamesUsersA->pluck('user_id')->all();
-                $usersIdsB = $game->gamesUsersB->pluck('user_id')->all();
-
-                if ($key === 0) {
-                    $game->cancel(['reset_rating' => true]);
-                } else {
-                    $game->cancel(['reset_rating' => false]);
-                }
-
-                $usersATeam = User::whereIn('id', $usersIdsA)->get();
-                $usersBTeam = User::whereIn('id', $usersIdsB)->get();
-
-                $game->setUsers($usersATeam, $usersBTeam);
-            });
-        }
-
-        User::updateStat();
-    }
-
-    public function updateWith($newAttributes)
-    {
-        $currentPosition = (int) $this->currentPosition();
-        $this->fill($newAttributes);
-        $newPosition = (int) $this->currentPosition();
-        $this->save();
-
-        $this->cancel();
-        
-        $usersATeam = User::whereIn('id', $newAttributes['games_users_a'])->get();
-        $usersBTeam = User::whereIn('id', $newAttributes['games_users_b'])->get();
-
-        $this->setUsers($usersATeam, $usersBTeam);
-        $position = min([$currentPosition, $newPosition]);
-        $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
-
-        $this->recountFromPosition($prevPosition);
-
-        return $this;
-    }
-
     public static function create(array $attributes = [])
     {
         $self = parent::create($attributes);
+        $chunkSize = 50;
 
-        /* @var $self Game */
-        $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
-        $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
+        if (!$self)
+            return null;
 
-        $self->setUsers($usersATeam, $usersBTeam);
-        $position = $self->currentPosition();
+        /* @var static $self */
+        $countAllGames = self::count();
+        $currentPosition = $self->currentPosition();
+        $isLastGame = ($currentPosition + 1 === $countAllGames) ? true : false;
 
-        if ($position !== $self::count() - 1) {
-            $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
-            $self->recountFromPosition($prevPosition);
+        // If new game has a last position just adding it to the end without recalculation.
+        if ($isLastGame) {
+            $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
+            $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
+            $self->setUsers($usersATeam, $usersBTeam);
+
+            return $self;
+        } else {
+            static::where('played_at', '>', $self->played_at)
+                ->orderBy('played_at', 'DESC')
+                ->chunk($chunkSize, function($games) {
+                    foreach ($games as $game) {
+                        $game->cancel();
+                    }
+                });
+
+            $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
+            $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
+            $self->setUsers($usersATeam, $usersBTeam);
+
+            static::where('played_at', '>', $self->played_at)
+                ->orderBy('played_at', 'ASC')
+                ->chunk($chunkSize, function($games) {
+                    foreach ($games as $game) {
+                        $game->activate();
+                    }
+                });
         }
 
         return $self;
     }
 
+    public function update(array $attributes = [], array $options = [])
+    {
+        $chunkSize = 50;
+        $currentGameId = $this->id;
+        $usersAIds = $attributes['games_users_a'];
+        $usersBIds = $attributes['games_users_b'];
+        $oldPlayedAt = strtotime($this->played_at);
+        $this->fill($attributes);
+        $newPlayedAt = strtotime($this->played_at);
+        $playedAt = date('c', min($oldPlayedAt, $newPlayedAt));
+
+        static::where('played_at', '>=', $playedAt)
+            ->orWhere('id', '=', $this->id)
+            ->orderBy('played_at', 'DESC')
+            ->chunk($chunkSize, function($games) {
+                foreach ($games as $game) {
+                    $game->cancel();
+                }
+            });
+
+        if (!$this->save()) {
+            // do something ...
+        }
+
+        static::where('status', static::STATUS_CANCELED)
+            ->orderBy('played_at', 'ASC')
+            ->chunk($chunkSize, function($games) use ($currentGameId, $usersAIds, $usersBIds) {
+                foreach ($games as $game) {
+                    $usersATeam = null;
+                    $usersBTeam = null;
+
+                    if ($game->id == $currentGameId) {
+                        $usersATeam = User::whereIn('id', $usersAIds)->get();
+                        $usersBTeam = User::whereIn('id', $usersBIds)->get();
+                    }
+
+                    $game->activate($usersATeam, $usersBTeam);
+                }
+            });
+
+        return true;
+    }
+
     public function delete()
     {
-        $position = $this->currentPosition();
-        $this->cancel();
-        $prevPosition = $position - 1 >= 0 ? $position - 1 : 0;
+        $chunkSize = 50;
+        $playedAt = date('c', strtotime($this->played_at));
+        
+        static::where('played_at', '>=', $playedAt)
+            ->orWhere('id', '=', $this->id)
+            ->orderBy('played_at', 'DESC')
+            ->chunk($chunkSize, function($games) {
+                foreach ($games as $game) {
+                    $game->cancel();
+                }
+            });
 
-        $this->recountFromPosition($prevPosition);
+        if (!parent::delete()) {
+            // do something ...
+        }
 
-        return parent::delete();
+        static::where('status', static::STATUS_CANCELED)
+            ->orderBy('played_at', 'ASC')
+            ->chunk($chunkSize, function($games) {
+                foreach ($games as $game) {
+                    $game->activate();
+                }
+            });
+
+        return true;
     }
 }

@@ -9,11 +9,8 @@ class ChartController extends Controller
 {
     public function getIndex(Request $request)
     {
-        if ($request->wantsJson()) {
-            $users = User::orderBy('rating', SORT_DESC)->get();
-            return response()->json($users);
-        }
+        $users = User::playedGames()->orderBy('rating', SORT_DESC)->get();
 
-        return view('chart.index');
+        return response($users);
     }
 }

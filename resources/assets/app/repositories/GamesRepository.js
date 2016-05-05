@@ -1,12 +1,17 @@
 app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
     function GamesRepository() {
+        var self = this;
+
         this.storage = [];
         this.loading = true;
         this.lastpage = 0;
         this.currentpage = 0;
+        this.filters = {
+            page: this.currentpage,
+            usersGames: false
+        };
 
-        var self = this,
-            indexesMap = {};
+        var indexesMap = {};
 
         this.add = function (data) {
             angular.forEach(data, function(data) {
@@ -33,16 +38,40 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
             return game;
         };
 
-        this.load = function (callback) {
-            self.loading = true;
+        this.load = function (flush) {
+            if (flush) {
+                // Flush all games and their data
+                self.currentpage = 0;
+            }
 
+            var data = (function (data) {
+                var copy = {};
+
+                for (var prop in data) {
+                    if (!data.hasOwnProperty(prop))
+                        continue;
+
+                    copy[prop] = data[prop];
+
+                    if (typeof(copy[prop]) === 'boolean') {
+                        copy[prop] *= 1;
+                    }
+                }
+
+                return copy;
+            })(this.filters);
+
+
+            self.loading = true;
             $http({
                 url: '/',
                 method: 'GET',
-                params: {
-                    page: (self.currentpage + 1)
-                }
+                params: data
             }).success(function(response) {
+                if (flush) {
+                    self.storage.splice(0, self.storage.length);
+                }
+
                 if (response.data.length > 0) {
                     self.currentpage = response.current_page;
                     self.lastpage = response.last_page;
@@ -52,9 +81,6 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
 
                 self.loading = false;
             });
-
-            if (callback)
-                callback.call();
         };
 
         return this;

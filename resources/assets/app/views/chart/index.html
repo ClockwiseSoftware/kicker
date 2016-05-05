@@ -4,16 +4,31 @@
         <table class="table table-condensed users-chart">
             <thead>
             <tr>
-                <th><a href="#" onclick="return false;" ng-click="orderByField = 'index'; reverseSort = !reverseSort">#</a></th>
-                <th><a href="#" onclick="return false;" ng-click="orderByField = 'name'; reverseSort = !reverseSort">Name</a></th>
-                <th class="user-email"><a href="#" onclick="return false;" ng-click="orderByField = 'email'; reverseSort = !reverseSort">Email</a></th>
-                <th><a href="#" onclick="return false;" ng-click="orderByField = 'rating'; reverseSort = !reverseSort">
-                    <span class="normal-text">Rating</span>
-                    <span class="collapsed-text">R</span>
-                </a></th>
+                <th>
+                    <a href="#" onclick="return false;"
+                       ng-click="orderByField = 'index'; reverseSort = !reverseSort">#</a>
+                </th>
+                <th>
+                    <a href="#" onclick="return false;"
+                       ng-click="orderByField = 'name'; reverseSort = !reverseSort">Name</a>
+                </th>
+                <th>
+                    <a href="#" onclick="return false;"
+                       ng-click="orderByField = 'rating'; reverseSort = !reverseSort">
+                        <span class="normal-text">Rating</span>
+                        <span class="collapsed-text">R</span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="return false;"
+                       ng-click="orderByField = 'win_rate'; reverseSort = !reverseSort">
+                        <span class="normal-text">Win Rate (%)</span>
+                        <span class="collapsed-text">WR</span>
+                    </a>
+                </th>
                 <th>
                     <a href="#"
-                       onclick="return false;" ng-click="orderByField = 'countGamesPlayed'; reverseSort = !reverseSort"
+                       onclick="return false;" ng-click="orderByField = 'count_games'; reverseSort = !reverseSort"
                     >
                         <span class="normal-text">Games Played</span>
                         <span class="collapsed-text">T</span>
@@ -41,9 +56,9 @@
             <tr ng-repeat="user in users|orderBy:orderByField:reverseSort" ng-class="me.id === user.id ? 'current-user' : ''">
                 <td>{{ user.index }}</td>
                 <td>{{ user.name }}</td>
-                <td class="user-email">{{ user.email }}</td>
                 <td>{{ user.rating }}</td>
-                <td>{{ user.countGames() }}</td>
+                <td>{{ user.win_rate }}</td>
+                <td>{{ user.count_games }}</td>
                 <td class="games-lost">{{ user.count_looses }}</td>
                 <td class="games-win">{{ user.count_wins }}</td>
             </tr>

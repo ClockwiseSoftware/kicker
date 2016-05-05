@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Validator;
+use Input;
+use Image;
 
 class UserController extends Controller
 {
@@ -14,9 +16,9 @@ class UserController extends Controller
     protected function validationRules($user)
     {
         return [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'min:1',
+            'name' => 'filled|max:255',
+            'email' => 'filled|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'filled|min:1',
         ];
     }
 
@@ -85,10 +87,48 @@ class UserController extends Controller
 
         $this->validate($request, $this->validationRules($user));
         $user->fill($request->all());
+
+        if ($request->get('password'))
+            $user->setPassword($request->get('password'));
+
         $user->save();
 
         if ($request->wantsJson()) {
             return response()->json($user);
         }
+    }
+
+    public function postUpdateAvatar(Request $request, $id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        $avatar = $request->file('avatar');
+        $rules = [
+            'avatar' => 'required|mimes:jpeg,bmp,png'
+        ];
+        $validator = Validator::make(['avatar' => $avatar], $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response($errors, 402);
+        }
+
+        $user->deleteAvatar();
+
+        $destinationPath = public_path() . '/uploads';
+        $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
+        Image::make($avatar->getRealPath())->fit(120, 120)->save($avatar->getRealPath());
+
+        if (!$avatar->move($destinationPath, $fileName)) {
+            return response([
+                'avatar' => ['Error saving the file.']
+            ], 500);
+        }
+
+        $user->setAvatar($fileName);
+        $user->save();
+
+        return response([
+            'avatar' => $user->avatar_url
+        ]);
     }
 }
