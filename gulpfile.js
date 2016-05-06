@@ -1,7 +1,9 @@
 process.env.DISABLE_NOTIFIER = true;
 
 var elixir = require('laravel-elixir');
+
 require('laravel-elixir-html-minify');
+require('laravel-elixir-clear');
 
 elixir.config.sourcemaps = false;
 
@@ -21,12 +23,13 @@ elixir(function (mix) {
     'main.less',
     'navbar.less',
     'games.less',
+    'create-game.less',
     'chart.less',
     'edit-users.less',
     'profile.less',
     'checkboxes.less',
     'theme.less'
-  ], 'public/css/main.css', 'resources/assets/less');
+  ], 'resources/assets/css/compiled-less.css', 'resources/assets/less');
 
   // Main assets
   mix.styles([
@@ -41,7 +44,7 @@ elixir(function (mix) {
     'resources/assets/bower/angular/angular-csp.css',
 
     'resources/assets/css/sign.css',
-    'public/css/main.css'
+    'resources/assets/css/compiled-less.css'
   ], 'public/css/main.css', './');
 
   mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');

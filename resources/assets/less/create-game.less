@@ -1,0 +1,37 @@
+@import "variables";
+
+.create-game-container {
+  .game-graphic {
+    width: 100%;
+    border: 0;
+  }
+
+  .user-avatar.empty {
+    cursor: pointer;
+    text-align: center;
+
+    .add-button {
+      transition-duration: 400ms;
+      font-size: 25px;
+      line-height: @avatar-max-size;
+      color: rgba(255, 255, 255, 0.25);
+      padding-left: @avatar-max-size / 40;
+      padding-top: @avatar-max-size / 40;
+    }
+  }
+
+  .user-avatar.empty:hover {
+    .add-button {
+      color: rgba(255, 255, 255, 0.75);
+    }
+  }
+}
+
+/* MD */
+@media (min-width: @screen-md-min) {
+  .create-game-container
+  .result-container.main
+  .result {
+    width: 85px;
+  }
+}
