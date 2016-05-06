@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Models\Game;
 use App\Models\GameProcessor;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\FacadesDB;
@@ -34,6 +34,19 @@ class User extends Authenticatable
         }
 
         parent::__construct($attributes);
+    }
+
+    public function scopeActive(Builder $query)
+    {
+        return $query->where('deleted', false);
+    }
+
+    public function softDelete()
+    {
+        $this->deleted = true;
+        $this->deleteAvatar();
+
+        return $this->save();
     }
 
     /**
@@ -129,6 +142,10 @@ class User extends Authenticatable
         if ($this->avatar_url && file_exists($fullPath)) {
             unlink(public_path() . $this->avatar_url);
         }
+
+        $this->avatar_url = null;
+
+        return true;
     }
     
     public function setAvatar($avatarUrl = null)

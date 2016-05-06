@@ -39,24 +39,32 @@ Route::group(['middleware' => ['web']], function () {
     // Games routes
     Route::get('/', 'GameController@index')->name('home');
     Route::get('game/{id}', 'GameController@one')->where('id', '[0-9]+');
-    Route::post('game', 'GameController@create');
-    Route::put('game/{id}', 'GameController@update')->where('id', '[0-9]+');
+    Route::group(['middleware' => ['auth', 'active']], function () {
+        Route::post('game', 'GameController@create');
+        Route::put('game/{id}', 'GameController@update')->where('id', '[0-9]+');
+        Route::delete('game/{id}', 'GameController@delete')->where('id', '[0-9]+');
+        Route::get('game/{id}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
+    });
 
-    Route::delete('game/{id}', 'GameController@delete')->where('id', '[0-9]+');
-    Route::get('game/{id}/delete', 'GameController@delete')->where('id', '[0-9]+');
-
-    Route::get('game/{id}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
-
-    // Users routes
-    Route::get('/user/search', 'UserController@getSearch')->name('userSearch');
-    Route::get('/user/role', 'UserController@getRole')->name('userRole');
-    Route::get('/user/me', 'UserController@getOne');
-    Route::get('/users', 'UserController@getIndex');
-    Route::put('/user/{id}', 'UserController@putUpdate')
-        ->where('id', '[0-9]+');
-    Route::post('/user/{id}/avatar', 'UserController@postUpdateAvatar')
-        ->where('id', '[0-9]+');
 
     // Users routes
+    Route::get('/user/search', 'UserController@search');
+    Route::get('/user/role', 'UserController@role');
+    Route::get('/user/me', [
+        'middleware' => ['auth'],
+        'uses' => 'UserController@one',
+    ]);
+    Route::post('/user/{id}/restore', [
+        'middleware' => ['auth'],
+        'uses' => 'UserController@restore',
+    ]);
+    Route::get('/users', 'UserController@index');
+    Route::group(['middleware' => ['auth', 'active']], function () {
+        Route::put('/user/{id}', 'UserController@update')->where('id', '[0-9]+');
+        Route::post('/user/{id}/avatar', 'UserController@updateAvatar')->where('id', '[0-9]+');
+        Route::delete('/user/{id}', 'UserController@delete')->where('id', '[0-9]+');
+    });
+
+    // Chart routes
     Route::get('/chart', 'ChartController@getIndex')->name('chart');
 });

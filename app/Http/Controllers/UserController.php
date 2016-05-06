@@ -22,22 +22,22 @@ class UserController extends Controller
         ];
     }
 
-    public function getSearch(Request $request)
+    public function search(Request $request)
     {
         $search = $request->get('search');
         $exceptIds = $request->get('exceptIds');
 
-        $query = null;
+        $query = User::active();
 
         if ($search) {
-            $query = User::where(function ($query) use ($search) {
+            $query = $query->where(function ($query) use ($search) {
                 $query = $query->where('name', 'LIKE', "%{$search}%")
                     ->orWhere('email', 'LIKE', "%{$search}%");
 
                 return $query;
             });
         } else {
-            $query = User::take(100)->orderBy('rating', 'desc');
+            $query = $query->orderBy('rating', 'desc');
         }
 
         if ($exceptIds)
@@ -48,7 +48,7 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function getRole(Request $request)
+    public function role(Request $request)
     {
         $user = $request->user();
         $role = User::ROLE_GUEST;
@@ -60,7 +60,7 @@ class UserController extends Controller
         return response()->json($role);
     }
 
-    public function getOne(Request $request)
+    public function one(Request $request)
     {
         $user = User::findMe();
 
@@ -69,7 +69,7 @@ class UserController extends Controller
         }
     }
 
-    public function getIndex(Request $request)
+    public function index(Request $request)
     {
         $users = User::paginate(1000);
 
@@ -78,7 +78,31 @@ class UserController extends Controller
         }
     }
 
-    public function putUpdate(Request $request, $id)
+    public function delete(Request $request, $id)
+    {
+        $user = User::findMe();
+
+        if (!$user)
+            abort(404);
+
+        if (!$user->softDelete())
+            abort(500);
+
+        return response([]);
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $user = $request->user();
+        $user->deleted = false;
+
+        if (!$user->save())
+            abort(500);
+
+        return response($user);
+    }
+
+    public function update(Request $request, $id)
     {
         $user = User::where('id', $id)->first();
 
@@ -98,7 +122,7 @@ class UserController extends Controller
         }
     }
 
-    public function postUpdateAvatar(Request $request, $id)
+    public function updateAvatar(Request $request, $id)
     {
         $user = User::where('id', $id)->firstOrFail();
         $avatar = $request->file('avatar');

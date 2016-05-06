@@ -10,6 +10,7 @@
     "angular-bootstrap": "*",
     "ng-file-upload": "*",
     "angular-resource": "*",
-    "angular-animate": "*"
+    "angular-animate": "*",
+    "ng-dialog": "*"
   }
 }

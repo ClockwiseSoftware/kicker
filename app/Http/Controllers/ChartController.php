@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
 
 class ChartController extends Controller
 {
-    public function getIndex(Request $request)
+    public function getIndex()
     {
-        $users = User::playedGames()->orderBy('rating', SORT_DESC)->get();
+        $users = User::playedGames()->active()->orderBy('rating', SORT_DESC)->get();
 
         return response($users);
     }
