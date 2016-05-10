@@ -1,10 +1,14 @@
 (function (app) {
   app.factory('Player', ['$resource',
     function ($resource) {
-      return $resource('user/me', {id: '@id'}, {
-        get: {
+      return $resource('user/me', {id: '@id', params: '@params'}, {
+        me: {
           method: 'GET',
           isArray: false
+        },
+        get: {
+          method: 'GET',
+          url: 'users'
         },
         update: {
           method: 'PUT',

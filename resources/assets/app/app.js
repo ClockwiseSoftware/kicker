@@ -82,7 +82,7 @@ var app = angular
           });
       };
 
-      Player.get().$promise
+      Player.me().$promise
         .then(function (player) {
           $rootScope.currentPlayer = player;
         });

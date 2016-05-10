@@ -11,6 +11,7 @@
     "ng-file-upload": "*",
     "angular-resource": "*",
     "angular-animate": "*",
-    "ng-dialog": "*"
+    "ng-dialog": "*",
+    "underscore": "*"
   }
 }

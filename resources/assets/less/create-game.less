@@ -27,6 +27,23 @@
   }
 }
 
+/* SM */
+@media (max-width: @screen-sm-max) {
+  .create-game-container {
+
+    .user-avatar.empty {
+      .add-button {
+        font-size: 25px;
+        line-height: @little-avatar-max-size;
+        color: rgba(255, 255, 255, 0.25);
+        padding-left: @avatar-max-size / 40;
+        padding-top: @avatar-max-size / 40;
+      }
+    }
+
+  }
+}
+
 /* MD */
 @media (min-width: @screen-md-min) {
   .create-game-container

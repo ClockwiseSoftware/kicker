@@ -1,68 +1,86 @@
 <div class="row">
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap create-game-container">
-        <div class="game-graphic">
-            <div class="team team-a">
-                <div class="team-user">
-                    <div class="info">
-                        <div class="name">Username</div>
+        <form>
+            <div class="col-md-3 col-centered">
+                <input id="played-at"
+                       name=""
+                       type="text"
+                       class="form-control"
+                       ng-value="game.playedAt"
+                       style="text-align: center;">
+            </div>
+            <div class="game-graphic">
+                <div class="team team-a">
+                    <div class="team-user" ng-repeat="player in game.players.winners">
+                        <div class="info">
+                            <div class="name">{{ player.name || 'select player...' }}</div>
+                        </div>
+                        <div class="user-avatar empty"
+                             back-img="{{ player.avatar_url }}"
+                             ng-click="openDialog(); setActiveTeam('winners'); setActiveIndex($index);">
+                            <div class="fa fa-plus add-button"></div>
+                            <img ng-src="{{ player.avatar_url }}" />
+                        </div>
+                        <div class="align-helper"></div>
                     </div>
-                    <div class="user-avatar empty">
-                        <div class="fa fa-plus add-button"></div>
-                        <img ng-src="{{ gameUser.user.avatarUrl() }}" />
-                    </div>
-                    <div class="align-helper"></div>
                 </div>
-                <div class="team-user">
-                    <div class="info">
-                        <div class="name">Username</div>
+                <div class="result-container main">
+                    <div class="versus">VS</div>
+                    <div class="result">
+                        <div class="point">10</div>
+                        <div class="point">&thinsp;:&thinsp;</div>
+                        <div class="point">
+                            <select ng-model="game.points.losers" ng-options="point for point in points"></select>
+                        </div>
                     </div>
-                    <div class="user-avatar">
-                        <img ng-src="{{ gameUser.user.avatarUrl() }}" />
+                </div>
+                <div class="team team-b">
+                    <div class="team-user" ng-repeat="player in game.players.losers">
+                        <div class="user-avatar empty"
+                             back-img="{{ player.avatar_url }}"
+                             ng-click="openDialog(); setActiveTeam('losers'); setActiveIndex($index);">
+                            <div class="fa fa-plus add-button"></div>
+                            <img ng-src="{{ player.avatar_url }}" />
+                        </div>
+                        <div class="info">
+                            <div class="name">{{ player.name || 'select player...' }}</div>
+                        </div>
+                        <div class="align-helper"></div>
                     </div>
-                    <div class="align-helper"></div>
                 </div>
             </div>
-            <div class="result-container main">
-                <div class="versus">VS</div>
+            <div class="result-container additional text-center">
                 <div class="result">
                     <div class="point">10</div>
                     <div class="point">&thinsp;:&thinsp;</div>
                     <div class="point">
-                        <select>
-                            <option>0</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                        </select>
+                        <select ng-model="game.points.losers" ng-options="point for point in points"></select>
                     </div>
                 </div>
             </div>
-            <div class="team team-b">
-                <div class="team-user">
-                    <div class="user-avatar">
-                        <img ng-src="{{ gameUser.user.avatarUrl() }}" />
-                    </div>
-                    <div class="info">
-                        <div class="name">Username</div>
-                    </div>
-                    <div class="align-helper"></div>
-                </div>
-                <div class="team-user">
-                    <div class="user-avatar">
-                        <img ng-src="{{ gameUser.user.avatarUrl() }}" />
-                    </div>
-                    <div class="info">
-                        <div class="name">Username</div>
-                    </div>
-                    <div class="align-helper"></div>
+            <div class="errors">
+                <div ng-repeat="error in errors">{{ error }}</div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 text-right" ng-show="game.isValid">
+                    <button type="submit" class="btn btn-primary" ng-click="createGame()">Create</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+
+<script type="text/ng-template" id="delete-confirmation">
+    <div class="row">
+        <div class="col-md-11 col-centered">
+            <select class="form-control"
+                    size="15"
+                    ng-model="selectedPlayerId"
+                    ng-change="closeThisDialog(); selectPlayer(selectedPlayerId)">
+                <option ng-repeat="player in players | filter:{selected: false}" ng-value="player.id">
+                    {{ player.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+</script>

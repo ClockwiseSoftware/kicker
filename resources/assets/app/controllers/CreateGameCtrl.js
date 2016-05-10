@@ -1,42 +1,72 @@
-app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', 'UserSearch',
-    function($scope, $http, $location, $filter, CreateGameService, UserSearch) {
-        $scope.loading = false;
-        $scope.game = new CreateGameService();
-        $scope.errors = {};
+app.controller('CreateGameCtrl', [
+  '$scope', '$http', '$location',
+  '$filter', 'ngDialog', 'Player',
+  'Match', 'CreateGameService',
+  function ($scope, $http, $location, $filter, ngDialog, Player, Match, CreateGameService) {
+    $scope.loading = false;
+    $scope.errors = {};
+    $scope.points = _.range(0, 10);
+    $scope.players = [];
+    $scope.game = new CreateGameService();
 
-        $scope.findUsers = function (search) {
-            UserSearch.find(search, $scope);
-        };
+    var activeTeam = null;
+    $scope.setActiveTeam = function setActiveTeam(team) {
+      activeTeam = team;
+    };
 
-        $scope.onSelectUser = function (user) {
-            UserSearch.remove(user, $scope);
-        };
+    var activeIndex = null;
+    $scope.setActiveIndex = function setActiveTeam(index) {
+      activeIndex = index;
+    };
 
-        $scope.onRemoveUser = function (user) {
-            UserSearch.add(user, $scope);
-        };
+    $scope.openDialog = function openDialog() {
+      ngDialog.open({
+        template: 'delete-confirmation',
+        scope: $scope
+      });
+    };
 
-        $scope.create = function() {
-            $scope.errors = {};
-            $scope.loading = true;
+    $scope.selectPlayer = function selectPlayer(playerId) {
+      playerId = parseInt(playerId);
+      var player = _.find($scope.players, function (player) { return player.id === playerId; });
+      player.selected = true;
 
-            $http.post('/game', $scope.game.getFormData()).error(function(response) {
-                $scope.errors = response;
-            }).then(function() {
-                $scope.loading = false;
-                $location.path('/');
-            }, function () {
-                $scope.loading = false;
-            });
-        };
+      var prevPlayer = $scope.game.players[activeTeam][activeIndex];
+      if (prevPlayer && prevPlayer.hasOwnProperty('id')) {
+        prevPlayer.selected = false;
+      }
 
-        var $playedAt = $('#playedAt');
-        $playedAt.datetimepicker({
-            format: 'MM/DD/YYYY HH:mm',
-            maxDate: (new Date())
+      $scope.game.players[activeTeam][activeIndex] = player;
+      $scope.game.validate();
+    };
+    
+    $scope.createGame = function createGame() {
+      Match.create({}, $scope.game.getFormData()).$promise
+        .then(function () {
+          $scope.loading = false;
+          $location.path('/');
         });
-        $playedAt.on('dp.change', function() {
-            $scope.game.playedAt = $(this).val();
+    };
+
+    Player.get({exceptIds: $scope.selectedPlayersIds}).$promise
+      .then(function (res) {
+        $scope.players = res.data;
+        _.each($scope.players, function (player) {
+          player.selected = false;
+          player.avatar_url = player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png';
         });
-    }
+      })
+      .catch(function (res) {
+        c$scope.errors = res
+      });
+
+    var $playedAt = $('#played-at');
+    $playedAt.datetimepicker({
+      format: 'MM/DD/YYYY HH:mm',
+      maxDate: (new Date())
+    });
+    $playedAt.on('dp.change', function() {
+      $scope.game.playedAt = $(this).val();
+    });
+  }
 ]);

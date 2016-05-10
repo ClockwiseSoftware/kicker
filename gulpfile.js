@@ -57,6 +57,7 @@ elixir(function (mix) {
     'bower/bootstrap/dist/js/bootstrap.js',
     'bower/moment/min/moment.min.js',
     'bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+    'resources/assets/bower/underscore/underscore.js',
 
     // Angular
     'bower/angular/angular.js',
@@ -91,6 +92,7 @@ elixir(function (mix) {
 
     // Resources
     'app/resources/Player.js',
+    'app/resources/Match.js',
 
     // Repositories
     'app/repositories/GamesRepository.js',

@@ -1,80 +1,63 @@
-app.factory('CreateGameService', ['$http', '$filter', function($http, $filter) {
-    function CreateGameService(data) {
-        var $this = this;
+app.factory('CreateGameService', ['$http', '$filter', function ($http, $filter) {
+  function CreateGameService(data) {
+    var _this = this;
 
-        this.id = null;
-        this.users = {
-            a: [],
-            b: []
-        };
-        this.points = {
-            a: 0,
-            b: 0
-        };
+    _this.isValid = false;
+    _this.id = null;
+    _this.players = {
+      winners: [{}, {}],
+      losers: [{}, {}]
+    };
+    _this.points = {
+      winners: 10,
+      losers: 0
+    };
 
-        function transformDate(date) {
-            return $filter('date')(date, 'MM/dd/yyyy HH:mm');
-        }
-
-        this.playedAt = transformDate(new Date());
-
-        this.teamIds = function (teamIndex) {
-            var users = this.users[teamIndex],
-                ids = [];
-
-            angular.forEach(users, function(user) {
-                this.push(user.id);
-            }, ids);
-
-            return ids;
-        };
-
-        this.getSelectedIds = function () {
-            return this.teamIds('a').concat(this.teamIds('b'));
-        };
-
-        this.exportUsers = function (data, teamIndex) {
-            var users = [];
-
-            angular.forEach(data['games_users_' + teamIndex], function(game_user) {
-                this.push(game_user.user);
-            }, users);
-
-            return users;
-        };
-
-        this.setData = function(data) {
-            $this.users = {
-                a: $this.exportUsers(data, 'a'),
-                b: $this.exportUsers(data, 'b')
-            };
-            $this.points = {
-                a: data.team_a_points,
-                b: data.team_b_points
-            };
-            $this.playedAt = transformDate(Date.parseISO(data.played_at));
-            $this.id = data.id;
-        };
-
-        this.getFormData = function () {
-            return {
-                games_users_a: $this.teamIds('a'),
-                team_a_points: $this.points.a,
-                games_users_b: $this.teamIds('b'),
-                team_b_points: $this.points.b,
-                played_at: $this.playedAt
-            }
-        };
-
-        if (data) {
-            this.setData(data);
-        }
-
-        return this;
+    function transformDate(date) {
+      return $filter('date')(date, 'MM/dd/yyyy HH:mm');
     }
 
-    CreateGameService.prototype.MAX_POINTS = 10;
-    CreateGameService.prototype.MIN_POINTS = 0;
+    _this.playedAt = transformDate(new Date());
+    _this.setData = function (data) {};
 
-    return CreateGameService;
+    _this.getFormData = function () {
+      return {
+        games_users_a: _.pluck(_this.players.winners, 'id'),
+        team_a_points: _this.points.winners,
+        games_users_b: _.pluck(_this.players.losers, 'id'),
+        team_b_points: _this.points.losers,
+        played_at: _this.playedAt
+      }
+    };
+
+    _this.validate = function validate() {
+      var valid = true;
+
+      // Validate Players
+      _.each(_this.players, function (players, team) {
+        for (var index in players) {
+          if (!players[index].hasOwnProperty('id'))
+            valid = false;
+        }
+      });
+
+      // Validate Date
+      if (!_this.playedAt)
+        valid = false;
+
+      _this.isValid = valid;
+      return _this.isValid;
+    };
+
+    if (data) {
+      _this.setData(data);
+    }
+
+    return this;
+  }
+
+  CreateGameService.prototype.MAX_POINTS = 10;
+  CreateGameService.prototype.MIN_POINTS = 0;
+
+  return CreateGameService;
 }]);

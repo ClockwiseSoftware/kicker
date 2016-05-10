@@ -14,7 +14,7 @@ app.controller('UserProfileCtrl', [
       });
     };
 
-    Player.get().$promise
+    Player.me().$promise
       .then(function (player) {
         $scope.loading = false;
         $scope.player = player;
