@@ -9,6 +9,10 @@ app.controller('CreateGameCtrl', [
     $scope.players = [];
     $scope.game = new CreateGameService();
 
+    $scope.isEmpty = function (object) {
+      return angular.equals({}, object);
+    };
+
     var activeTeam = null;
     $scope.setActiveTeam = function setActiveTeam(team) {
       activeTeam = team;
@@ -45,6 +49,10 @@ app.controller('CreateGameCtrl', [
         .then(function () {
           $scope.loading = false;
           $location.path('/');
+        })
+        .catch(function (res) {
+          console.log(res.data);
+          $scope.errors = res.data;
         });
     };
 
@@ -55,9 +63,6 @@ app.controller('CreateGameCtrl', [
           player.selected = false;
           player.avatar_url = player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png';
         });
-      })
-      .catch(function (res) {
-        c$scope.errors = res
       });
 
     var $playedAt = $('#played-at');

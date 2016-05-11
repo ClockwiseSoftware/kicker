@@ -58,8 +58,10 @@
                     </div>
                 </div>
             </div>
-            <div class="errors">
-                <div ng-repeat="error in errors">{{ error }}</div>
+            <div class="errors text-center alert alert-danger" ng-show="!isEmpty(errors)">
+                <div ng-repeat="(attribute, values) in errors">
+                    <div ng-repeat="error in values">{{ error }}</div>
+                </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right" ng-show="game.isValid">

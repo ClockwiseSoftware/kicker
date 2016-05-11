@@ -28,6 +28,7 @@ body {
 }
 
 .user-avatar {
+  position: relative;
   vertical-align: middle;
   border-radius: @avatar-border-radius;
   -webkit-border-radius: @avatar-border-radius;
@@ -40,12 +41,14 @@ body {
   transition-duration: 0;
 }
 
-
 .user-avatar.dragover {
   opacity: 0.1;
 }
 
 .user-avatar img {
+  position: absolute;
+  top: 0;
+  left: 0;
   max-width: @avatar-max-size;
   max-height: @avatar-max-size;
   opacity: 0;
