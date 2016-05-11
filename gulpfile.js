@@ -34,7 +34,6 @@ elixir(function (mix) {
   // Main assets
   mix.styles([
     'resources/assets/bower/bootstrap/dist/css/bootstrap.css',
-    'resources/assets/bower/ui-select/dist/select.css',
     'resources/assets/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
     'resources/assets/bower/angular-bootstrap/ui-bootstrap-csp.css',
 
@@ -65,7 +64,6 @@ elixir(function (mix) {
     // Angular derivatives
     'resources/assets/bower/angular-route/angular-route.js',
     'resources/assets/bower/angular-sanitize/angular-sanitize.js',
-    'resources/assets/bower/ui-select/dist/select.js',
     'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
     'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js',
     'resources/assets/bower/ng-file-upload/ng-file-upload.js',
@@ -78,7 +76,6 @@ elixir(function (mix) {
 
     // Custom directives
     'app/directives/BackImgDirective.js',
-    'app/directives/NumberOnlyDirective.js',
 
     // Filters
     'resources/assets/app/filters/IsEmptyFilter.js',

@@ -1,23 +1,23 @@
 <div class="row">
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap create-game-container">
         <form>
-            <div class="col-md-3 col-centered">
+            <div class="col-md-6 col-centered datepicker-container">
                 <input id="played-at"
                        name=""
                        type="text"
                        class="form-control"
                        ng-value="game.playedAt"
-                       style="text-align: center;">
+                >
             </div>
             <div class="game-graphic">
                 <div class="team team-a">
-                    <div class="team-user" ng-repeat="player in game.players.winners">
+                    <div class="team-user" ng-repeat="player in game.players.winners"
+                         ng-click="openDialog(); game.setActiveTeam('winners'); game.setActiveIndex($index);">
                         <div class="info">
                             <div class="name">{{ player.name || 'select player...' }}</div>
                         </div>
                         <div class="user-avatar empty"
-                             back-img="{{ player.avatar_url }}"
-                             ng-click="openDialog(); game.setActiveTeam('winners'); game.setActiveIndex($index);">
+                             back-img="{{ player.avatar_url }}">
                             <div class="fa fa-plus add-button"></div>
                             <img ng-src="{{ player.avatar_url }}" />
                         </div>
@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="team team-b">
-                    <div class="team-user" ng-repeat="player in game.players.losers">
+                    <div class="team-user" ng-repeat="player in game.players.losers"
+                         ng-click="openDialog(); game.setActiveTeam('losers'); game.setActiveIndex($index);">
                         <div class="user-avatar empty"
-                             back-img="{{ player.avatar_url }}"
-                             ng-click="openDialog(); game.setActiveTeam('losers'); game.setActiveIndex($index);">
+                             back-img="{{ player.avatar_url }}">
                             <div class="fa fa-plus add-button"></div>
                             <img ng-src="{{ player.avatar_url }}" />
                         </div>
@@ -51,7 +51,7 @@
             </div>
             <div class="result-container additional text-center">
                 <div class="result">
-                    <div class="point">10</div>
+                    <div class="point">{{ game.points.winners }}</div>
                     <div class="point">&thinsp;:&thinsp;</div>
                     <div class="point">
                         <select ng-model="game.points.losers" ng-options="point for point in points"></select>
@@ -65,24 +65,9 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right" ng-show="game.isValid">
-                    <button type="submit" class="btn btn-primary" ng-click="updateGame(game)">Save</button>
+                    <button type="submit" class="btn btn-primary" ng-click="updateGame(game)">Update</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
-<script type="text/ng-template" id="choose-player-dialog">
-    <div class="row">
-        <div class="col-md-11 col-centered">
-            <select class="form-control"
-                    size="15"
-                    ng-model="selectedPlayerId"
-                    ng-change="closeThisDialog(); selectPlayer(selectedPlayerId)">
-                <option ng-repeat="player in players | filter:{selected: false}" ng-value="player.id">
-                    {{ player.name }}
-                </option>
-            </select>
-        </div>
-    </div>
-</script>

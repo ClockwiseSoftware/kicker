@@ -11,8 +11,9 @@ app.controller('CreateGameCtrl', [
 
     $.openDialog = function openDialog() {
       ngDialog.open({
-        template: 'choose-player-dialog',
-        scope: $
+        template: 'html/dialogues/select-player.html',
+        scope: $,
+        closeByNavigation: true
       });
     };
 

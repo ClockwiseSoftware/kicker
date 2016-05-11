@@ -1,5 +1,5 @@
 <div class="row games-container" ng-show="user.isAdmin || user.isUser">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container col-centered">
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container content-wrap col-centered">
         <div class="col-md-4">
             <div class="material-switch pull-left">
                 <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"
@@ -15,7 +15,7 @@
 </div>
 
 <div class="row games-container" ng-repeat="game in games">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container col-centered">
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container content-wrap col-centered">
         <div class="game-graphic">
             <div class="team team-a">
                 <div class="team-user" ng-repeat="gameUser in game.games_users_a">

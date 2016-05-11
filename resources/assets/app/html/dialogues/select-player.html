@@ -1,12 +1,17 @@
 <div class="row">
     <div class="col-md-11 col-centered">
-        <select class="form-control"
-                size="15"
-                ng-model="selectedPlayerId"
-                ng-change="closeThisDialog(); selectPlayer(selectedPlayerId)">
-            <option ng-repeat="player in players | filter:{selected: false}" ng-value="player.id">
-                {{ player.name }}
-            </option>
-        </select>
+        <h4 class="text-center">Select player</h4>
+        <div class="list-group" style="height: 85vh; overflow-y: scroll">
+            <a href="javascript:void(0)" class="list-group-item"
+               ng-repeat="player in players | filter:{selected: false}"
+               ng-click="closeThisDialog(); selectPlayer(player.id);"
+            >
+                <div class="user-avatar mini"
+                     back-img="{{ player.avatar_url }}">
+                    <img ng-src="{{ player.avatar_url }}" />
+                </div>
+                <div class="list-player-name">{{ player.name }}</div>
+            </a>
+        </div>
     </div>
 </div>

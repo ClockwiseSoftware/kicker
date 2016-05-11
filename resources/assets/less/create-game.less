@@ -1,67 +1,22 @@
 @import "variables";
 
 .create-game-container {
-  padding: 0;
-  width: 44%;
-  .panel{
-    margin-bottom: 0;
-  }
-
-  .panel-body {
-    padding: 0;
-  }
-  .result-container{
-    width: 100%;
-    text-align: center;
-    //background: #D0D0D0;
-  }
-  .result{
-    display: inline-block;
-    margin: 10px;
-  }
-  .info .name{
-    text-transform: uppercase;
-    text-align: left;
-    margin-left: 10px;
-    font-size: 13px;
-  }
-  .versus{
-    float: left;
-  }
-  .team{
-    background: #E6E6E6;
-    padding: 18px;
-  }
-  .game-graphic-datepicker{
-    margin-top: 20px;
-  }
-  .team-user{
-    width: 50%;
-    float: left;
-  }
   .game-graphic {
     width: 100%;
     border: 0;
-    margin-top: 26px;
-    text-align: center;
-    .team-a,.team-b{
-      width: 100%;
-      display: inline-block;
-      text-align: right;
-    }
+  }
 
-  }
-  .panel-heading{
-    text-transform: uppercase;
-    text-align: center;
-    padding: 20px;
-    font-weight: bold;
-  }
-  .user-avatar{
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  }
-  .user-avatar.empty {
+  .team-user:hover {
     cursor: pointer;
+
+    .user-avatar.empty {
+      .add-button {
+        color: rgba(255, 255, 255, 0.75);
+      }
+    }
+  }
+
+  .user-avatar.empty {
     text-align: center;
 
     .add-button {
@@ -74,21 +29,22 @@
     }
   }
 
-  .user-avatar.empty:hover {
-    .add-button {
-      color: rgba(255, 255, 255, 0.75);
-    }
-  }
+  .datepicker-container {
+    padding: 20px;
 
-  .errors {
-    float: left;
-    width: 100%;
+    > input {
+      font-size: 18px;
+      text-align: center;
+    }
   }
 }
 
-/* XS */
+/* SM */
 @media (max-width: @screen-xs-max) {
   .create-game-container {
+    .result-container.additional {
+      padding: 30px 0;
+    }
 
     .user-avatar.empty {
       .add-button {
@@ -99,15 +55,15 @@
         padding-top: @avatar-max-size / 40;
       }
     }
-
   }
 }
 
 /* MD */
 @media (min-width: @screen-md-min) {
-  .create-game-container
-  .result-container.main
-  .result {
-    width: 140px;
+  .create-game-container {
+    .result-container.main
+    .result {
+      width: 90px;
+    }
   }
 }
