@@ -1,0 +1,1 @@
+<div class=row><div class="col-md-11 col-centered"><select class=form-control size=15 ng-model=selectedPlayerId ng-change="closeThisDialog(); selectPlayer(selectedPlayerId)"><option ng-repeat="player in players | filter:{selected: false}" ng-value=player.id>{{ player.name }}</option></select></div></div>

@@ -80,6 +80,9 @@ elixir(function (mix) {
     'app/directives/BackImgDirective.js',
     'app/directives/NumberOnlyDirective.js',
 
+    // Filters
+    'resources/assets/app/filters/IsEmptyFilter.js',
+
     // Chart
     'app/services/UserService.js',
     'app/controllers/ChartsCtrl.js',

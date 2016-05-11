@@ -1,78 +1,85 @@
 <div class="row">
-    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap create-game-container">
-        <form>
-            <div class="col-md-3 col-centered">
-                <input id="played-at"
-                       name=""
-                       type="text"
-                       class="form-control"
-                       ng-value="game.playedAt"
-                       style="text-align: center;">
-            </div>
-            <div class="game-graphic">
-                <div class="team team-a">
-                    <div class="team-user" ng-repeat="player in game.players.winners">
-                        <div class="info">
-                            <div class="name">{{ player.name || 'select player...' }}</div>
-                        </div>
-                        <div class="user-avatar empty"
-                             back-img="{{ player.avatar_url }}"
-                             ng-click="openDialog(); setActiveTeam('winners'); setActiveIndex($index);">
-                            <div class="fa fa-plus add-button"></div>
-                            <img ng-src="{{ player.avatar_url }}" />
-                        </div>
-                        <div class="align-helper"></div>
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap game-container create-game-container">
+        <div class="panel panel-default">
+            <div class="panel-heading">Panel heading without title</div>
+            <div class="panel-body">
+                <form>
+                    <div class="col-md-5 game-graphic-datepicker col-centered">
+                        <input id="played-at"
+                               name=""
+                               type="text"
+                               class="form-control"
+                               ng-value="game.playedAt"
+                               style="text-align: center;">
                     </div>
-                </div>
-                <div class="result-container main">
-                    <div class="versus">VS</div>
-                    <div class="result">
-                        <div class="point">10</div>
-                        <div class="point">&thinsp;:&thinsp;</div>
-                        <div class="point">
-                            <select ng-model="game.points.losers" ng-options="point for point in points"></select>
+                    <div class="game-graphic">
+                        <div class="team team-a">
+                            <div class="team-user" ng-repeat="player in game.players.winners">
+                                <div class="user-avatar empty"
+                                     back-img="{{ player.avatar_url }}"
+                                     ng-click="openDialog(); game.setActiveTeam('winners'); game.setActiveIndex($index);">
+                                    <div class="fa fa-plus add-button"></div>
+                                    <img ng-src="{{ player.avatar_url }}" />
+                                </div>
+                                <div class="info">
+                                    <div class="name">{{ player.name || 'select player...' }}</div>
+                                </div>
+                                <div class="align-helper"></div>
+                            </div>
+                        </div>
+                        <div class="result-container main">
+                            <div class="result">
+                                <div class="versus">VS</div>
+                                <div class="point">{{ game.points.winners }}</div>
+                                <div class="point">&thinsp;:&thinsp;</div>
+                                <div class="point">
+                                    <select ng-model="game.points.losers" ng-options="point for point in points"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team team-b">
+                            <div class="team-user" ng-repeat="player in game.players.losers">
+                                <div class="user-avatar empty"
+                                     back-img="{{ player.avatar_url }}"
+                                     ng-click="openDialog(); game.setActiveTeam('losers'); game.setActiveIndex($index);">
+                                    <div class="fa fa-plus add-button"></div>
+                                    <img ng-src="{{ player.avatar_url }}" />
+                                </div>
+                                <div class="info">
+                                    <div class="name">{{ player.name || 'select player...' }}</div>
+                                </div>
+                                <div class="align-helper"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="team team-b">
-                    <div class="team-user" ng-repeat="player in game.players.losers">
-                        <div class="user-avatar empty"
-                             back-img="{{ player.avatar_url }}"
-                             ng-click="openDialog(); setActiveTeam('losers'); setActiveIndex($index);">
-                            <div class="fa fa-plus add-button"></div>
-                            <img ng-src="{{ player.avatar_url }}" />
+                    <div class="result-container additional text-center">
+                        <div class="result">
+                            <div class="point">10</div>
+                            <div class="point">&thinsp;:&thinsp;</div>
+                            <div class="point">
+                                <select ng-model="game.points.losers" ng-options="point for point in points"></select>
+                            </div>
                         </div>
-                        <div class="info">
-                            <div class="name">{{ player.name || 'select player...' }}</div>
+                    </div>
+                    <div class="errors text-center alert alert-danger" ng-hide="errors | isEmpty">
+                        <div ng-repeat="(attribute, values) in errors">
+                            <div ng-repeat="error in values">{{ error }}</div>
                         </div>
-                        <div class="align-helper"></div>
                     </div>
-                </div>
-            </div>
-            <div class="result-container additional text-center">
-                <div class="result">
-                    <div class="point">10</div>
-                    <div class="point">&thinsp;:&thinsp;</div>
-                    <div class="point">
-                        <select ng-model="game.points.losers" ng-options="point for point in points"></select>
+                    <div class="form-group">
+                        <div class="col-sm-12 text-right" ng-show="game.isValid">
+                            <button type="submit" class="btn btn-primary" ng-click="createGame()">Create</button>
+                        </div>
                     </div>
-                </div>
+                    <div class="clearfix"></div>
+                </form>
             </div>
-            <div class="errors text-center alert alert-danger" ng-show="!isEmpty(errors)">
-                <div ng-repeat="(attribute, values) in errors">
-                    <div ng-repeat="error in values">{{ error }}</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-12 text-right" ng-show="game.isValid">
-                    <button type="submit" class="btn btn-primary" ng-click="createGame()">Create</button>
-                </div>
-            </div>
-        </form>
+        </div>
+
     </div>
 </div>
 
-<script type="text/ng-template" id="delete-confirmation">
+<script type="text/ng-template" id="choose-player-dialog">
     <div class="row">
         <div class="col-md-11 col-centered">
             <select class="form-control"

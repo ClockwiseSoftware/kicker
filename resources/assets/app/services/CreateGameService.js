@@ -12,13 +12,38 @@ app.factory('CreateGameService', ['$http', '$filter', function ($http, $filter) 
       winners: 10,
       losers: 0
     };
+    _this.activeTeam = null;
+    _this.activeIndex = null;
 
-    function transformDate(date) {
-      return $filter('date')(date, 'MM/dd/yyyy HH:mm');
-    }
+    _this.setActiveTeam = function setActiveTeam(team) {
+      _this.activeTeam = team;
+    };
+
+    _this.setActiveIndex = function setActiveTeam(index) {
+      _this.activeIndex = index;
+    };
+
+    _this.getSelectedPlayerIds = function getSelectedPlayerIds() {
+      var winnersIds = _.pluck(_this.players.winners, 'id');
+      var losersIds = _.pluck(_this.players.losers, 'id');
+
+      return winnersIds.concat(losersIds);
+    };
 
     _this.playedAt = transformDate(new Date());
-    _this.setData = function (data) {};
+
+    _this.setData = function (data) {
+      _this.players = {
+        winners: exportUsers(data, 'winners'),
+        losers: exportUsers(data, 'losers')
+      };
+      _this.points = {
+        winners: data.team_a_points,
+        losers: data.team_b_points
+      };
+      _this.playedAt = transformDate(Date.parseISO(data.played_at));
+      _this.id = data.id;
+    };
 
     _this.getFormData = function () {
       return {
@@ -49,15 +74,28 @@ app.factory('CreateGameService', ['$http', '$filter', function ($http, $filter) 
       return _this.isValid;
     };
 
+    function transformDate(date) {
+      return $filter('date')(date, 'MM/dd/yyyy HH:mm');
+    }
+
+    function exportUsers(data, team) {
+      var users = [];
+      var teamIndex = team === 'winners' ? 'a' : 'b';
+
+      angular.forEach(data['games_users_' + teamIndex], function(game_user) {
+        game_user.user.avatar_url = game_user.user.avatar_url ? game_user.user.avatar_url : '/img/no-avatar.min.png';
+        this.push(game_user.user);
+      }, users);
+
+      return users;
+    }
+
     if (data) {
       _this.setData(data);
     }
 
     return this;
   }
-
-  CreateGameService.prototype.MAX_POINTS = 10;
-  CreateGameService.prototype.MIN_POINTS = 0;
 
   return CreateGameService;
 }]);

@@ -1,117 +1,88 @@
 <div class="row">
-    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered create-game-container">
-        <form class="form-horizontal">
-            <div class="team">
-                <div class="team-title">Team A</div>
-                <div class="form-group">
-                    <label for="usersA" class="col-sm-2 control-label">Players</label>
-                    <div class="col-sm-10">
-                        <ui-select multiple id="usersA"
-                                   ng-model="game.users.a"
-                                   theme="bootstrap" sortable="true"
-                                   limit="2"
-                                   on-select="onSelectUser($item)"
-                                   on-remove="onRemoveUser($item)"
-                                   ng-disabled="disabled" title="Players of Team A">
-                            <ui-select-match placeholder="Select players...">{{ $item.name }}</ui-select-match>
-                            <ui-select-choices repeat="user in usersSearch track by $index"
-                                               refresh="findUsers($select.search)"
-                                               ui-disable-choice="!user.id"
-                                               refresh-delay="0">
-                                <span ng-if="user.id"> {{ user.name }} ({{ user.email }})</span>
-                                <span ng-if="!user.id"> {{ user.name }}</span>
-                            </ui-select-choices>
-                        </ui-select>
-
-                        <div class="error">
-                            <div ng-repeat="error in errors.games_users_a">{{ error }}</div>
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap create-game-container">
+        <form>
+            <div class="col-md-3 col-centered">
+                <input id="played-at"
+                       name=""
+                       type="text"
+                       class="form-control"
+                       ng-value="game.playedAt"
+                       style="text-align: center;">
+            </div>
+            <div class="game-graphic">
+                <div class="team team-a">
+                    <div class="team-user" ng-repeat="player in game.players.winners">
+                        <div class="info">
+                            <div class="name">{{ player.name || 'select player...' }}</div>
+                        </div>
+                        <div class="user-avatar empty"
+                             back-img="{{ player.avatar_url }}"
+                             ng-click="openDialog(); game.setActiveTeam('winners'); game.setActiveIndex($index);">
+                            <div class="fa fa-plus add-button"></div>
+                            <img ng-src="{{ player.avatar_url }}" />
+                        </div>
+                        <div class="align-helper"></div>
+                    </div>
+                </div>
+                <div class="result-container main">
+                    <div class="versus">VS</div>
+                    <div class="result">
+                        <div class="point">{{ game.points.winners }}</div>
+                        <div class="point">&thinsp;:&thinsp;</div>
+                        <div class="point">
+                            <select ng-model="game.points.losers" ng-options="point for point in points"></select>
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="pointsA" class="col-sm-2 control-label">Points</label>
-                    <div class="col-sm-10">
-                        <input id="pointsA" ng-model="game.points.a" type="text" class="form-control"
-                               number-only
-                               min="{{ game.MIN_POINTS }}"
-                               max="{{ game.MAX_POINTS }}"
-                               ng-required="required"
-                               required="required">
-                        <div class="error">
-                            <div ng-repeat="error in errors.team_a_points">{{ error }}</div>
+                <div class="team team-b">
+                    <div class="team-user" ng-repeat="player in game.players.losers">
+                        <div class="user-avatar empty"
+                             back-img="{{ player.avatar_url }}"
+                             ng-click="openDialog(); game.setActiveTeam('losers'); game.setActiveIndex($index);">
+                            <div class="fa fa-plus add-button"></div>
+                            <img ng-src="{{ player.avatar_url }}" />
                         </div>
+                        <div class="info">
+                            <div class="name">{{ player.name || 'select player...' }}</div>
+                        </div>
+                        <div class="align-helper"></div>
                     </div>
                 </div>
             </div>
-
-            <div class="team">
-                <div class="team-title">Team B</div>
-                <div class="form-group">
-                    <label for="usersB" class="col-sm-2 control-label">Players</label>
-                    <div class="col-sm-10">
-                        <ui-select multiple id="usersB"
-                                   ng-model="game.users.b"
-                                   limit="2"
-                                   on-select="onSelectUser($item)"
-                                   on-remove="onRemoveUser($item)"
-                                   theme="bootstrap" sortable="true"
-                                   ng-disabled="disabled"  title="Players of Team B">
-                            <ui-select-match placeholder="Select players...">{{ $item.name }}</ui-select-match>
-                            <ui-select-choices repeat="user in usersSearch track by $index"
-                                               refresh="findUsers($select.search)"
-                                               ui-disable-choice="!user.id"
-                                               refresh-delay="0">
-                                <span ng-if="user.id"> {{ user.name }} ({{ user.email }})</span>
-                                <span ng-if="!user.id"> {{ user.name }}</span>
-                            </ui-select-choices>
-                        </ui-select>
-
-                        <div class="error">
-                            <div ng-repeat="error in errors.games_users_b">{{ error }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="pointsB" class="col-sm-2 control-label">Points</label>
-                    <div class="col-sm-10">
-                        <input id="pointsB" ng-model="game.points.b" type="text" class="form-control"
-                               number-only
-                               min="{{ game.MIN_POINTS }}"
-                               max="{{ game.MAX_POINTS }}"
-                               ng-required="required"
-                               required="required">
-                        <div class="error">
-                            <div ng-repeat="error in errors.team_b_points">{{ error }}</div>
-                        </div>
+            <div class="result-container additional text-center">
+                <div class="result">
+                    <div class="point">10</div>
+                    <div class="point">&thinsp;:&thinsp;</div>
+                    <div class="point">
+                        <select ng-model="game.points.losers" ng-options="point for point in points"></select>
                     </div>
                 </div>
             </div>
-
-            <div class="team">
-                <hr>
-                <div class="form-group">
-                    <label for="playedAt" class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <input type="text" id="playedAt" class="form-control" required="required" ng-model="game.playedAt">
-                        <div class="error">
-                            <div class="error">
-                                <div ng-repeat="error in errors.played_at">{{ error }}</div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="errors text-center alert alert-danger" ng-hide="errors | isEmpty">
+                <div ng-repeat="(attribute, values) in errors">
+                    <div ng-repeat="error in values">{{ error }}</div>
                 </div>
             </div>
-
-            <div class="text-center">
-                <button class="btn btn-primary" type="button" ng-click="update()" ng-if="loading === false">
-                    Save
-                </button>
-                <button class="btn btn-primary" type="button" ng-if="loading" disabled="disabled">
-                    <span><i class="fa fa-refresh fa-spin"></i></span> Saving ...
-                </button>
+            <div class="form-group">
+                <div class="col-sm-12 text-right" ng-show="game.isValid">
+                    <button type="submit" class="btn btn-primary" ng-click="updateGame(game)">Save</button>
+                </div>
             </div>
         </form>
     </div>
 </div>
+
+<script type="text/ng-template" id="choose-player-dialog">
+    <div class="row">
+        <div class="col-md-11 col-centered">
+            <select class="form-control"
+                    size="15"
+                    ng-model="selectedPlayerId"
+                    ng-change="closeThisDialog(); selectPlayer(selectedPlayerId)">
+                <option ng-repeat="player in players | filter:{selected: false}" ng-value="player.id">
+                    {{ player.name }}
+                </option>
+            </select>
+        </div>
+    </div>
+</script>

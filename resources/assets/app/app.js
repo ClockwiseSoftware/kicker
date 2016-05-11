@@ -67,24 +67,25 @@ var app = angular
         $(this).closest('.navbar-collapse').collapse('hide');
       });
     }
-  ]).run([
+  ])
+  .run([
     '$rootScope', 'Player',
-    function ($rootScope, Player) {
-      $rootScope.currentPlayer = null;
+    function ($, Player) {
+      $.currentPlayer = null;
 
-      $rootScope.restoreProfile = function () {
-        Player.restore({id: $rootScope.currentPlayer.id}).$promise
+      $.restoreProfile = function restoreProfile() {
+        Player.restore({id: $.currentPlayer.id}).$promise
           .then(function (player) {
-            $rootScope.currentPlayer = player;
+            $.currentPlayer = player;
           })
           .catch(function (player) {
-            $rootScope.currentPlayer = player;
+            $.currentPlayer = player;
           });
       };
 
       Player.me().$promise
         .then(function (player) {
-          $rootScope.currentPlayer = player;
+          $.currentPlayer = player;
         });
     }
   ]);
