@@ -85,6 +85,9 @@ var app = angular
 
       Player.me().$promise
         .then(function (player) {
+          player.deleted = parseInt(player.deleted);
+          player.deleted = isNaN(player.deleted) ? false : !!player.deleted;
+          $rootScope.currentPlayer = player;
           $.currentPlayer = player;
         });
     }

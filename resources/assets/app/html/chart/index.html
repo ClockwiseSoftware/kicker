@@ -20,18 +20,11 @@
                     </a>
                 </th>
                 <th>
-                    <a href="#" onclick="return false;"
-                       ng-click="orderByField = 'win_rate'; reverseSort = !reverseSort">
-                        <span class="normal-text">Win Rate (%)</span>
-                        <span class="collapsed-text">WR</span>
-                    </a>
-                </th>
-                <th>
                     <a href="#"
-                       onclick="return false;" ng-click="orderByField = 'count_games'; reverseSort = !reverseSort"
+                       onclick="return false;" ng-click="orderByField = 'count_wins'; reverseSort = !reverseSort"
                     >
-                        <span class="normal-text">Games Played</span>
-                        <span class="collapsed-text">T</span>
+                        <span class="normal-text">Games Won</span>
+                        <span class="collapsed-text">W</span>
                     </a>
                 </th>
                 <th>
@@ -44,10 +37,17 @@
                 </th>
                 <th>
                     <a href="#"
-                       onclick="return false;" ng-click="orderByField = 'count_wins'; reverseSort = !reverseSort"
+                       onclick="return false;" ng-click="orderByField = 'count_games'; reverseSort = !reverseSort"
                     >
-                        <span class="normal-text">Games Win</span>
-                        <span class="collapsed-text">W</span>
+                        <span class="normal-text">Games Played</span>
+                        <span class="collapsed-text">T</span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" onclick="return false;"
+                       ng-click="orderByField = 'win_rate'; reverseSort = !reverseSort">
+                        <span class="normal-text">Win Rate (%)</span>
+                        <span class="collapsed-text">WR</span>
                     </a>
                 </th>
             </tr>
@@ -57,10 +57,10 @@
                 <td>{{ user.index }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.rating }}</td>
-                <td>{{ user.win_rate }}</td>
-                <td>{{ user.count_games }}</td>
-                <td class="games-lost">{{ user.count_looses }}</td>
                 <td class="games-win">{{ user.count_wins }}</td>
+                <td class="games-lost">{{ user.count_looses }}</td>
+                <td>{{ user.count_games }}</td>
+                <td>{{ user.win_rate }}</td>
             </tr>
             </tbody>
         </table>
