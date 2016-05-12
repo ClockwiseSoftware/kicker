@@ -49,24 +49,22 @@
                 </div>
             </div>
 
-            <div class="form-group" ng-if="!currentPlayer.deleted">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-5">
-                    <a href="javascript:void(0)" ng-click="openDialog()">Delete profile</a>
-                </div>
-            </div>
-
             <div class="alert alert-success text-center animate-show" ng-show="showAlert">
                 Changes have been saved!
             </div>
 
             <div class="form-group">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-5">
-                    <button class="btn btn-primary" ng-click="saveChanges(player)" ng-disabled="loading">
-                        <span ng-show="loading"><i class="fa fa-refresh fa-spin"></i>&nbsp;</span>
-                        Save
-                    </button>
+                <div class="col-sm-12 text-right">
+                    <md-button
+                            ng-if="!currentPlayer.deleted"
+                            md-no-ink class="md-primary"
+                            ng-click="openDialog()"
+                    >Delete profile</md-button>
+                    <md-button
+                            class="md-raised md-primary"
+                            ng-click="saveChanges(player)"
+                            ng-disabled="loading"
+                    >Save</md-button>
                 </div>
             </div>
         </form>
