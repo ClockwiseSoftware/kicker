@@ -58,6 +58,8 @@
                     </div>
                 </div>
             </div>
+            <div class="clearfix"></div>
+
             <div class="errors text-center alert alert-danger" ng-hide="errors | isEmpty">
                 <div ng-repeat="(attribute, values) in errors">
                     <div ng-repeat="error in values">{{ error }}</div>
@@ -65,7 +67,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right" ng-show="game.isValid">
-                    <button type="submit" class="btn btn-primary" ng-click="updateGame(game)">Update</button>
+                    <md-button class="md-raised md-primary" type="submit" ng-click="updateGame(game)">Update</md-button>
                 </div>
             </div>
         </form>

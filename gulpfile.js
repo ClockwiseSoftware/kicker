@@ -40,6 +40,8 @@ elixir(function (mix) {
     'resources/assets/bower/ng-dialog/css/ngDialog.css',
     'resources/assets/bower/ng-dialog/css/ngDialog-theme-default.css',
 
+    'resources/assets/bower/angular-material/angular-material.min.css',
+
     'resources/assets/bower/angular/angular-csp.css',
 
     'resources/assets/css/sign.css',
@@ -70,6 +72,9 @@ elixir(function (mix) {
     'resources/assets/bower/angular-resource/angular-resource.js',
     'resources/assets/bower/angular-animate/angular-animate.js',
     'resources/assets/bower/ng-dialog/js/ngDialog.js',
+    'resources/assets/bower/angular-aria/angular-aria.min.js',
+    'resources/assets/bower/angular-messages/angular-messages.min.js',
+    'resources/assets/bower/angular-material/angular-material.min.js',
 
     // Application
     'app/app.js',
