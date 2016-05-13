@@ -42,6 +42,8 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
             if (flush) {
                 // Flush all games and their data
                 self.currentpage = 0;
+            } else {
+                self.currentpage++;
             }
 
             var data = (function (data) {
@@ -61,6 +63,7 @@ app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
                 return copy;
             })(this.filters);
 
+            data.page = this.currentpage;
 
             self.loading = true;
             $http({
