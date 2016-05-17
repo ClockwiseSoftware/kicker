@@ -6,6 +6,18 @@
     border: 0;
   }
 
+  .user-avatar {
+    .add-button {
+      display: none;
+    }
+  }
+
+  .user-avatar.empty {
+    .add-button {
+      display: inline-block;
+    }
+  }
+
   .team-user:hover {
     cursor: pointer;
 
@@ -30,7 +42,7 @@
   }
 
   .datepicker-container {
-    padding: 20px;
+    padding-top: 10px;
 
     > input {
       font-size: 18px;

@@ -2,12 +2,10 @@
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap create-game-container">
         <form>
             <div class="col-md-6 col-centered datepicker-container">
-                <input id="played-at"
-                       name=""
-                       type="text"
-                       class="form-control"
-                       ng-value="game.playedAt"
-                >
+                <md-input-container class="md-block datepicker-container">
+                    <label for="played-at"></label>
+                    <input id="played-at" ng-model="game.playedAt">
+                </md-input-container>
             </div>
             <div class="game-graphic">
                 <div class="team team-a">
@@ -16,7 +14,7 @@
                         <div class="info">
                             <div class="name">{{ player.name || 'select player...' }}</div>
                         </div>
-                        <div class="user-avatar empty"
+                        <div class="user-avatar" ng-class="player.id ? '' : 'empty'"
                              back-img="{{ player.avatar_url }}">
                             <div class="fa fa-plus add-button"></div>
                             <img ng-src="{{ player.avatar_url }}" />
@@ -37,7 +35,7 @@
                 <div class="team team-b">
                     <div class="team-user" ng-repeat="player in game.players.losers"
                          ng-click="openDialog(); game.setActiveTeam('losers'); game.setActiveIndex($index);">
-                        <div class="user-avatar empty"
+                        <div class="user-avatar" ng-class="player.id ? '' : 'empty'"
                              back-img="{{ player.avatar_url }}">
                             <div class="fa fa-plus add-button"></div>
                             <img ng-src="{{ player.avatar_url }}" />

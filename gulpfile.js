@@ -33,12 +33,12 @@ elixir(function (mix) {
 
   // Main assets
   mix.styles([
-    'resources/assets/bower/bootstrap/dist/css/bootstrap.css',
+    'resources/assets/bower/bootstrap/dist/css/bootstrap.min.css',
     'resources/assets/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
     'resources/assets/bower/angular-bootstrap/ui-bootstrap-csp.css',
 
-    'resources/assets/bower/ng-dialog/css/ngDialog.css',
-    'resources/assets/bower/ng-dialog/css/ngDialog-theme-default.css',
+    'resources/assets/bower/ng-dialog/css/ngDialog.min.css',
+    'resources/assets/bower/ng-dialog/css/ngDialog-theme-default.min.css',
 
     'resources/assets/bower/angular-material/angular-material.min.css',
 
@@ -54,24 +54,24 @@ elixir(function (mix) {
   // Angular application
   mix.html('**/*.html', 'public/html', 'resources/assets/app/html');
   mix.scripts([
-    'bower/jquery/dist/jquery.js',
-    'bower/bootstrap/dist/js/bootstrap.js',
+    'bower/jquery/dist/jquery.min.js',
+    'bower/bootstrap/dist/js/bootstrap.min.js',
     'bower/moment/min/moment.min.js',
     'bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-    'resources/assets/bower/underscore/underscore.js',
+    'resources/assets/bower/underscore/underscore-min.js',
 
     // Angular
-    'bower/angular/angular.js',
+    'bower/angular/angular.min.js',
 
     // Angular derivatives
-    'resources/assets/bower/angular-route/angular-route.js',
-    'resources/assets/bower/angular-sanitize/angular-sanitize.js',
-    'resources/assets/bower/angular-bootstrap/ui-bootstrap.js',
-    'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.js',
-    'resources/assets/bower/ng-file-upload/ng-file-upload.js',
-    'resources/assets/bower/angular-resource/angular-resource.js',
-    'resources/assets/bower/angular-animate/angular-animate.js',
-    'resources/assets/bower/ng-dialog/js/ngDialog.js',
+    'resources/assets/bower/angular-route/angular-route.min.js',
+    'resources/assets/bower/angular-sanitize/angular-sanitize.min.js',
+    'resources/assets/bower/angular-bootstrap/ui-bootstrap.min.js',
+    'resources/assets/bower/angular-bootstrap/ui-bootstrap-tpls.min.js',
+    'resources/assets/bower/ng-file-upload/ng-file-upload.min.js',
+    'resources/assets/bower/angular-resource/angular-resource.min.js',
+    'resources/assets/bower/angular-animate/angular-animate.min.js',
+    'resources/assets/bower/ng-dialog/js/ngDialog.min.js',
     'resources/assets/bower/angular-aria/angular-aria.min.js',
     'resources/assets/bower/angular-messages/angular-messages.min.js',
     'resources/assets/bower/angular-material/angular-material.min.js',
