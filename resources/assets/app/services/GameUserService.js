@@ -13,7 +13,7 @@ app.factory('GameUser', ['$http', 'User', function($http, User) {
         };
 
         this.userPointsClass = function() {
-            return obj.getDelta() > 0 ? 'win' : 'lose';
+            return obj.getDelta() >= 0 ? 'win' : 'lose';
         };
 
         if (data) {
