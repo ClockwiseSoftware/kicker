@@ -88,10 +88,19 @@ var app = angular
           player.deleted = parseInt(player.deleted);
           player.deleted = isNaN(player.deleted) ? false : !!player.deleted;
           $.currentPlayer = player;
-          $.currentPlayer = player;
         });
     }
-  ]);
+  ])
+  .run(['$rootScope', function ($) {
+    $.loading = false;
+
+    $.$on('startLoading', function(event) {
+      $.loading = true;
+    });
+    $.$on('finishLoading', function(event) {
+      $.loading = false;
+    });
+  }]);
 
 Date.parseISO = function (string) {
   var date = new Date(string);

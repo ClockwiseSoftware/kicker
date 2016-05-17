@@ -80,6 +80,7 @@ elixir(function (mix) {
 
     // Custom directives
     'app/directives/BackImgDirective.js',
+    'app/directives/WindowBottomDirective.js',
 
     // Filters
     'app/filters/IsEmptyFilter.js',

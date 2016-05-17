@@ -42,7 +42,7 @@
         </nav>
         <div class="container main-container">
             <div class="content">
-                <div class="row games-container" ng-show="currentPlayer.deleted">
+                <div class="row games-container" ng-cloak ng-show="currentPlayer.deleted">
                     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container col-centered text-center">
                         Your profile is not active. You can <a href="javascript:void(0)" ng-click="restoreProfile()">
                             restore profile</a> to get full access.
@@ -53,6 +53,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
+        <md-progress-linear ng-cloak ng-show="loading" md-mode="query"></md-progress-linear>
 
         {{ Html::script('js/app.js') }}
         @yield('scripts')

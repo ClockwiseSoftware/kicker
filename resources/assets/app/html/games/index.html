@@ -117,10 +117,5 @@
         </div>
     </div>
 </div>
-<div class="row games-pages" ng-show="gamesRepository.currentpage < gamesRepository.lastpage">
-    <md-button
-            class="md-raised md-primary"
-            ng-click="!gamesRepository.loading && gamesRepository.load()"
-            ng-disabled="gamesRepository.loading"
-    >More</md-button>
-</div>
+
+<div window-bottom="loadMore()"></div>
