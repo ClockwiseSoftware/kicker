@@ -71,24 +71,29 @@
 }
 
 .team .rating-delta {
+  background: #ccc;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 500;
   line-height: @rating-delta-size;
   position: absolute;
   border-radius: 50%;
-  color: #ccc;
   text-align: center;
   min-width: @rating-delta-size;
   bottom: -5px;
   right: -5px;
+  border: 1px solid;
 }
 
 .team .rating-delta.lose {
-  background: @color-loser;
+  color: @color-loser;
+  background-color: #FFF2F2;
+  border-color: #FFC7C7;
 }
 
 .team .rating-delta.win {
-  background: @color-winner;
+  color: @color-winner;
+  background-color: #D5D7DE;
+  border-color: #A0ACD8;
 }
 
 .team-a {
