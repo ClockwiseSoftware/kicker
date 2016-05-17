@@ -42,10 +42,8 @@ elixir(function (mix) {
     'resources/assets/bower/ng-dialog/css/ngDialog-theme-default.min.css',
 
     'resources/assets/bower/angular-material/angular-material.min.css',
-
     'resources/assets/bower/angular/angular-csp.css',
 
-    'resources/assets/css/sign.css',
     'resources/assets/css/compiled-less.css'
   ], 'public/css/main.css', './');
 
