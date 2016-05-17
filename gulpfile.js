@@ -20,13 +20,14 @@ elixir(function (mix) {
   mix.less([
     'main.less',
     'navbar.less',
+    'sign.less',
     'games.less',
     'chart.less',
     'edit-users.less',
     'profile.less',
     'checkboxes.less',
     'theme.less'
-  ], 'public/css/main.css', 'resources/assets/less');
+  ], 'resources/assets/css/compiled-less.css', 'resources/assets/less');
 
   // Main assets
   mix.styles([
@@ -40,8 +41,7 @@ elixir(function (mix) {
 
     'resources/assets/bower/angular/angular-csp.css',
 
-    'resources/assets/css/sign.css',
-    'public/css/main.css'
+    'resources/assets/css/compiled-less.css'
   ], 'public/css/main.css', './');
 
   mix.copy('resources/assets/bower/bootstrap/fonts', 'public/fonts');

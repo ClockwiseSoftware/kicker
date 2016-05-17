@@ -6,10 +6,8 @@
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
-        {{-- Google gonts CDN --}}
-        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-        <link rel='stylesheet' href="https://apiary.a.ssl.fastly.net/assets/website-b64c00d70e7971fc4f7a.css">
+        {{-- Roboto font on Google fonts --}}
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
         {{-- Font awesome CDN --}}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
