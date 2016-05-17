@@ -3,7 +3,8 @@
   "devDependencies": {
     "gulp": "^3.8.8",
     "bower": "*",
-    "laravel-elixir-html-minify": "^1.0.1"
+    "laravel-elixir-html-minify": "^1.0.1",
+    "laravel-elixir-clear": "^1.0.1"
   },
   "dependencies": {
     "laravel-elixir": "^4.0.0",

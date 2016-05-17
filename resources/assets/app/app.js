@@ -1,8 +1,8 @@
 var app = angular
   .module('kickerApp', [
-    'ngRoute', 'ui.select', 'ngSanitize',
-    'ui.bootstrap', 'ngFileUpload', 'ngResource',
-    'ngAnimate', 'ngDialog'
+    'ngRoute', 'ngSanitize', 'ui.bootstrap',
+    'ngFileUpload', 'ngResource', 'ngAnimate',
+    'ngDialog', 'ngMaterial', 'ngMessages'
   ]).config(['$httpProvider', '$routeProvider',
     function ($httpProvider, $routeProvider) {
       $routeProvider
@@ -67,26 +67,28 @@ var app = angular
         $(this).closest('.navbar-collapse').collapse('hide');
       });
     }
-  ]).run([
+  ])
+  .run([
     '$rootScope', 'Player',
-    function ($rootScope, Player) {
-      $rootScope.currentPlayer = null;
+    function ($, Player) {
+      $.currentPlayer = null;
 
-      $rootScope.restoreProfile = function () {
-        Player.restore({id: $rootScope.currentPlayer.id}).$promise
+      $.restoreProfile = function restoreProfile() {
+        Player.restore({id: $.currentPlayer.id}).$promise
           .then(function (player) {
-            $rootScope.currentPlayer = player;
+            $.currentPlayer = player;
           })
           .catch(function (player) {
-            $rootScope.currentPlayer = player;
+            $.currentPlayer = player;
           });
       };
 
-      Player.get().$promise
+      Player.me().$promise
         .then(function (player) {
           player.deleted = parseInt(player.deleted);
           player.deleted = isNaN(player.deleted) ? false : !!player.deleted;
-          $rootScope.currentPlayer = player;
+          $.currentPlayer = player;
+          $.currentPlayer = player;
         });
     }
   ]);

@@ -1,72 +1,60 @@
 <div class="row">
     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 col-centered content-wrap user-profile">
-        <div class="user-avatar-container">
-            <div class="user-avatar preload"
-                 back-img="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}"
-                 ngf-select ng-model="avatar"
-            >
-                <img ng-src="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}" />
-            </div>
-            <div class="errors" ng-repeat="error in errors.avatar">
-                {{ error }}
-            </div>
-        </div>
-
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-sm-5 text-right">
-                    <label for="name" class="control-label">Name</label>
+        <form>
+            <div class="user-avatar-container">
+                <div class="user-avatar preload"
+                     back-img="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}"
+                     ngf-select ng-model="avatar"
+                >
+                    <img ng-src="{{ player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png'}}" />
                 </div>
-                <div class="col-sm-5">
-                    <input id="name" type="text" class="form-control" ng-model="player.name">
+                <div class="errors" ng-repeat="error in errors.avatar">
+                    {{ error }}
+                </div>
+            </div>
+
+            <div class="col-md-10 col-centered text-right">
+                <md-input-container class="md-block">
+                    <label for="name">Name</label>
+                    <input id="name" type="text" ng-model="player.name">
                     <div class="errors" ng-repeat="error in errors.name">
                         {{ error }}
                     </div>
-                </div>
+                </md-input-container>
             </div>
 
-            <div class="form-group">
-                <div class="col-sm-5 text-right">
-                    <label for="email" class="control-label">Email</label>
-                </div>
-                <div class="col-sm-5">
-                    <input id="email" type="text" class="form-control" ng-model="player.email">
+            <div class="col-md-10 col-centered text-right">
+                <md-input-container class="md-block">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" ng-model="player.email">
                     <div class="errors" ng-repeat="error in errors.email">
                         {{ error }}
                     </div>
-                </div>
+                </md-input-container>
             </div>
 
-            <div class="form-group">
-                <div class="col-sm-5 text-right">
-                    <label for="password" class="control-label">Password</label>
-                </div>
-                <div class="col-sm-5">
-                    <input id="password" type="password" class="form-control" placeholder="Fill to change..." ng-model="player.password">
+            <div class="col-md-10 col-centered text-right">
+                <md-input-container class="md-block">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" ng-model="player.password" placeholder="Fill to change...">
                     <div class="errors" ng-repeat="error in errors.password">
                         {{ error }}
                     </div>
-                </div>
-            </div>
-
-            <div class="form-group" ng-if="!currentPlayer.deleted">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-5">
-                    <a href="javascript:void(0)" ng-click="openDialog()">Delete profile</a>
-                </div>
-            </div>
-
-            <div class="alert alert-success text-center animate-show" ng-show="showAlert">
-                Changes have been saved!
+                </md-input-container>
             </div>
 
             <div class="form-group">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-5">
-                    <button class="btn btn-primary" ng-click="saveChanges(player)" ng-disabled="loading">
-                        <span ng-show="loading"><i class="fa fa-refresh fa-spin"></i>&nbsp;</span>
-                        Save
-                    </button>
+                <div class="col-sm-12 text-right">
+                    <md-button
+                            ng-if="!currentPlayer.deleted"
+                            md-no-ink class="md-primary"
+                            ng-click="openDialog()"
+                    >Delete profile</md-button>
+                    <md-button
+                            class="md-raised md-primary"
+                            ng-click="saveChanges(player)"
+                            ng-disabled="loading"
+                    >Save</md-button>
                 </div>
             </div>
         </form>

@@ -1,0 +1,81 @@
+@import "variables";
+
+.create-game-container {
+  .game-graphic {
+    width: 100%;
+    border: 0;
+  }
+
+  .user-avatar {
+    .add-button {
+      display: none;
+    }
+  }
+
+  .user-avatar.empty {
+    .add-button {
+      display: inline-block;
+    }
+  }
+
+  .team-user:hover {
+    cursor: pointer;
+
+    .user-avatar.empty {
+      .add-button {
+        color: rgba(255, 255, 255, 0.75);
+      }
+    }
+  }
+
+  .user-avatar.empty {
+    text-align: center;
+
+    .add-button {
+      transition-duration: 400ms;
+      font-size: 25px;
+      line-height: @avatar-max-size;
+      color: rgba(255, 255, 255, 0.25);
+      padding-left: @avatar-max-size / 40;
+      padding-top: @avatar-max-size / 40;
+    }
+  }
+
+  .datepicker-container {
+    padding-top: 10px;
+
+    > input {
+      font-size: 18px;
+      text-align: center;
+    }
+  }
+}
+
+/* SM */
+@media (max-width: @screen-xs-max) {
+  .create-game-container {
+    .result-container.additional {
+      padding: 30px 0;
+    }
+
+    .user-avatar.empty {
+      .add-button {
+        font-size: 25px;
+        line-height: @little-avatar-max-size;
+        color: rgba(255, 255, 255, 0.25);
+        padding-left: @avatar-max-size / 40;
+        padding-top: @avatar-max-size / 40;
+      }
+    }
+  }
+}
+
+/* MD */
+@media (min-width: @screen-md-min) {
+  .create-game-container {
+    .result-container.main
+    .result {
+      width: 100px;
+    }
+  }
+}
