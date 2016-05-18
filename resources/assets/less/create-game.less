@@ -1,5 +1,25 @@
 @import "variables";
 
+.exchange {
+  position: relative;
+  width: 30px;
+  height: 30px;
+
+  .left-exchange{
+    position: absolute;
+    top: -5px;
+    left: 0;
+    color: @color-loser;
+  }
+
+  .right-exchange {
+    position: absolute;
+    top: 10px;
+    left: 3px;
+    color: @color-winner;
+  }
+}
+
 .create-game-container {
   .game-graphic {
     width: 100%;

@@ -36,7 +36,10 @@
                                style="padding: 15px"
                                ng-click="game.changeSides()"
                     >
-                        <i class="fa fa-exchange exchange-button" aria-hidden="true"></i>
+                        <div class="exchange">
+                            <i class="fa fa-long-arrow-left exchange-button left-exchange" aria-hidden="true"></i>
+                            <i class="fa fa-long-arrow-right exchange-button right-exchange" aria-hidden="true"></i>
+                        </div>
                     </md-button>
                 </div>
                 <div class="team team-b">
@@ -60,7 +63,10 @@
                            style="padding: 15px"
                            ng-click="game.changeSides()"
                 >
-                    <i class="fa fa-exchange exchange-button" aria-hidden="true"></i>
+                    <div class="exchange">
+                        <i class="fa fa-long-arrow-left exchange-button left-exchange" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-right exchange-button right-exchange" aria-hidden="true"></i>
+                    </div>
                 </md-button>
                 <div class="result">
                     <div class="point">{{ game.points.winners }}</div>
