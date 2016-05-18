@@ -54,7 +54,7 @@
             <div class="clearfix"></div>
         </div>
         <md-progress-linear ng-cloak ng-show="loading" md-mode="query"></md-progress-linear>
-        <div ng-cloak ng-hide="loading" class="loader-helper"></div>
+        <div class="loader-helper"></div>
 
         {{ Html::script('js/app.js') }}
         @yield('scripts')
