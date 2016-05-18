@@ -5,6 +5,7 @@
             <a href="javascript:void(0)" class="list-group-item"
                ng-repeat="player in players | filter:{selected: false}"
                ng-click="closeThisDialog(); selectPlayer(player.id);"
+               ng-class="player.id == currentPlayer.id ? 'active' : ''"
             >
                 <div class="user-avatar mini"
                      back-img="{{ player.avatar_url }}">
