@@ -19,6 +19,7 @@ class UserController extends Controller
             'name' => 'filled|max:255',
             'email' => 'filled|email|max:255|unique:users,email,' . $user->id,
             'password' => 'filled|min:1',
+            'oldPassword' => 'filled|old_password:' . $user->password,
         ];
     }
 
@@ -112,8 +113,9 @@ class UserController extends Controller
         $this->validate($request, $this->validationRules($user));
         $user->fill($request->all());
 
-        if ($request->get('password'))
+        if ($request->get('password')) {
             $user->setPassword($request->get('password'));
+        }
 
         $user->save();
 

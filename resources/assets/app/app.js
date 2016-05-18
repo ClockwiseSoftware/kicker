@@ -3,7 +3,8 @@ var app = angular
     'ngRoute', 'ngSanitize', 'ui.bootstrap',
     'ngFileUpload', 'ngResource', 'ngAnimate',
     'ngDialog', 'ngMaterial', 'ngMessages'
-  ]).config(['$httpProvider', '$routeProvider',
+  ]).config([
+    '$httpProvider', '$routeProvider',
     function ($httpProvider, $routeProvider) {
       $routeProvider
       // Signup and Signin pages
@@ -56,16 +57,6 @@ var app = angular
           controller: 'GamesCtrl',
           templateUrl: 'html/games/index.html'
         });
-
-      // Close navbar on navigate event
-      $(window).on('popstate', function () {
-        $('.navbar-collapse').collapse('hide');
-      });
-
-      // Close navbar on link click
-      $('body').on('click', '.navbar-collapse li', function () {
-        $(this).closest('.navbar-collapse').collapse('hide');
-      });
     }
   ])
   .run([
@@ -100,7 +91,33 @@ var app = angular
     $.$on('finishLoading', function(event) {
       $.loading = false;
     });
-  }]);
+  }])
+  .run(function () {
+    var $navBar = jQuery('.navbar-collapse');
+
+    // Close navbar on navigate event
+    jQuery(window).on('popstate', function () {
+      $navBar.collapse('hide');
+    });
+
+    // Close navbar on body click
+    jQuery('body').on('click', function (event) {
+      var clickover = jQuery(event.target);
+      var _opened = $navBar.hasClass('in');
+
+      if (_opened === true && !clickover.hasClass('navbar-toggle')) {
+        $navBar.collapse('hide');
+      }
+    });
+
+    jQuery(document).on('scroll', function () {
+      var _opened = $navBar.hasClass('in');
+
+      if (_opened) {
+        $navBar.collapse('hide');
+      }
+    });
+  });
 
 Date.parseISO = function (string) {
   var date = new Date(string);

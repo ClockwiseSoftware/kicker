@@ -25,16 +25,6 @@
 
             <div class="col-md-10 col-centered text-right">
                 <md-input-container class="md-block">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" ng-model="player.email">
-                    <div class="errors" ng-repeat="error in errors.email">
-                        {{ error }}
-                    </div>
-                </md-input-container>
-            </div>
-
-            <div class="col-md-10 col-centered text-right">
-                <md-input-container class="md-block">
                     <label for="password">Password</label>
                     <input id="password" type="password" ng-model="player.password" placeholder="Fill to change...">
                     <div class="errors" ng-repeat="error in errors.password">

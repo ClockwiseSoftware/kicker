@@ -101,6 +101,15 @@ class User extends Authenticatable
         $this->password = bcrypt($password);
     }
 
+    /**
+     * @param $password
+     * @return bool
+     */
+    public function checkPassword($password)
+    {
+        return $this->password === bcrypt($password);
+    }
+
     public function getAvatarUrl()
     {
         if ($this->avatar_url)
