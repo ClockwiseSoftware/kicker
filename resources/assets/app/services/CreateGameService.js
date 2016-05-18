@@ -74,6 +74,17 @@ app.factory('CreateGameService', ['$http', '$filter', function ($http, $filter) 
       return _this.isValid;
     };
 
+    /**
+     * A tricky swap
+     * @see http://stackoverflow.com/questions/16201656/how-to-swap-two-variables-in-javascript for more details
+     * @returns {CreateGameService}
+     */
+    _this.changeSides = function changeSides() {
+      _this.players.losers = [_this.players.winners, _this.players.winners = _this.players.losers][0];
+
+      return _this;
+    };
+
     function transformDate(date) {
       return $filter('date')(date, 'MM/dd/yyyy HH:mm');
     }

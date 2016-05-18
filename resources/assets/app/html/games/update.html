@@ -31,6 +31,13 @@
                             <select ng-model="game.points.losers" ng-options="point for point in points"></select>
                         </div>
                     </div>
+                    <md-button class="md-icon-button md-primary md-button-auto"
+                               aria-label="Change sides"
+                               style="padding: 15px"
+                               ng-click="game.changeSides()"
+                    >
+                        <i class="fa fa-exchange exchange-button" aria-hidden="true"></i>
+                    </md-button>
                 </div>
                 <div class="team team-b">
                     <div class="team-user" ng-repeat="player in game.players.losers"
@@ -48,6 +55,13 @@
                 </div>
             </div>
             <div class="result-container additional text-center">
+                <md-button class="md-icon-button md-primary md-button-auto"
+                           aria-label="Change sides"
+                           style="padding: 15px"
+                           ng-click="game.changeSides()"
+                >
+                    <i class="fa fa-exchange exchange-button" aria-hidden="true"></i>
+                </md-button>
                 <div class="result">
                     <div class="point">{{ game.points.winners }}</div>
                     <div class="point">&thinsp;:&thinsp;</div>

@@ -1,15 +1,14 @@
 <div class="row games-container" ng-show="user.isAdmin || user.isUser">
     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container content-wrap col-centered">
         <div class="col-md-4">
-            <div class="material-switch pull-left">
-                <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox"
-                       ng-model="gamesRepository.filters.usersGames"
-                       ng-change="gamesRepository.load(true)"/>
-                <label for="someSwitchOptionDefault" class="label-default"></label>
-            </div>
-            <div class="filter-item pull-left">
+            <md-switch
+                    ng-model="gamesRepository.filters.usersGames"
+                    ng-change="showOlnlyMyGames()"
+                    class="md-primary"
+                    aria-label="Switch 1"
+            >
                 Show only my games
-            </div>
+            </md-switch>
         </div>
     </div>
 </div>
@@ -67,7 +66,7 @@
                 </div>
             </div>
             <div class="game-information">
-                <div class="controls" ng-if="user.isGuest === false">
+                <div class="controls" ng-if="user.isGuest === false" data-id="{{ game.id }}">
                     <!--<a href="#"-->
                        <!--class="btn btn-default btn-xs control-button"-->
                        <!--ng-href="#/game/{{ game.id }}/update"-->

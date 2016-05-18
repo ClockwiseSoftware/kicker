@@ -1,7 +1,8 @@
 app.controller('GamesCtrl', [
   '$scope', '$rootScope', '$http',
-  '$window', 'Game', 'GamesRepository',
-  function ($, $rootScope, $http, $window, Game, GamesRepository) {
+  '$window', '$timeout', 'Game',
+  'GamesRepository',
+  function ($, $rootScope, $http, $window, $timeout, Game, GamesRepository) {
     $.gamesRepository = new GamesRepository();
     $.games = $.gamesRepository.storage;
 
@@ -14,6 +15,12 @@ app.controller('GamesCtrl', [
           $.$emit('finishLoading');
         });
       }
+    };
+
+    $.showOlnlyMyGames = function showOlnlyMyGames() {
+      $timeout(function () {
+        $.gamesRepository.load(true);
+      }, 100);
     };
 
     // @TODO encapsulate it somewhere
