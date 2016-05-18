@@ -47,17 +47,19 @@ app.controller('GamesCtrl', [
     $.userRole = getUserRole();
 
     $.complain = function (id) {
-      var game = $.gamesRepository.get(id);
-      game.loading = true;
+      $timeout(function () {
+        var game = $.gamesRepository.get(id);
+        game.loading = true;
 
-      $http.get('/game/' + id + '/complain')
-        .success(function (response) {
-          $http.get('/game/' + id)
-            .success(function (response) {
-              game.loading = false;
-              $.gamesRepository.update(response.id, response);
-            });
-        });
+        $http.get('/game/' + id + '/complain')
+          .success(function (response) {
+            $http.get('/game/' + id)
+              .success(function (response) {
+                game.loading = false;
+                $.gamesRepository.update(response.id, response);
+              });
+          });
+      }, 100);
     };
   }
 ]);

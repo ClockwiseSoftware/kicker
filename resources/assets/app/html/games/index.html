@@ -79,7 +79,8 @@
                     <!--&gt;<i class="fa fa-ban"></i></a>-->
 
                     <md-button class="md-icon-button" aria-label="Complain"
-                        ng-click="complain(game.id)"
+                               md-ink-ripple="#c01935"
+                               ng-click="complain(game.id)"
                     >
                         <i class="fa fa-flag"
                            ng-class="game.isComplainedByUser(currentPlayer) ? 'active-complain' : 'not-active-complain'"></i>
