@@ -64,7 +64,6 @@ app.factory('GamesRepository', ['$http', 'Game', function ($http, Game) {
       })(this.filters);
 
       data.page = this.currentpage;
-
       _this.loading = true;
       return $http({
         url: '/',

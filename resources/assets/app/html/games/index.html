@@ -77,29 +77,12 @@
                    <!--class="btn btn-danger btn-xs control-button"-->
                    <!--ng-if="user.isAdmin"-->
                 <!--&gt;<i class="fa fa-ban"></i></a>-->
-                <!--<a href="#"-->
-                   <!--ng-click="game.loading === false ? complain(game.id) : false"-->
-                   <!--onclick="return false"-->
-                   <!--class="btn btn-danger btn-xs control-button"-->
-                   <!--ng-if="user.isUser || user.isAdmin"-->
-                   <!--ng-disabled="game.loading"-->
-                   <!--tooltip-placement="top"-->
-                   <!--tooltip-popup-close-delay="2000"-->
-                   <!--tooltip-trigger="none"-->
-                   <!--tooltip-is-open="game.tooltipIsVisible"-->
-                   <!--ng-mouseover="game.tooltipIsVisible = true"-->
-                   <!--ng-mouseleave="game.tooltipIsVisible = false"-->
-                   <!--uib-tooltip-html="game.complaintsHtml"-->
-                <!--&gt;-->
-                    <!--<span ng-if="game.loading">-->
-                        <!--<i class="fa fa-refresh fa-spin"></i>-->
-                    <!--</span>-->
-                    <!--<i class="fa fa-flag" ng-hide="game.loading"></i>-->
-                    <!--<span ng-if="game.complaints.length > 0">{{ game.complaints.length }}</span>-->
-                <!--</a>-->
 
-                <md-button class="md-icon-button" aria-label="Complain">
-                    <i class="fa fa-flag not-active-complain"></i>
+                <md-button class="md-icon-button" aria-label="Complain"
+                    ng-click="complain(game.id)"
+                >
+                    <i class="fa fa-flag"
+                       ng-class="game.isComplainedByUser(currentPlayer) ? 'active-complain' : 'not-active-complain'"></i>
                 </md-button>
             </div>
             <div class="result-container additional">

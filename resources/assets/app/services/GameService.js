@@ -80,6 +80,36 @@ app.factory('Game', [
         this.setData(data);
       }
 
+      /**
+       * @param user
+       * @returns {boolean}
+       */
+      _this.isComplainedByUser = function (user) {
+        var complaint;
+
+        if (!user || !user.hasOwnProperty('id'))
+          return false;
+
+        if (!_this.hasOwnProperty('complaints') || !_this.complaints.length)
+          return false;
+
+        for (var index in _this.complaints) {
+          if (!_this.complaints.hasOwnProperty(index))
+            continue;
+
+          if (!_this.complaints[index].hasOwnProperty('user') || !_this.complaints[index].user)
+            continue;
+
+          complaint = _this.complaints[index];
+
+          if (complaint.user.id == user.id) {
+            return true;
+          }
+        }
+
+        return false;
+      };
+
       return this;
     }
 
