@@ -41,7 +41,13 @@
   .team-user:hover {
     cursor: pointer;
 
+    .user-avatar {
+      box-shadow: @box-shadow-selected;
+    }
+
     .user-avatar.empty {
+      box-shadow: @box-shadow-default;
+
       .add-button {
         color: rgba(255, 255, 255, 0.75);
       }
