@@ -27,6 +27,7 @@
   }
 
   .user-avatar {
+    transition-duration: 300ms;
     .add-button {
       display: none;
     }
@@ -42,11 +43,11 @@
     cursor: pointer;
 
     .user-avatar {
-      box-shadow: @box-shadow-selected;
+      opacity: 0.5;
     }
 
     .user-avatar.empty {
-      box-shadow: @box-shadow-default;
+      opacity: 1;
 
       .add-button {
         color: rgba(255, 255, 255, 0.75);
