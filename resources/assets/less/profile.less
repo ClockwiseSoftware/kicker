@@ -17,13 +17,32 @@ table.user-profile-table th * {
   cursor: pointer;
 }
 
-.delete-profile-button {
-  color: @color-winner;
+.save-button {
+  color: @color-winner !important;
+
+  &:hover {
+    background: #fff !important;
+  }
 }
 
-.delete-profile-button:hover {
-  background: @color-loser !important;
-  color: #fff !important;
+.delete-button {
+  color: @color-loser !important;
+
+  &:hover {
+    background: #fff !important;
+  }
+}
+
+.no-touch {
+  .delete-button:hover {
+    background: @color-loser !important;
+    color: #fff !important;
+  }
+
+  .save-button:hover {
+    background: @color-winner !important;
+    color: #fff !important;
+  }
 }
 
 .user-profile .user-avatar-container .user-avatar:hover {

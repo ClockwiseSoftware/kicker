@@ -31,7 +31,7 @@
                             <select ng-model="game.points.losers" ng-options="point for point in points"></select>
                         </div>
                     </div>
-                    <md-button class="md-icon-button md-primary md-button-auto"
+                    <md-button class="md-icon-button md-primary md-button-auto change-sides-button"
                                aria-label="Change sides"
                                style="padding: 15px"
                                ng-click="game.changeSides()"
@@ -85,7 +85,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right" ng-show="game.isValid">
-                    <md-button class="md-raised md-primary" type="submit" ng-click="createGame()">Save</md-button>
+                    <md-button class="save-button" type="submit" ng-click="createGame()">Save</md-button>
                 </div>
             </div>
         </form>

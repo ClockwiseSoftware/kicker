@@ -11,30 +11,13 @@ app.controller('UserProfileCtrl', [
       var confirm = $mdDialog.confirm()
         .title('Do you really want to delete your profile?')
         .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
+        .ok('Delete')
+        .cancel('Cancel');
 
       $mdDialog.show(confirm)
         .then(function() {
           $.deletePlayer($.player);
         });
-    };
-
-    $.showConfirm = function(ev) {
-      // Appending dialog to document.body to cover sidenav in docs app
-      var confirm = $mdDialog.confirm()
-        .title('Would you like to delete your debt?')
-        .textContent('All of the banks have agreed to forgive you your debts.')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Please do it!')
-        .cancel('Sounds like a scam');
-
-      $mdDialog.show(confirm).then(function() {
-        $.status = 'You decided to get rid of your debt.';
-      }, function() {
-        $.status = 'You decided to keep your debt.';
-      });
     };
 
     Player.me().$promise

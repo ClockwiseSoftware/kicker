@@ -93,6 +93,11 @@ var app = angular
     });
   }])
   .run(function () {
+    if ('ontouchstart' in document) {
+      angular.element('body').removeClass('no-touch');
+    }
+  })
+  .run(function () {
     var $navBar = jQuery('.navbar-collapse');
 
     // Close navbar on navigate event

@@ -15,7 +15,7 @@
         {{ Html::style('css/main.css') }}
         @yield('styles')
     </head>
-    <body>
+    <body class="no-touch">
         <nav class="navbar navbar-default navbar-fixed-top navbar-center">
             <div class="container">
                 <div class="navbar-header">
