@@ -10,29 +10,35 @@ var app = angular
       // Signup and Signin pages
         .when('/signup', {
           controller: 'SignupCtrl',
-          templateUrl: 'html/auth/signup.html'
+          templateUrl: 'html/auth/signup.html',
+          activeTab: 'signup'
         })
         .when('/signin', {
           controller: 'SigninCtrl',
-          templateUrl: 'html/auth/signin.html'
+          templateUrl: 'html/auth/signin.html',
+          activeTab: 'signin'
         })
 
         // Games pages
         .when('/', {
           controller: 'GamesCtrl',
-          templateUrl: 'html/games/index.html'
+          templateUrl: 'html/games/index.html',
+          activeTab: 'games'
         })
         .when('/game/create', {
           controller: 'CreateGameCtrl',
-          templateUrl: 'html/games/create.html'
+          templateUrl: 'html/games/create.html',
+          activeTab: 'create-game'
         })
         .when('/game/:id/update', {
           controller: 'UpdateGameCtrl',
-          templateUrl: 'html/games/update.html'
+          templateUrl: 'html/games/update.html',
+          activeTab: 'edit=game'
         })
         .when('/game/:id/complainers', {
           controller: 'ComplainersCtrl',
-          templateUrl: 'html/games/complainers.html'
+          templateUrl: 'html/games/complainers.html',
+          activeTab: 'complainers'
         })
 
         // Admin's pages
@@ -44,18 +50,21 @@ var app = angular
         // User's pages
         .when('/user/profile', {
           templateUrl: 'html/user/profile.html',
-          controller: 'UserProfileCtrl'
+          controller: 'UserProfileCtrl',
+          activeTab: 'profile'
         })
 
         // Chart pages
         .when('/chart', {
-          templateUrl: 'html/chart/index.html'
+          templateUrl: 'html/chart/index.html',
+          activeTab: 'chart'
         })
 
         // Because Facebook adds this parameter in hash after successful login
         .when('/_=_', {
           controller: 'GamesCtrl',
-          templateUrl: 'html/games/index.html'
+          templateUrl: 'html/games/index.html',
+          activeTab: 'games'
         });
     }
   ])
@@ -122,7 +131,14 @@ var app = angular
         $navBar.collapse('hide');
       }
     });
-  });
+  })
+  .run(['$rootScope', function ($) {
+    $.activeTab = '';
+
+    $.$on('$routeChangeStart', function (scope, next, current) {
+      $.activeTab = next.$$route.activeTab;
+    });
+  }]);
 
 Date.parseISO = function (string) {
   var date = new Date(string);
