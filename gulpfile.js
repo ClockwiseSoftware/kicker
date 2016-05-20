@@ -3,8 +3,6 @@ process.env.DISABLE_NOTIFIER = true;
 var elixir = require('laravel-elixir');
 
 require('laravel-elixir-html-minify');
-require('laravel-elixir-clear');
-
 elixir.config.sourcemaps = false;
 
 /*

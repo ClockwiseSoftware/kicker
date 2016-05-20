@@ -32,7 +32,14 @@ app.controller('CreateGameCtrl', [
       $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
       $.game.validate();
     };
-    
+
+    $.orderPlayers = function (player) {
+      if ($.currentPlayer.id == player.id)
+        return 1;
+
+      return player.name;
+    };
+
     $.createGame = function createGame() {
       Match.create({}, $.game.getFormData()).$promise
         .then(function () {

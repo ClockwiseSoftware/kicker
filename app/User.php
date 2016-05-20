@@ -66,7 +66,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'email',
+        'facebook_id', 'is_admin'
     ];
 
     public function generateTempPassword($length = 32)
