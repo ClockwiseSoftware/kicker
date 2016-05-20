@@ -47,7 +47,13 @@ app.controller('CreateGameCtrl', [
           $location.path('/');
         })
         .catch(function (res) {
-          $.errors = res.data;
+          if (res.status === 422) {
+            $.errors = res.data;
+          } else {
+            $.errors = {
+              text: ['Something terrible has happened. Please, try again later!']
+            };
+          }
         });
     };
 
