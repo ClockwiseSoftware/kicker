@@ -68,7 +68,6 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('game_unique', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
-            $createdAt = time();
             $secondsDelta = (int)$parameters[0];
 
             $usersAIds = $data['games_users_a'];
@@ -91,8 +90,9 @@ class AppServiceProvider extends ServiceProvider
                             ->where('team_b_points', $teamAPoints);
                     });
                 })
-                ->where(DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $createdAt - $secondsDelta)
-                ->with(['gamesUsersA', 'gamesUsersB'])
+                ->where(
+                    DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', DB::raw("UNIX_TIMESTAMP(NOW()) - {$secondsDelta}")
+                )->with(['gamesUsersA', 'gamesUsersB'])
                 ->get();
 
             foreach ($games as $game) {
