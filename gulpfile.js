@@ -24,9 +24,7 @@ elixir(function (mix) {
     'games.less',
     'create-game.less',
     'chart.less',
-    'edit-users.less',
     'profile.less',
-    'checkboxes.less',
     'theme.less'
   ], 'resources/assets/css/compiled-less.css', 'resources/assets/less');
 

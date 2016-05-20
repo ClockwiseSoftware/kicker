@@ -1,7 +1,7 @@
 @import "variables";
 
 .game-container {
-  background-color: rgb(255, 255, 255);
+  background-color: @game-container-color;
   padding: 20px;
   border-radius: 0.42em;
   margin-bottom: 0.7em;
@@ -44,7 +44,7 @@
 }
 
 .complain.not-active-complain {
-  color: #A9A9A9;
+  color: @complain-color;
 }
 
 .team-user .user-avatar {
@@ -82,7 +82,6 @@
 }
 
 .team .rating-delta {
-  background: #ccc;
   font-size: 12px;
   font-weight: 500;
   line-height: @rating-delta-size;
@@ -97,15 +96,15 @@
 
 .team .rating-delta.lose {
   color: @color-loser;
-  background-color: #FFE1E1;
-  border-color: #FFC7C7;
+  background-color: @loser-delta-background;
+  border-color: @loser-delta-border-color;
 }
 
 
 .team .rating-delta.win {
   color: @color-winner;
-  background-color: #C4D2FF;
-  border-color: #A0ACD8;
+  background-color: @winner-delta-background;
+  border-color: @winner-delta-border-color;
 }
 
 .team-a {

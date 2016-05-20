@@ -1,10 +1,14 @@
 @import "variables";
 
 body {
-  background: #E4E4E4 url("../img/noise-bg.png");
+  background: @body-background-color url("../img/noise-bg.png");
   font-family: 'Roboto', sans-serif;
   font-size: @base-font-size;
   height: auto;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
 
 .ngdialog.ngdialog-theme-default {
@@ -30,11 +34,11 @@ md-switch {
 }
 
 .list-group-item.active {
-  background: lighten(@color-winner, 11%);
+  background: @list-item-color;
   border: none;
 }
 .list-group-item.active:hover {
-  background: lighten(@color-winner, 15%);
+  background: @list-item-hover-color;
 }
 
 .md-button.md-icon-button {
@@ -111,17 +115,13 @@ md-switch {
 }
 
 .content-wrap {
-  background-color: rgb(255, 255, 255);
+  background-color: @game-container-color;
   padding: 20px;
   border-radius: 6px;
   margin-bottom: 10px;
   display: table;
   max-width: 768px;
   box-shadow: @box-shadow-default;
-}
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
 }
 
 .sign-errors {
@@ -184,34 +184,6 @@ md-switch {
   border-radius: 0 0 6px 6px;
 }
 
-.sign-with {
-  display: block;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  color: rgba(255, 255, 255, 0.6);
-  background-color: #3b5998;
-  text-align: center;
-  border-radius: 6px;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.sign-with:hover, .sign-with:focus {
-  color: white;
-  text-decoration: none;
-}
-
-.sign-choices {
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-}
-
-.sign-controls {
-  margin-top: 30px;
-}
-
 .complain-user {
   padding: 0;
 }
@@ -236,14 +208,6 @@ md-switch {
   white-space: nowrap;
   padding: 5px;
   max-width: 250px;
-}
-
-.see-all-complainers {
-  color: rgba(230, 229, 231, 0.8);
-}
-
-.see-all-complainers:hover {
-  color: #e6e5e7;
 }
 
 .complain-user-list {
@@ -279,7 +243,7 @@ md-switch {
   }
 
   .team-a {
-    border-right: 1px solid rgba(212, 212, 212, 0.6);
+    border-right: 1px solid @game-border-color;
   }
 }
 
