@@ -1,8 +1,8 @@
 app.controller('CreateGameCtrl', [
   '$scope', '$http', '$location',
-  '$filter', 'ngDialog', 'Player',
-  'Match', 'CreateGameService',
-  function ($, $http, $location, $filter, ngDialog, Player, Match, CreateGameService) {
+  '$filter', '$timeout', 'ngDialog',
+  'Player', 'Match', 'CreateGameService',
+  function ($, $http, $location, $filter, $timeout, ngDialog, Player, Match, CreateGameService) {
     $.loading = false;
     $.errors = {};
     $.points = _.range(0, 10);
@@ -41,12 +41,21 @@ app.controller('CreateGameCtrl', [
     };
 
     $.createGame = function createGame() {
+      var timeoutId = $timeout(function () {
+        $.loading = true;
+      }, 500);
+
       Match.create({}, $.game.getFormData()).$promise
         .then(function () {
+          $timeout.cancel(timeoutId);
           $.loading = false;
+
           $location.path('/');
         })
         .catch(function (res) {
+          $timeout.cancel(timeoutId);
+          $.loading = false;
+
           if (res.status === 422) {
             $.errors = res.data;
           } else {
