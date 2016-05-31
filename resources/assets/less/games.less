@@ -1,12 +1,11 @@
 @import "variables";
 
 .game-container {
-  background-color: rgb(255, 255, 255);
+  background-color: @game-container-color;
   padding: 20px;
   border-radius: 0.42em;
   margin-bottom: 0.7em;
   display: table;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .games-pages {
@@ -34,6 +33,18 @@
 .team-user > * {
   display: inline-block;
   vertical-align: middle;
+}
+
+.complain {
+  transition-duration: 400ms;
+}
+
+.complain.active-complain {
+  color: @color-loser;
+}
+
+.complain.not-active-complain {
+  color: @complain-color;
 }
 
 .team-user .user-avatar {
@@ -72,23 +83,28 @@
 
 .team .rating-delta {
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 500;
   line-height: @rating-delta-size;
   position: absolute;
   border-radius: 50%;
-  color: #ccc;
   text-align: center;
   min-width: @rating-delta-size;
   bottom: -5px;
   right: -5px;
+  border: 1px solid;
 }
 
 .team .rating-delta.lose {
-  background: @color-loser;
+  color: @color-loser;
+  background-color: @loser-delta-background;
+  border-color: @loser-delta-border-color;
 }
 
+
 .team .rating-delta.win {
-  background: @color-winner;
+  color: @color-winner;
+  background-color: @winner-delta-background;
+  border-color: @winner-delta-border-color;
 }
 
 .team-a {
@@ -126,7 +142,7 @@
 
 .game-information .controls {
   position: absolute;
-  right: 0;
+  right: -10px;
 }
 
 .game-information .controls .control-button {
@@ -138,29 +154,6 @@
 
 .game-information .controls .control-button > * {
   vertical-align: middle;
-}
-
-.create-game-container {
-  background-color: rgb(255, 255, 255);
-  padding: 20px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  display: table;
-}
-
-.create-game-container .team-title {
-  text-align: center;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 0 0 20px 0;
-}
-
-.create-game-container .error {
-  color: @color-error;
-}
-
-.games-container .game-container, .create-game-container {
-  max-width: 760px !important;
 }
 
 .game-graphic .name {
@@ -223,7 +216,7 @@
   }
 
   .game-information .controls {
-    bottom: 0;
+    bottom: -10px;
   }
 
   .game-graphic .team-b {
@@ -231,12 +224,12 @@
   }
 
   .game-graphic .team-a {
-    padding-right: 10px;
+    padding-right: 9px;
   }
 
   .team .rating-delta {
     line-height: @rating-delta-size * 0.7;
-    min-width: @rating-delta-size * 0.7;
+    min-width: @rating-delta-size * 0.8;
     right: -3px;
   }
 }
@@ -252,14 +245,14 @@
   }
 
   .game-graphic .team-a {
-    padding-right: 10px;
+    padding-right: 9px;
   }
 }
 
 /* SM */
 @media (max-width: @screen-sm-max) {
   .game-information .controls {
-    bottom: 0;
+    bottom: -10px;
   }
 
   .game-graphic {
@@ -289,7 +282,7 @@
   }
 
   .game-information .controls {
-    top: 0;
+    top: -10px;
   }
 }
 
@@ -301,9 +294,5 @@
 
   .game-graphic .name {
     width: 100px;
-  }
-
-  .game-information .controls {
-    top: 0;
   }
 }

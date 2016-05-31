@@ -1,74 +1,81 @@
 app.controller('UserProfileCtrl', [
   '$scope', '$http', '$timeout',
-  'ngDialog', 'Upload', 'Player',
-  function ($scope, $http, $timeout, ngDialog, Upload, Player) {
-    $scope.player = null;
-    $scope.errors = {};
-    $scope.loading = true;
-    $scope.showAlert = false;
+  '$mdToast', '$mdDialog', 'Upload',
+  'Player',
+  function ($, $http, $timeout, $mdToast, $mdDialog, Upload, Player) {
+    $.player = null;
+    $.errors = {};
+    $.loading = true;
 
-    $scope.openDialog = function openDialog() {
-      ngDialog.open({
-        template: 'delete-confirmation',
-        scope: $scope
-      });
+    $.openDialog = function openDialog(ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Do you really want to delete your profile?')
+        .targetEvent(ev)
+        .ok('Delete')
+        .cancel('Cancel');
+
+      $mdDialog.show(confirm)
+        .then(function() {
+          $.deletePlayer($.player);
+        });
     };
 
-    Player.get().$promise
+    Player.me().$promise
       .then(function (player) {
-        $scope.loading = false;
-        $scope.player = player;
+        $.loading = false;
+        $.player = player;
       });
 
-    $scope.deletePlayer = function (player) {
+    $.deletePlayer = function (player) {
       Player.delete({id: player.id}).$promise
         .then(function () {
           window.location.href = '/logout';
         });
     };
 
-    $scope.saveChanges = function (player) {
-      $scope.errors = {};
-      $scope.loading = true;
+    $.saveChanges = function (player) {
+      $.errors = {};
+      $.loading = true;
 
-      Player.update({id: $scope.player.id}, player).$promise
+      Player.update({id: $.player.id}, player).$promise
         .then(function (res) {
-          $scope.loading = false;
+          $.loading = false;
           showAlert();
         })
         .catch(function (res) {
-          $scope.loading = false;
-          $scope.errors = res.data;
+          $.loading = false;
+          $.errors = res.data;
         });
     };
 
-    $scope.$watch('avatar', function () {
-      $scope.upload($scope.avatar);
+    $.$watch('avatar', function () {
+      $.upload($.avatar);
     });
 
-    $scope.upload = function (avatar) {
-      $scope.errors = {};
+    $.upload = function (avatar) {
+      $.errors = {};
       if (avatar && !avatar.$error) {
         Upload.upload({
-          url: '/user/' + $scope.player.id + '/avatar',
+          url: '/user/' + $.player.id + '/avatar',
           data: {
             avatar: avatar
           }
         }).then(function (res) {
-          $scope.player.avatar_url = res.data.avatar + '?' + (new Date()).getTime();
+          $.player.avatar_url = res.data.avatar + '?' + (new Date()).getTime();
           showAlert();
         }).catch(function (res) {
-          $scope.errors = res.data;
+          $.errors = res.data;
         });
       }
     };
 
     function showAlert() {
-      $scope.showAlert = true;
-
-      $timeout(function () {
-        $scope.showAlert = false;
-      }, 2000);
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent('Changes have been saved!')
+          .position('bottom right')
+          .hideDelay(2000)
+      );
     }
   }
 ]);

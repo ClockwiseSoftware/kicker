@@ -9,12 +9,40 @@ table.user-profile-table th * {
   text-align: center;
   width: 100%;
   height: auto;
-  padding-bottom: 20px;
+  padding: 20px 0;
 }
 
 .user-profile .user-avatar-container .user-avatar {
   margin: 0 auto;
   cursor: pointer;
+}
+
+.save-button {
+  color: @color-winner !important;
+
+  &:hover {
+    background: #fff !important;
+  }
+}
+
+.delete-button {
+  color: @color-loser !important;
+
+  &:hover {
+    background: #fff !important;
+  }
+}
+
+.no-touch {
+  .delete-button:hover {
+    background: @color-loser !important;
+    color: @button-touch-background-color !important;
+  }
+
+  .save-button:hover {
+    background: @color-winner !important;
+    color: @button-touch-background-color !important;
+  }
 }
 
 .user-profile .user-avatar-container .user-avatar:hover {

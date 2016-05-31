@@ -66,7 +66,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'email',
+        'facebook_id', 'is_admin'
     ];
 
     public function generateTempPassword($length = 32)
@@ -99,6 +100,15 @@ class User extends Authenticatable
     public function setPassword($password)
     {
         $this->password = bcrypt($password);
+    }
+
+    /**
+     * @param $password
+     * @return bool
+     */
+    public function checkPassword($password)
+    {
+        return $this->password === bcrypt($password);
     }
 
     public function getAvatarUrl()

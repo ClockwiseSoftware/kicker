@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('users_ids', function($attribute, $value, $parameters, $validator) {
-            $usersIdsCount = isset($parameters[0]) ? (int) $parameters[0] : 2;
+        Validator::extend('users_ids', function ($attribute, $value, $parameters, $validator) {
+            $usersIdsCount = isset($parameters[0]) ? (int)$parameters[0] : 2;
 
             if (!is_array($value))
                 return false;
@@ -26,24 +27,24 @@ class AppServiceProvider extends ServiceProvider
             $ids = [];
 
             foreach ($value as $item) {
-                $item = (int) $item;
+                $item = (int)$item;
 
                 if (!$item)
                     return false;
 
-                $ids[] = (int) $item;
+                $ids[] = (int)$item;
             }
 
             if (count($ids) !== $usersIdsCount)
                 return false;
 
-            $usersCount = (int) User::whereIn('id', $ids)->count();
+            $usersCount = (int)User::whereIn('id', $ids)->count();
 
             return $usersCount === $usersIdsCount;
         });
 
         // @TODO refactoring of validation rule
-        Validator::extend('unique_compare_to', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('unique_compare_to', function ($attribute, $value, $parameters, $validator) {
             $allData = $validator->getData();
             $compareTo = $parameters[0];
             $compareValue = $allData[$compareTo];
@@ -52,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
                 for ($i = 0; $i < count($value); $i++) {
                     $currentValue = $value[$i];
 
-                    for ($j = 0; $j< count($compareValue); $j++) {
+                    for ($j = 0; $j < count($compareValue); $j++) {
                         if ($currentValue === $compareValue[$j]) {
                             return false;
                         }
@@ -64,34 +65,34 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // @TODO refactoring of validation rule
-        Validator::extend('game_unique', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('game_unique', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
 
-            $createdAt = time();
-            $secondsDelta = (int) $parameters[0];
+            $secondsDelta = (int)$parameters[0];
 
             $usersAIds = $data['games_users_a'];
             $usersBIds = $data['games_users_b'];
-            $teamAPoints = (int) $data['team_a_points'];
-            $teamBPoints = (int) $data['team_b_points'];
+            $teamAPoints = (int)$data['team_a_points'];
+            $teamBPoints = (int)$data['team_b_points'];
 
             $games = Game::where(
-                function($query) use ($teamAPoints, $teamBPoints) {
+                function ($query) use ($teamAPoints, $teamBPoints) {
                     // ... WHERE (
                     //     (`team_a_points` = "$teamAPoints" AND `team_b_points` = "$teamBPoints")
                     //     OR
                     //     (`team_a_points` = "$teamBPoints" AND `team_b_points` = "$teamAPoints")
                     // ) ...
-                    return $query->where(function($query) use ($teamAPoints, $teamBPoints) {
+                    return $query->where(function ($query) use ($teamAPoints, $teamBPoints) {
                         return $query->where('team_a_points', $teamAPoints)
                             ->where('team_b_points', $teamBPoints);
-                    })->orWhere(function($query) use ($teamAPoints, $teamBPoints) {
+                    })->orWhere(function ($query) use ($teamAPoints, $teamBPoints) {
                         return $query->where('team_a_points', $teamBPoints)
                             ->where('team_b_points', $teamAPoints);
                     });
                 })
-                ->where(DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', $createdAt - $secondsDelta)
-                ->with(['gamesUsersA', 'gamesUsersB'])
+                ->where(
+                    DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', DB::raw("UNIX_TIMESTAMP(NOW()) - {$secondsDelta}")
+                )->with(['gamesUsersA', 'gamesUsersB'])
                 ->get();
 
             foreach ($games as $game) {
@@ -114,6 +115,10 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return true;
+        });
+
+        Validator::extend('old_password', function ($attribute, $value, $parameters) {
+            return Hash::check($value, $parameters[0]);
         });
     }
 

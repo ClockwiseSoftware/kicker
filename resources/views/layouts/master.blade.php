@@ -6,10 +6,8 @@
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
-        {{-- Google gonts CDN --}}
-        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-        <link rel='stylesheet' href="https://apiary.a.ssl.fastly.net/assets/website-b64c00d70e7971fc4f7a.css">
+        {{-- Roboto font on Google fonts --}}
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
         {{-- Font awesome CDN --}}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -17,7 +15,7 @@
         {{ Html::style('css/main.css') }}
         @yield('styles')
     </head>
-    <body>
+    <body class="no-touch">
         <nav class="navbar navbar-default navbar-fixed-top navbar-center">
             <div class="container">
                 <div class="navbar-header">
@@ -28,15 +26,15 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav navbar-center">
-                        <li><a href="/#/">Games</a></li>
-                        <li><a href="/#/chart">Chart</a></li>
+                        <li ng-class="{active: activeTab == 'games'}"><a href="/#/">Games</a></li>
+                        <li ng-class="{active: activeTab == 'chart'}"><a href="/#/chart">Chart</a></li>
                         @if(!Auth::check())
-                            <li><a href="/#/signin">Login</a></li>
-                            <li><a href="/#/signup">Register</a></li>
+                            <li ng-class="{active: activeTab == 'signin'}"><a href="/#/signin">Login</a></li>
+                            <li ng-class="{active: activeTab == 'signup'}"><a href="/#/signup">Register</a></li>
                         @else
-                            <li><a href="/#/game/create">Add game</a></li>
-                            <li><a href="/#/user/profile">Profile</a></li>
-                            <li><a href="/logout">Logout</a></li>
+                            <li ng-class="{active: activeTab == 'create-game'}"><a href="/#/game/create">Add game</a></li>
+                            <li ng-class="{active: activeTab == 'profile'}"><a href="/#/user/profile">Profile</a></li>
+                            <li ng-class="{active: activeTab == 'logout'}"><a href="/logout">Logout</a></li>
                         @endif
                     </ul>
                 </div>
@@ -44,7 +42,7 @@
         </nav>
         <div class="container main-container">
             <div class="content">
-                <div class="row games-container" ng-show="currentPlayer.deleted">
+                <div class="row games-container" ng-cloak ng-show="currentPlayer.deleted">
                     <div class="col-xs-12 col-sm-12 col-md-9 col-lg-6 game-container col-centered text-center">
                         Your profile is not active. You can <a href="javascript:void(0)" ng-click="restoreProfile()">
                             restore profile</a> to get full access.
@@ -53,9 +51,13 @@
 
                 <div ng-view></div>
             </div>
+            <div class="clearfix"></div>
         </div>
+        <md-progress-linear ng-cloak ng-show="loading" md-mode="query"></md-progress-linear>
+        <div class="loader-helper"></div>
 
         {{ Html::script('js/app.js') }}
         @yield('scripts')
+
     </body>
 </html>

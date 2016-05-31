@@ -40,10 +40,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'GameController@index')->name('home');
     Route::get('game/{id}', 'GameController@one')->where('id', '[0-9]+');
     Route::group(['middleware' => ['auth', 'active']], function () {
-        Route::post('game', 'GameController@create');
         Route::put('game/{id}', 'GameController@update')->where('id', '[0-9]+');
         Route::delete('game/{id}', 'GameController@delete')->where('id', '[0-9]+');
+        Route::get('game/{id}/delete', 'GameController@delete')->where('id', '[0-9]+');
         Route::get('game/{id}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
+    });
+    Route::group(['middleware' => ['auth']], function () {
+        Route::post('game', 'GameController@create');
     });
 
 

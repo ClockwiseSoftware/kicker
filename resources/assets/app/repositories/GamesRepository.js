@@ -1,93 +1,92 @@
-app.factory('GamesRepository', ['$http', 'Game', function($http, Game) {
-    function GamesRepository() {
-        var self = this;
+app.factory('GamesRepository', ['$http', 'Game', function ($http, Game) {
+  function GamesRepository() {
+    var _this = this;
 
-        this.storage = [];
-        this.loading = true;
-        this.lastpage = 0;
-        this.currentpage = 0;
-        this.filters = {
-            page: this.currentpage,
-            usersGames: false
-        };
+    this.storage = [];
+    this.loading = true;
+    this.lastpage = 0;
+    this.currentpage = 0;
+    this.filters = {
+      page: this.currentpage,
+      usersGames: false
+    };
 
-        var indexesMap = {};
+    var indexesMap = {};
 
-        this.add = function (data) {
-            angular.forEach(data, function(data) {
-                var game = new Game(data);
-                this.push(game);
+    this.add = function (data) {
+      angular.forEach(data, function (data) {
+        var game = new Game(data);
+        this.push(game);
 
-                indexesMap[game.id] = this.length - 1;
-            }, self.storage);
-        };
+        indexesMap[game.id] = this.length - 1;
+      }, _this.storage);
+    };
 
-        this.get = function (id) {
-            var storageIndex = indexesMap[id];
+    this.get = function (id) {
+      var storageIndex = indexesMap[id];
 
-            if (self.storage.hasOwnProperty(storageIndex))
-                return self.storage[storageIndex];
+      if (_this.storage.hasOwnProperty(storageIndex))
+        return _this.storage[storageIndex];
 
-            return null;
-        };
+      return null;
+    };
 
-        this.update = function (id, data) {
-            var game = self.get(id);
-            angular.copy(new Game(data), game);
+    this.update = function (id, data) {
+      var game = _this.get(id);
+      angular.copy(new Game(data), game);
 
-            return game;
-        };
+      return game;
+    };
 
-        this.load = function (flush) {
-            if (flush) {
-                // Flush all games and their data
-                self.currentpage = 0;
-            } else {
-                self.currentpage++;
-            }
+    this.load = function (flush) {
+      if (flush) {
+        // Flush all games and their data
+        _this.currentpage = 0;
+      } else {
+        _this.currentpage++;
+      }
 
-            var data = (function (data) {
-                var copy = {};
+      var data = (function (data) {
+        var copy = {};
 
-                for (var prop in data) {
-                    if (!data.hasOwnProperty(prop))
-                        continue;
+        for (var prop in data) {
+          if (!data.hasOwnProperty(prop))
+            continue;
 
-                    copy[prop] = data[prop];
+          copy[prop] = data[prop];
 
-                    if (typeof(copy[prop]) === 'boolean') {
-                        copy[prop] *= 1;
-                    }
-                }
+          if (typeof(copy[prop]) === 'boolean') {
+            copy[prop] *= 1;
+          }
+        }
 
-                return copy;
-            })(this.filters);
+        return copy;
+      })(this.filters);
 
-            data.page = this.currentpage;
+      data.page = this.currentpage;
+      _this.loading = true;
+      return $http({
+        url: '/',
+        method: 'GET',
+        params: data
+      }).success(function (response) {
+        if (flush) {
+          _this.storage.splice(0, _this.storage.length);
+        }
 
-            self.loading = true;
-            $http({
-                url: '/',
-                method: 'GET',
-                params: data
-            }).success(function(response) {
-                if (flush) {
-                    self.storage.splice(0, self.storage.length);
-                }
+        if (response.data.length > 0) {
+          _this.currentpage = response.current_page;
+          _this.lastpage = response.last_page;
 
-                if (response.data.length > 0) {
-                    self.currentpage = response.current_page;
-                    self.lastpage = response.last_page;
+          _this.add(response.data);
+        }
 
-                    self.add(response.data);
-                }
+        _this.loading = false;
+      });
+    };
 
-                self.loading = false;
-            });
-        };
+    return this;
+  }
 
-        return this;
-    }
-
-    return GamesRepository;
+  return GamesRepository;
 }]);

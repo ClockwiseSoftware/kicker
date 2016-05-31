@@ -1,42 +1,87 @@
-app.controller('CreateGameCtrl', ['$scope', '$http', '$location', '$filter', 'CreateGameService', 'UserSearch',
-    function($scope, $http, $location, $filter, CreateGameService, UserSearch) {
-        $scope.loading = false;
-        $scope.game = new CreateGameService();
-        $scope.errors = {};
+app.controller('CreateGameCtrl', [
+  '$scope', '$http', '$location',
+  '$filter', '$timeout', 'ngDialog',
+  'Player', 'Match', 'CreateGameService',
+  function ($, $http, $location, $filter, $timeout, ngDialog, Player, Match, CreateGameService) {
+    $.loading = false;
+    $.errors = {};
+    $.points = _.range(0, 10);
+    $.players = [];
+    $.game = new CreateGameService();
 
-        $scope.findUsers = function (search) {
-            UserSearch.find(search, $scope);
-        };
+    $.openDialog = function openDialog() {
+      ngDialog.open({
+        template: 'html/dialogues/select-player.html',
+        scope: $,
+        closeByNavigation: true
+      });
+    };
 
-        $scope.onSelectUser = function (user) {
-            UserSearch.remove(user, $scope);
-        };
+    $.selectPlayer = function selectPlayer(playerId) {
+      playerId = parseInt(playerId);
+      var player = _.find($.players, function (player) {
+        return player.id === playerId;
+      });
+      player.selected = true;
 
-        $scope.onRemoveUser = function (user) {
-            UserSearch.add(user, $scope);
-        };
+      var prevPlayer = $.game.players[$.game.activeTeam][$.game.activeIndex];
+      if (prevPlayer && prevPlayer.hasOwnProperty('id')) {
+        prevPlayer.selected = false;
+      }
 
-        $scope.create = function() {
-            $scope.errors = {};
-            $scope.loading = true;
+      $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
+      $.game.validate();
+    };
 
-            $http.post('/game', $scope.game.getFormData()).error(function(response) {
-                $scope.errors = response;
-            }).then(function() {
-                $scope.loading = false;
-                $location.path('/');
-            }, function () {
-                $scope.loading = false;
-            });
-        };
+    $.orderPlayers = function (player) {
+      if ($.currentPlayer.id == player.id)
+        return 1;
 
-        var $playedAt = $('#playedAt');
-        $playedAt.datetimepicker({
-            format: 'MM/DD/YYYY HH:mm',
-            maxDate: (new Date())
+      return player.name;
+    };
+
+    $.createGame = function createGame() {
+      var timeoutId = $timeout(function () {
+        $.loading = true;
+      }, 500);
+
+      Match.create({}, $.game.getFormData()).$promise
+        .then(function () {
+          $timeout.cancel(timeoutId);
+          $.loading = false;
+
+          $location.path('/');
+        })
+        .catch(function (res) {
+          $timeout.cancel(timeoutId);
+          $.loading = false;
+
+          if (res.status === 422) {
+            $.errors = res.data;
+          } else {
+            $.errors = {
+              text: ['Something terrible has happened. Please, try again later!']
+            };
+          }
         });
-        $playedAt.on('dp.change', function() {
-            $scope.game.playedAt = $(this).val();
+    };
+
+    Player.get().$promise
+      .then(function (res) {
+        $.players = res.data;
+        _.each($.players, function (player) {
+          player.selected = false;
+          player.avatar_url = player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png';
         });
-    }
+      });
+
+    var $playedAt = jQuery('#played-at');
+    $playedAt.datetimepicker({
+      format: 'MM/DD/YYYY HH:mm',
+      maxDate: (new Date())
+    });
+    $playedAt.on('dp.change', function() {
+      $.game.playedAt = jQuery(this).val();
+    });
+  }
 ]);

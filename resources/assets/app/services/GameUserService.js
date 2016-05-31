@@ -1,27 +1,27 @@
-app.factory('GameUser', ['$http', 'User', function($http, User) {
-    function GameUser(data) {
-        var obj = this;
+app.factory('GameUser', ['$http', 'User', function ($http, User) {
+  function GameUser(data) {
+    var _this = this;
 
-        this.setData = function(data) {
-            angular.extend(this, data);
+    this.setData = function (data) {
+      angular.extend(this, data);
 
-            obj.user = new User(obj.user);
-        };
-        
-        this.getDelta = function() {
-            return obj.rating_after - obj.rating_before;
-        };
+      _this.user = new User(_this.user);
+    };
 
-        this.userPointsClass = function() {
-            return obj.getDelta() > 0 ? 'win' : 'lose';
-        };
+    this.getDelta = function () {
+      return _this.rating_after - _this.rating_before;
+    };
 
-        if (data) {
-            this.setData(data);
-        }
+    this.userPointsClass = function () {
+      return _this.getDelta() >= 0 ? 'win' : 'lose';
+    };
 
-        return this;
+    if (data) {
+      this.setData(data);
     }
 
-    return GameUser;
+    return this;
+  }
+
+  return GameUser;
 }]);
