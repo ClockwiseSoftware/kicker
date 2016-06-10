@@ -81,6 +81,11 @@ class Game extends Model
         }
     }
 
+    public function getPointsDelta()
+    {
+        return abs($this->team_a_points - $this->team_b_points);
+    }
+
     /**
      * @param $value
      * @return $this
@@ -160,20 +165,20 @@ class Game extends Model
             return false;
 
         $gameResult = $this->getGameResult();
-        list($teamARatings, $teamBRatings) = GameProcessor::calculateRatingForTeams(
-            $teamAUsers, $teamBUsers, $gameResult
+        $teamRatings = GameProcessor::calculateRatingForTeams(
+            $teamAUsers, $teamBUsers, $gameResult, $this->getPointsDelta()
         );
 
         $teams = [
             [
                 'teamIndex' => $this::TEAM_A_INDEX,
                 'users' => $teamAUsers,
-                'ratings' => $teamARatings,
+                'ratings' => $teamRatings[GameProcessor::TEAM_A],
                 'gameResult' => $gameResult
             ], [
                 'teamIndex' => $this::TEAM_B_INDEX,
                 'users' => $teamBUsers,
-                'ratings' => $teamBRatings,
+                'ratings' => $teamRatings[GameProcessor::TEAM_B],
                 'gameResult' => GameProcessor::oppositeResult($gameResult)
             ]
         ];
