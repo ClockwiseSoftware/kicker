@@ -75,7 +75,10 @@ class GameController extends Controller
         $this->validate($request, $this->validationRules());
         $game = Game::create($request->all());
 
-        return response($game);
+        if ($game)
+            return response($game);
+
+        return response($game, 400);
     }
 
     public function update(Request $request, $id)
@@ -84,16 +87,19 @@ class GameController extends Controller
         $game = Game::findOrFail($id);
 
         /* @var $game Game */
-        $game->update($request->all());
+        if ($game->update($request->all()))
+            return response($game);
 
-        return response($game);
+        return response($game, 500);
     }
 
     public function delete(Request $request, $id)
     {
         $game = Game::findOrFail($id);
-        $game->delete();
 
-        return redirect()->route('home');
+        if ($game->delete())
+            return redirect()->route('home');
+
+        return response($game, 500);
     }
 }
