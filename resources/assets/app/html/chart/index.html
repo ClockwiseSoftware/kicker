@@ -53,7 +53,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="user in users|orderBy:orderByField:reverseSort" ng-class="me.id === user.id ? 'current-user' : ''">
+            <tr ng-repeat="user in users|orderBy:orderByField:reverseSort|storm3dFilter:currentPlayer.id" ng-class="me.id === user.id ? 'current-user' : ''">
                 <td>{{ user.index }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.rating }}</td>

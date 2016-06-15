@@ -18,14 +18,7 @@ elixir.config.sourcemaps = false;
 
 elixir(function (mix) {
   mix.less([
-    'main.less',
-    'navbar.less',
-    'sign.less',
-    'games.less',
-    'create-game.less',
-    'chart.less',
-    'profile.less',
-    'theme.less'
+    '*.less'
   ], 'resources/assets/css/compiled-less.css', 'resources/assets/less');
 
   // Main assets
@@ -79,7 +72,7 @@ elixir(function (mix) {
     'app/directives/WindowBottomDirective.js',
 
     // Filters
-    'app/filters/IsEmptyFilter.js',
+    'app/filters/*.js',
 
     // Chart
     'app/services/UserService.js',
