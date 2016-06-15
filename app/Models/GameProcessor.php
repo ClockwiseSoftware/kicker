@@ -11,6 +11,7 @@ class GameProcessor
     const DRAW = 0.5;
 
     const BASE_POINTS = 1;
+    const MAX_DELTA = 100;
 
     const TEAM_A = 0;
     const TEAM_B = 1;
@@ -23,8 +24,9 @@ class GameProcessor
     protected function countDelta($ratingWinner, $ratingLoser, $pointsDelta)
     {
         $e = 1 / (1 + pow(10, ($ratingLoser - $ratingWinner) / 400));
+        $result = (int) (static::BASE_POINTS * $pointsDelta / $e);
 
-        return (int) (static::BASE_POINTS * $pointsDelta / $e);
+        return $result > static::MAX_DELTA ? static::MAX_DELTA : $result;
     }
 
     /**
