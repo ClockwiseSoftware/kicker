@@ -81,6 +81,11 @@ class Game extends Model
         }
     }
 
+    public function getPointsDelta()
+    {
+        return abs($this->team_a_points - $this->team_b_points);
+    }
+
     /**
      * @param $value
      * @return $this
@@ -123,13 +128,13 @@ class Game extends Model
             $user->rollbackStats($gameResult);
 
             if (!$user->save()) {
-                // do something...
+                return false;
             }
         }
 
         $this->status = static::STATUS_CANCELED;
         if (!$this->save()) {
-            // do something...
+            return false;
         }
 
         return $this;
@@ -148,7 +153,7 @@ class Game extends Model
         $this->status = static::STATUS_ACTIVE;
 
         if (!$this->save()) {
-            // do something ...
+            return false;
         }
 
         return $this;
@@ -160,20 +165,20 @@ class Game extends Model
             return false;
 
         $gameResult = $this->getGameResult();
-        list($teamARatings, $teamBRatings) = GameProcessor::calculateRatingForTeams(
-            $teamAUsers, $teamBUsers, $gameResult
+        $teamRatings = GameProcessor::calculateRatingForTeams(
+            $teamAUsers, $teamBUsers, $gameResult, $this->getPointsDelta()
         );
 
         $teams = [
             [
                 'teamIndex' => $this::TEAM_A_INDEX,
                 'users' => $teamAUsers,
-                'ratings' => $teamARatings,
+                'ratings' => $teamRatings[GameProcessor::TEAM_A],
                 'gameResult' => $gameResult
             ], [
                 'teamIndex' => $this::TEAM_B_INDEX,
                 'users' => $teamBUsers,
-                'ratings' => $teamBRatings,
+                'ratings' => $teamRatings[GameProcessor::TEAM_B],
                 'gameResult' => GameProcessor::oppositeResult($gameResult)
             ]
         ];
@@ -198,7 +203,7 @@ class Game extends Model
                 $user->changeStats($gameResult);
 
                 if (!$user->save()) {
-                    // do something...
+                    return false;
                 }
             }
         }
@@ -218,82 +223,125 @@ class Game extends Model
     {
         $self = null;
 
-        DB::transaction(function () use ($self, $attributes) {
-            $self = parent::create($attributes);
-            $chunkSize = 50;
+        try {
+            DB::transaction(function () use (&$self, $attributes) {
+                $self = parent::create($attributes);
+                $chunkSize = 50;
 
-            if (!$self)
-                return null;
+                if (!$self) {
+                    throw new \ErrorException('Could not create Game');
+                }
 
-            /* @var static $self */
-            $countAllGames = self::count();
-            $currentPosition = $self->currentPosition();
-            $isLastGame = ($currentPosition + 1 === $countAllGames) ? true : false;
+                /* @var static $self */
+                $countAllGames = self::count();
+                $currentPosition = $self->currentPosition();
+                $isLastGame = ($currentPosition + 1 === $countAllGames) ? true : false;
 
-            // If new game has a last position just adding it to the end without recalculation.
-            if ($isLastGame) {
-                $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
-                $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
-                $self->setUsers($usersATeam, $usersBTeam);
+                // If new game has a last position just adding it to the end without recalculation.
+                if ($isLastGame) {
+                    $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
+                    $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
 
-                return $self;
-            } else {
-                static::where('played_at', '>', $self->played_at)
-                    ->orderBy('played_at', 'DESC')
-                    ->chunk($chunkSize, function($games) {
-                        foreach ($games as $game) {
-                            $game->cancel();
+                    if (!$self->setUsers($usersATeam, $usersBTeam)) {
+                        throw new \ErrorException('Could not set users for Game #' . $self->id);
+                    }
+
+                    return $self;
+                }
+
+                // Recalculate games which are dependent from added game.
+                while (true) {
+                    $games = static::where('played_at', '>', $self->played_at)
+                        ->where('status', self::STATUS_ACTIVE)
+                        ->orderBy('played_at', 'DESC')
+                        ->take($chunkSize)
+                        ->get();
+
+                    if (!$games->count())
+                        break;
+
+                    $games->each(function ($game) {
+                        if (!$game->cancel()) {
+                            throw new \ErrorException('Could not cancel Game #' . $game->id);
                         }
                     });
+                }
 
                 $usersATeam = User::whereIn('id', $attributes['games_users_a'])->get();
                 $usersBTeam = User::whereIn('id', $attributes['games_users_b'])->get();
-                $self->setUsers($usersATeam, $usersBTeam);
 
-                static::where('played_at', '>', $self->played_at)
-                    ->orderBy('played_at', 'ASC')
-                    ->chunk($chunkSize, function($games) {
-                        foreach ($games as $game) {
-                            $game->activate();
+                if (!$self->setUsers($usersATeam, $usersBTeam)) {
+                    throw new \ErrorException('Could not set users for Game #' . $self->id);
+                }
+
+                while (true) {
+                    $games = static::where('played_at', '>', $self->played_at)
+                        ->where('status', self::STATUS_CANCELED)
+                        ->orderBy('played_at', 'ASC')
+                        ->take($chunkSize)
+                        ->get();
+
+                    if (!$games->count())
+                        break;
+
+                    $games->each(function ($game) {
+                        if (!$game->activate()) {
+                            throw new \ErrorException('Could not activate Game #' . $game->id);
                         }
                     });
-            }
-
-            return $self;
-        });
+                }
+            });
+        } catch (\ErrorException $e) {
+            return false;
+        }
 
         return $self;
     }
 
     public function update(array $attributes = [], array $options = [])
     {
-        DB::transaction(function () use ($attributes, $options) {
-            $chunkSize = 50;
-            $currentGameId = $this->id;
-            $usersAIds = $attributes['games_users_a'];
-            $usersBIds = $attributes['games_users_b'];
-            $oldPlayedAt = strtotime($this->played_at);
-            $this->fill($attributes);
-            $newPlayedAt = strtotime($this->played_at);
-            $playedAt = date('c', min($oldPlayedAt, $newPlayedAt));
+        try {
+            DB::transaction(function () use ($attributes, $options) {
+                $chunkSize = 50;
+                $currentGameId = $this->id;
+                $usersAIds = $attributes['games_users_a'];
+                $usersBIds = $attributes['games_users_b'];
+                $oldPlayedAt = strtotime($this->played_at);
+                $this->fill($attributes);
+                $newPlayedAt = strtotime($this->played_at);
+                $playedAt = date('c', min($oldPlayedAt, $newPlayedAt));
 
-            static::where('played_at', '>=', $playedAt)
-                ->orWhere('id', '=', $this->id)
-                ->orderBy('played_at', 'DESC')
-                ->chunk($chunkSize, function ($games) {
-                    foreach ($games as $game) {
-                        $game->cancel();
-                    }
-                });
+                while (true) {
+                    $games = static::whereRaw("(played_at >= '{$playedAt}' OR id = {$this->id})")
+                        ->where('status', self::STATUS_ACTIVE)
+                        ->take($chunkSize)
+                        ->orderBy('played_at', 'DESC')
+                        ->get();
 
-            if (!$this->save()) {
-                // do something ...
-            }
+                    if (!$games->count())
+                        break;
 
-            static::where('status', static::STATUS_CANCELED)
-                ->orderBy('played_at', 'ASC')
-                ->chunk($chunkSize, function ($games) use ($currentGameId, $usersAIds, $usersBIds) {
-                    foreach ($games as $game) {
+                    $games->each(function ($game) {
+                        if (!$game->cancel()) {
+                            throw new \ErrorException('Could not cancel Game #' . $game->id);
+                        }
+                    });
+                }
+
+                if (!$this->save()) {
+                    throw new \ErrorException('Could not update Game #' . $this->id);
+                }
+
+                while (true) {
+                    $games = static::where('status', static::STATUS_CANCELED)
+                        ->orderBy('played_at', 'ASC')
+                        ->take($chunkSize)
+                        ->get();
+
+                    if (!$games->count())
+                        break;
+
+                    $games->each(function ($game) use ($currentGameId, $usersAIds, $usersBIds) {
                         $usersATeam = null;
                         $usersBTeam = null;
 
@@ -302,42 +350,69 @@ class Game extends Model
                             $usersBTeam = User::whereIn('id', $usersBIds)->get();
                         }
 
-                        $game->activate($usersATeam, $usersBTeam);
-                    }
-                });
-        });
+                        if (!$game->activate($usersATeam, $usersBTeam)) {
+                            throw new \ErrorException('Could not activate Game #' . $game->id);
+                        }
+                    });
+                }
+            });
+        } catch (\ErrorException $e) {
+            return false;
+        }
 
         return true;
     }
 
     public function delete()
     {
-        DB::transaction(function () {
-            $chunkSize = 50;
-            $playedAt = date('c', strtotime($this->played_at));
+        try {
+            DB::transaction(function () {
+                $chunkSize = 50;
+                $playedAt = date('c', strtotime($this->played_at));
 
-            static::where('played_at', '>=', $playedAt)
-                ->orWhere('id', '=', $this->id)
-                ->orderBy('played_at', 'DESC')
-                ->chunk($chunkSize, function ($games) {
-                    foreach ($games as $game) {
-                        $game->cancel();
-                    }
-                });
+                while (true) {
+                    $games = static::whereRaw("(played_at >= '{$playedAt}' OR id = {$this->id})")
+                        ->where('status', self::STATUS_ACTIVE)
+                        ->take($chunkSize)
+                        ->orderBy('played_at', 'DESC')
+                        ->get();
 
-            if (!parent::delete()) {
-                // do something ...
-            }
+                    if (!$games->count())
+                        break;
 
-            static::where('status', static::STATUS_CANCELED)
-                ->orderBy('played_at', 'ASC')
-                ->chunk($chunkSize, function ($games) {
-                    foreach ($games as $game) {
-                        $game->activate();
-                    }
-                });
+                    $games->each(function ($game) {
+                        if (!$game->cancel()) {
+                            throw new \ErrorException('Could not cancel Game #' . $game->id);
+                        }
+                    });
+                }
 
-            return true;
-        });
+                if (!parent::delete()) {
+                    throw new \ErrorException('Could not delete Game #' . $game->id);
+                }
+
+                while (true) {
+                    $games = static::where('status', static::STATUS_CANCELED)
+                        ->orderBy('played_at', 'ASC')
+                        ->take($chunkSize)
+                        ->get();
+
+                    if (!$games->count())
+                        break;
+
+                    $games->each(function ($game) {
+                        if (!$game->activate()) {
+                            throw new \ErrorException('Could not cancel Game #' . $game->id);
+                        }
+                    });
+                }
+
+                return true;
+            });
+        } catch (\ErrorException $e) {
+            return false;
+        }
+
+        return true;
     }
 }
