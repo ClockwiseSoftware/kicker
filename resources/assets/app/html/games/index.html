@@ -80,7 +80,7 @@
 
                     <md-button class="md-icon-button" aria-label="Complain"
                                md-ink-ripple="#c01935"
-                               ng-click="!game.loading ? complain(game.id) : null"
+                               ng-click="!game.loading ? complain(game.id, $event) : null"
                     >
                         <i class="fa fa-flag complain"
                            ng-class="game.isComplainedByUser(currentPlayer) ? 'active-complain' : 'not-active-complain'"></i>

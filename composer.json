@@ -10,7 +10,8 @@
         "laravel/socialite": "~2.0",
         "laravelcollective/html": "5.2.*",
         "intervention/image": "~2.3",
-        "ext-gd": "*"
+        "tymon/jwt-auth": "0.5.*",
+	"ext-gd": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

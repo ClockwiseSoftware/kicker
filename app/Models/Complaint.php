@@ -8,7 +8,7 @@ use App\User;
 class Complaint extends Model
 {
     protected $table = 'complaints';
-    protected $fillable = ['game_id', 'user_id'];
+    protected $fillable = ['game_id', 'user_id', 'reason'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
