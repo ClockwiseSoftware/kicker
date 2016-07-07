@@ -17,24 +17,25 @@ app.controller('CreateGameCtrl', [
       });
     };
 
-    $.selectPlayer = function(playerId) {
-      playerId = parseInt(playerId);
-      var player = _.find($.players, function (player) {
-        return player.id === playerId;
-      });
-      player.selected = true;
+    $.selectPlayer = 
+        function(playerId) {
+            playerId = parseInt(playerId);
+            var player = 
+                _.find(
+                    $.players, 
+                    function(player) {
+                        return player.id === playerId;
+                    });
+            player.selected = true;
 
-      var prevPlayer = $.game.players[$.game.activeTeam][$.game.activeIndex];
-      if (prevPlayer && prevPlayer.hasOwnProperty('id')) {
-        prevPlayer.selected = false;
-      }
+            var prevPlayer = 
+                    $.game.players[$.game.activeTeam][$.game.activeIndex];
+            if(prevPlayer && prevPlayer.hasOwnProperty('id'))
+                prevPlayer.selected = false;
 
-      $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
-      $.game.validate();
-    };
-
-    if($.currentPlayer && $.currentPlayer.id)
-      $.selectPlayer($.currentPlayer.id);
+            $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
+            $.game.validate();
+        };
 
     $.orderPlayers = function (player) {
       if ($.currentPlayer.id == player.id)
@@ -69,14 +70,31 @@ app.controller('CreateGameCtrl', [
         });
     };
 
-    Player.get().$promise
-      .then(function (res) {
-        $.players = res.data;
-        _.each($.players, function (player) {
-          player.selected = false;
-          player.avatar_url = player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png';
-        });
-      });
+    Player
+        .get()
+        .$promise
+        .then(
+            function(res) {
+                $.players = res.data;
+                _.each(
+                    $.players, 
+                    function(player) {
+                        player.selected = false;
+                        player.avatar_url = 
+                            player.avatar_url ? 
+                                player.avatar_url : 
+                                '/img/no-avatar.min.png';
+
+
+
+                    });
+
+                if($.currentPlayer) {
+                    $.game.setActiveTeam('winners'); 
+                    $.game.setActiveIndex(0);
+                    $.selectPlayer($.currentPlayer.id)
+                }
+            });
 
     var $playedAt = jQuery('#played-at');
     $playedAt.datetimepicker({
