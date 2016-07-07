@@ -8,7 +8,7 @@ app.controller('CreateGameCtrl', [
     $.points = _.range(0, 10);
     $.players = [];
     $.game = new CreateGameService();
-
+console.log($.game, $.points);
     $.openDialog = function openDialog() {
       ngDialog.open({
         template: 'html/dialogues/select-player.html',
@@ -44,31 +44,33 @@ app.controller('CreateGameCtrl', [
       return player.name;
     };
 
-    $.createGame = function createGame() {
-      var timeoutId = $timeout(function () {
-        $.loading = true;
-      }, 500);
+    $.createGame = 
+        function() {
+            var timeoutId = $timeout(function () { $.loading = true;}, 500);
 
-      Match.create({}, $.game.getFormData()).$promise
-        .then(function () {
-          $timeout.cancel(timeoutId);
-          $.loading = false;
+            Match
+                .create({}, $.game.getFormData())
+                .$promise
+                .then(function () {
+                    $timeout.cancel(timeoutId);
+                    $.loading = false;
 
-          $location.path('/');
-        })
-        .catch(function (res) {
-          $timeout.cancel(timeoutId);
-          $.loading = false;
+                    $location.path('/');
+                })
+                .catch(function (res) {
 
-          if (res.status === 422) {
-            $.errors = res.data;
-          } else {
-            $.errors = {
-              text: ['Something terrible has happened. Please, try again later!']
-            };
-          }
-        });
-    };
+                    $timeout.cancel(timeoutId);
+                    $.loading = false;
+
+                    if (res.status === 422) {
+                      $.errors = res.data;
+                    } else {
+                      $.errors = {
+                        text: ['Something terrible has happened. Please, try again later!']
+                      };
+                    }
+                });
+        };
 
     Player
         .get()
