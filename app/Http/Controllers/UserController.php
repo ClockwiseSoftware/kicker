@@ -77,8 +77,7 @@ class UserController extends Controller
         $users = User::paginate(1000);
 
         if ($request->wantsJson()) {
-            return response()
-                        ->json($users);
+            return response()->json($users);
         }
     }
 

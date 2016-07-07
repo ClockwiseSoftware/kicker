@@ -2039,29 +2039,8 @@ app.controller(
                             offsX: -40,
                             offsY: -40,
                             onOk: function(pData) {
-
                                 makeReq('/game/'+id+'/'+pData+'/complain');
                                 UserComplain.hide();
-
-                                // $http
-                                //     .get('/game/'+id+'/'+pData+'/complain')
-                                //     .success(
-                                //         function(response) {
-                                //             $http
-                                //                 .get('/game/' + id)
-                                //                 .success(function (response) {
-                                //                     game.loading = false;
-                                //                     $.gamesRepository
-                                //                       .update(
-                                //                           response.id, 
-                                //                           response);
-                                //         });
-                                //     });
-
-                                // console.log(pData);
-                                // game.loading = false;
-
-                                
                             },
                             onClose: function() {
                               game.loading = false;
