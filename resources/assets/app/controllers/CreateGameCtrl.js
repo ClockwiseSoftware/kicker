@@ -17,7 +17,7 @@ app.controller('CreateGameCtrl', [
       });
     };
 
-    $.selectPlayer = function selectPlayer(playerId) {
+    $.selectPlayer = function(playerId) {
       playerId = parseInt(playerId);
       var player = _.find($.players, function (player) {
         return player.id === playerId;
@@ -32,6 +32,9 @@ app.controller('CreateGameCtrl', [
       $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
       $.game.validate();
     };
+
+    if($.currentPlayer && $.currentPlayer.id)
+      $.selectPlayer($.currentPlayer.id);
 
     $.orderPlayers = function (player) {
       if ($.currentPlayer.id == player.id)
