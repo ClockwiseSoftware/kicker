@@ -46,7 +46,8 @@ class UserController extends Controller
 
         $users = $query->get();
 
-        return response()->json($users);
+        return response()
+                    ->json($users);
     }
 
     public function role(Request $request)
@@ -58,7 +59,8 @@ class UserController extends Controller
             $role = $user->isAdmin() ? User::ROLE_ADMIN : User::ROLE_USER;
         }
 
-        return response()->json($role);
+        return response()
+                    ->json($role);
     }
 
     public function one(Request $request)
@@ -75,7 +77,8 @@ class UserController extends Controller
         $users = User::paginate(1000);
 
         if ($request->wantsJson()) {
-            return response()->json($users);
+            return response()
+                        ->json($users);
         }
     }
 
@@ -120,7 +123,8 @@ class UserController extends Controller
         $user->save();
 
         if ($request->wantsJson()) {
-            return response()->json($user);
+            return response()
+                        ->json($user);
         }
     }
 

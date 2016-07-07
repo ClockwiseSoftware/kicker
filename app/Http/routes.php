@@ -22,6 +22,21 @@
 |
 */
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
+
+Route::group(["middleware" => ["api"]], function() {
+    Route::resource(
+        '/api/index', 
+        'AuthenticateController', 
+        ['only' => ['index']]);
+
+    Route::post(
+        '/api/auth', 
+        'AuthenticateController@authenticate');
+});
+
+
 Route::group(['middleware' => ['web']], function () {
     // Authentication routes...
     Route::get('/signin', 'Auth\AuthController@getLogin')->name('login');
@@ -36,6 +51,27 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/signup', 'Auth\AuthController@getRegister')->name('register');
     Route::post('/signup', 'Auth\AuthController@postRegister')->name('checkRegister');
 
+    // Users routes
+    Route::get('/user/search', 'UserController@search');
+    Route::get('/user/role', 'UserController@role');
+
+    Route::get(
+        '/user/me', 
+        [   'middleware' => ['auth'],
+            'uses' => 'UserController@one',]);
+
+    Route::post('/user/{id}/restore', [
+        'middleware' => ['auth'],
+        'uses' => 'UserController@restore',
+    ]);
+
+    Route::get('/users', 'UserController@index');
+    Route::group(['middleware' => ['auth', 'active']], function () {
+        Route::put('/user/{id}', 'UserController@update')->where('id', '[0-9]+');
+        Route::post('/user/{id}/avatar', 'UserController@updateAvatar')->where('id', '[0-9]+');
+        Route::delete('/user/{id}', 'UserController@delete')->where('id', '[0-9]+');
+    });
+
     // Games routes
     Route::get('/', 'GameController@index')->name('home');
     Route::get('game/{id}', 'GameController@one')->where('id', '[0-9]+');
@@ -43,30 +79,14 @@ Route::group(['middleware' => ['web']], function () {
         Route::put('game/{id}', 'GameController@update')->where('id', '[0-9]+');
         Route::delete('game/{id}', 'GameController@delete')->where('id', '[0-9]+');
         Route::get('game/{id}/delete', 'GameController@delete')->where('id', '[0-9]+');
-        Route::get('game/{id}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
+        Route::get('game/{id}/{msg}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
     });
     Route::group(['middleware' => ['auth']], function () {
         Route::post('game', 'GameController@create');
     });
 
 
-    // Users routes
-    Route::get('/user/search', 'UserController@search');
-    Route::get('/user/role', 'UserController@role');
-    Route::get('/user/me', [
-        'middleware' => ['auth'],
-        'uses' => 'UserController@one',
-    ]);
-    Route::post('/user/{id}/restore', [
-        'middleware' => ['auth'],
-        'uses' => 'UserController@restore',
-    ]);
-    Route::get('/users', 'UserController@index');
-    Route::group(['middleware' => ['auth', 'active']], function () {
-        Route::put('/user/{id}', 'UserController@update')->where('id', '[0-9]+');
-        Route::post('/user/{id}/avatar', 'UserController@updateAvatar')->where('id', '[0-9]+');
-        Route::delete('/user/{id}', 'UserController@delete')->where('id', '[0-9]+');
-    });
+    
 
     // Chart routes
     Route::get('/chart', 'ChartController@getIndex')->name('chart');

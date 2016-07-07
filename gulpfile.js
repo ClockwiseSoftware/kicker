@@ -83,6 +83,7 @@ elixir(function (mix) {
     'app/services/GameService.js',
     'app/services/CreateGameService.js',
     'app/services/UserSearchService.js',
+    'app/services/userComplain.js',
 
     // Resources
     'app/resources/Player.js',

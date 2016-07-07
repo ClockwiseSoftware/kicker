@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ComplaintController extends Controller
 {
-    public function create(Request $request, $gameId)
+    public function create(Request $request, $gameId, $msg)
     {
         $user = User::findMe();
         $complaint = Complaint::where('user_id', $user->id)
@@ -22,6 +22,7 @@ class ComplaintController extends Controller
             Complaint::create([
                 'user_id' => $user->id,
                 'game_id' => $gameId,
+                'reason' => $msg
             ]);
         }
 
