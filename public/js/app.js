@@ -1767,6 +1767,9 @@ app.factory(
 
 						onClose = pOpts.onClose;
 						onOk = pOpts.onOk;
+
+						$scope.selectedOption = 0;
+						$scope.reason = "";
 					},
 				hide = 
 					function() {
@@ -1784,7 +1787,9 @@ app.factory(
 			$scope.onOk = 
 				function() {
 
-					console.log($scope);
+					if(	$scope.selectedOption == 2 &&
+						$scope.reason.length < 1)
+							return;
 
 					if(typeof onOk !== "function")
 						return;
@@ -2062,7 +2067,7 @@ app.controller('CreateGameCtrl', [
     $.points = _.range(0, 10);
     $.players = [];
     $.game = new CreateGameService();
-console.log($.game, $.points);
+
     $.openDialog = function openDialog() {
       ngDialog.open({
         template: 'html/dialogues/select-player.html',

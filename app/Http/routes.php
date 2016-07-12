@@ -23,17 +23,89 @@
 */
 
 header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET,PUT,DELETE,POST,OPTIONS");
 header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
+//routes for jwt-applications
 Route::group(["middleware" => ["api"]], function() {
+
     Route::resource(
         '/api/index', 
         'AuthenticateController', 
         ['only' => ['index']]);
-
     Route::post(
         '/api/auth', 
         'AuthenticateController@authenticate');
+
+    //restricted routes
+    Route::group(
+        ["middleware" => ["jwt.auth"]],
+        function() {
+            Route::get(
+                '/api/users', 
+                'UserController@index');
+
+            Route::get(
+                '/api/user/me', 
+                'UserController@one');
+
+            Route::get(
+                '/api/user/role', 
+                'UserController@role');            
+
+            Route::put(
+                '/api/user/{id}', 
+                'UserController@update')
+                    ->where('id', '[0-9]+');
+
+            Route::delete(
+                '/api/user/{id}', 
+                'UserController@delete')
+                    ->where('id', '[0-9]+');
+
+            Route::post(
+                '/api/user/{id}/restore', 
+                'UserController@restore');
+
+            Route::post(
+                '/api/user/{id}/avatar', 
+                'UserController@updateAvatar')
+                    ->where('id', '[0-9]+');
+
+            Route::put(
+                '/api/game/{id}', 
+                'GameController@update')
+                    ->where('id', '[0-9]+');
+
+            Route::delete(
+                '/api/game/{id}', 
+                'GameController@delete')
+                    ->where('id', '[0-9]+');
+
+            Route::get(
+                '/api/game/{id}/delete', 
+                'GameController@delete')
+                    ->where('id', '[0-9]+');
+
+            Route::get(
+                '/api/game/{id}/{msg}/complain', 
+                'ComplaintController@create')
+                    ->where('id', '[0-9]+');
+
+            Route::post(
+                '/api/game', 
+                'GameController@create');
+
+            Route::get(
+                '/api/game/{id}', 
+                'GameController@one')
+                    ->where('id', '[0-9]+');
+
+            Route::get(
+                '/api/games', 
+                'GameController@index')
+                    ->name('home');
+        });
 });
 
 
@@ -66,10 +138,12 @@ Route::group(['middleware' => ['web']], function () {
     ]);
 
     Route::get('/users', 'UserController@index');
-    Route::group(['middleware' => ['auth', 'active']], function () {
-        Route::put('/user/{id}', 'UserController@update')->where('id', '[0-9]+');
-        Route::post('/user/{id}/avatar', 'UserController@updateAvatar')->where('id', '[0-9]+');
-        Route::delete('/user/{id}', 'UserController@delete')->where('id', '[0-9]+');
+    Route::group([
+        'middleware' => ['auth', 'active']], 
+        function() {
+            Route::put('/user/{id}', 'UserController@update')->where('id', '[0-9]+');
+            Route::post('/user/{id}/avatar', 'UserController@updateAvatar')->where('id', '[0-9]+');
+            Route::delete('/user/{id}', 'UserController@delete')->where('id', '[0-9]+');
     });
 
     // Games routes

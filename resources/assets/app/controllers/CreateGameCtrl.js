@@ -8,7 +8,7 @@ app.controller('CreateGameCtrl', [
     $.points = _.range(0, 10);
     $.players = [];
     $.game = new CreateGameService();
-console.log($.game, $.points);
+
     $.openDialog = function openDialog() {
       ngDialog.open({
         template: 'html/dialogues/select-player.html',
