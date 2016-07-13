@@ -23,8 +23,9 @@
 */
 
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Methods: GET,PUT,DELETE,POST,OPTIONS");
-header('Access-Control-Allow-Headers: Authorization, Content-Type');
+header('Access-Control-Allow-Headers: Origin, Content-Type,x-access-token,Authorization');
 
 //routes for jwt-applications
 Route::group(["middleware" => ["api"]], function() {
@@ -33,9 +34,15 @@ Route::group(["middleware" => ["api"]], function() {
         '/api/index', 
         'AuthenticateController', 
         ['only' => ['index']]);
+
     Route::post(
         '/api/auth', 
         'AuthenticateController@authenticate');
+
+    Route::post(
+        '/api/fb/signin', 
+        'AuthenticateController@fbCallback');
+            //->name('fbRegisterCheck');
 
     //restricted routes
     Route::group(
@@ -115,13 +122,21 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/signin', 'Auth\AuthController@postLogin')->name('checkLogin');
     Route::get('/logout', 'Auth\AuthController@getLogout')->name('logout');
 
-    Route::get('/fb/signin', 'Auth\AuthController@redirectToProvider')->name('fbRegister');
-    Route::get('/fb/signin/callback', 'Auth\AuthController@handleProviderCallback')
-        ->name('fbRegisterCheck');
+    Route::get(
+        '/fb/signin', 
+        'Auth\AuthController@redirectToProvider')
+            ->name('fbRegister');
+
+    Route::get(
+        '/fb/signin/callback', 
+        'Auth\AuthController@handleProviderCallback')
+            ->name('fbRegisterCheck');
 
     // Registration routes...
-    Route::get('/signup', 'Auth\AuthController@getRegister')->name('register');
-    Route::post('/signup', 'Auth\AuthController@postRegister')->name('checkRegister');
+    Route::get('/signup', 'Auth\AuthController@getRegister')
+        ->name('register');
+    Route::post('/signup', 'Auth\AuthController@postRegister')
+        ->name('checkRegister');
 
     // Users routes
     Route::get('/user/search', 'UserController@search');

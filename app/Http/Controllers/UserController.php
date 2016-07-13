@@ -143,9 +143,11 @@ class UserController extends Controller
 
         $user->deleteAvatar();
 
-        $destinationPath = public_path() . '/uploads';
+        $destinationPath = public_path() . "/uploads";
         $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
-        Image::make($avatar->getRealPath())->fit(120, 120)->save($avatar->getRealPath());
+        Image::make($avatar->getRealPath())
+            ->fit(120, 120)
+            ->save($avatar->getRealPath());
 
         if (!$avatar->move($destinationPath, $fileName)) {
             return response([

@@ -84,7 +84,7 @@ class AuthController extends Controller
     {
         $fbUser = Socialite::with('facebook')->user();
 
-        if ($fbUser) {
+        if($fbUser) {
             $fbUser->email = mb_strtolower($fbUser->email);
             
             $user = User::where('facebook_id', $fbUser->id)
