@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use GuzzleHttp;
+use Validator;
 use App\User;
 use JWTAuth;
 use Config;
@@ -21,9 +22,25 @@ class AuthenticateController extends Controller
 	public function __construct() {
         $this->middleware(
             'jwt.auth', 
-            [   'except' => [   'authenticate', 
+            [   'except' => [   'signup',
+                                'authenticate', 
                                 'fbCallback']]);
 	}
+
+    public function index() {
+
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+
+        return response()->json([
+           'data' => [
+               'email' => $user->email,
+               'registered_at' => $user->created_at->toDateTimeString()
+           ]
+        ]);
+
+        //return response()->json(["cntrl.index"], 500);
+    }
 
     public function authenticate() {
       	$credentials = Input::only('email', 'password');
@@ -44,19 +61,44 @@ class AuthenticateController extends Controller
         return response()->json(compact('token'));
     }
 
-    public function index() {
+    public function signup() {
 
-    	$token = JWTAuth::getToken();
-      	$user = JWTAuth::toUser($token);
+        $credentials = Input::only('name', 'email', 'password');
+        
+        //validate credentials
+        $rules = [
+            "name" => "required|unique:users,name",
+            "email" => "required|email|unique:users,email",
+            "password" => "required"
+        ];
 
-       	return response()->json([
-           'data' => [
-               'email' => $user->email,
-               'registered_at' => $user->created_at->toDateTimeString()
-           ]
-       	]);
+        $validator = Validator::make($credentials, $rules);
 
-    	//return response()->json(["cntrl.index"], 500);
+        if($validator->fails()) {
+
+            $err = implode(" ", $validator->errors()->all());
+            return response()->json(['error' => $err], 401);
+        }
+
+        //create new user
+        $user = new User();
+        $user->name = $credentials["name"];
+        $user->email = $credentials["email"];
+        $user->setPassword($credentials["password"]);
+        $user->save();
+
+        //make token
+        try {
+            if(!$token = JWTAuth::attempt($credentials))
+                return response()
+                        ->json(['error' => 'Error. Invalid credentials'], 401);
+        } 
+        catch(JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+
+        //return jwt token
+        return response()->json(compact('token'));
     }
 
     public function fbCallback(Request $request) {
@@ -109,6 +151,7 @@ class AuthenticateController extends Controller
         }
         else {  // Create a new user account or return an existing one.
 
+            $user = new User();
             $user->facebook_id = $profile['id'];
             $user->email = $profile['email'];
             $user->name = $profile['name'];

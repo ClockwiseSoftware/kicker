@@ -40,9 +40,12 @@ Route::group(["middleware" => ["api"]], function() {
         'AuthenticateController@authenticate');
 
     Route::post(
+        '/api/signup', 
+        'AuthenticateController@signup');
+
+    Route::post(
         '/api/fb/signin', 
         'AuthenticateController@fbCallback');
-            //->name('fbRegisterCheck');
 
     //restricted routes
     Route::group(
