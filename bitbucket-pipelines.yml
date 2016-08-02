@@ -11,3 +11,4 @@ pipelines:
           - composer --version
           - phpunit --version
           - composer install
+          - phpunit
