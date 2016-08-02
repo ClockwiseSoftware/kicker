@@ -2,7 +2,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Dockerhub as your build environment
-image: phpunit/phpunit:5.0.3
+image: bodva/unit:latest
 
 pipelines:
   default:
