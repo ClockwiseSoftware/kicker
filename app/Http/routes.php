@@ -22,11 +22,6 @@
 |
 */
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Credentials: true');
-header("Access-Control-Allow-Methods: GET,PUT,DELETE,POST,OPTIONS");
-header('Access-Control-Allow-Headers: Origin, Content-Type,x-access-token,Authorization');
-
 //routes for jwt-applications
 Route::group(["middleware" => ["api"]], function() {
 
