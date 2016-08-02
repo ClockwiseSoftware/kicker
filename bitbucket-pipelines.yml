@@ -10,5 +10,6 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - composer --version
           - phpunit --version
+          - cp .env.example .env
           - composer install
           - phpunit
