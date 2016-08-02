@@ -8,10 +8,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class GameProcessorTest extends TestCase
 {
 	use DatabaseTransactions;
+
 	/**
-	 * A basic functional test example.
-	 *
-	 * @return void
+	 * @test
 	 */
 	public function check_calculating_rating()
 	{
