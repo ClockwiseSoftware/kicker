@@ -12,5 +12,7 @@ pipelines:
           - cp .env.example .env
           - composer install
           - vendor/bin/phpunit --version
+          - mysql --version
+          - service mysql start
           - php artisan migrate
           - phpunit
