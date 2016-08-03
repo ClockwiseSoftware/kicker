@@ -1,4 +1,4 @@
-image: clockwise/php7-mysql-unit
+image: clockwise/phpunit-alpain
 
 pipelines:
   default:
