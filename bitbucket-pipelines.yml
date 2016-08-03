@@ -9,8 +9,8 @@ pipelines:
     - step:
         script: # Modify the commands below to build your repository.
           - composer --version
-          - phpunit --version
           - cp .env.example .env
           - composer install
+          - vendor/bin/phpunit --version
           - php artisan migrate
           - phpunit
