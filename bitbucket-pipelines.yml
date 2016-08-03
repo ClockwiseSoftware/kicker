@@ -15,4 +15,4 @@ pipelines:
           - mysql --version
           - service mysql start
           - php artisan migrate
-          - /vendor/bin/phpunit
+          - vendor/bin/phpunit
