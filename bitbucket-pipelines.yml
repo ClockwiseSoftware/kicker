@@ -1,7 +1,3 @@
-# This is a sample build configuration for PHP.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Dockerhub as your build environment
 image: clockwise/php7-mysql-unit
 
 pipelines:
@@ -9,11 +5,17 @@ pipelines:
     - step:
         script: # Modify the commands below to build your repository.
           - composer --version
+          # copy default enviroment file
           - cp .env.example .env
+          # install composer vendor scripts
           - composer install
           - vendor/bin/phpunit --version
           - mysql --version
+          # start mysl
           - service mysql start
+          # create default databese for project
           - mysql -u root -e "CREATE DATABASE kicker_chart"
+          # migrate
           - php artisan migrate
+          # run tests
           - vendor/bin/phpunit
