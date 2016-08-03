@@ -1,4 +1,4 @@
-image: clockwise/phpunit-alpain
+image: bodva/phpunit-alpain
 
 pipelines:
   default:
