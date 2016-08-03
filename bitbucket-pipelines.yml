@@ -12,7 +12,7 @@ pipelines:
           - vendor/bin/phpunit --version
           - mysql --version
           # start mysl
-          - service mysql start
+#          - service mysql start
           # create default databese for project
           - mysql -u root -e "CREATE DATABASE kicker_chart"
           # migrate
