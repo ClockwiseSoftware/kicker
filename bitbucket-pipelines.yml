@@ -1,4 +1,4 @@
-image: clockwise/php7-mysql-unit
+image: clockwise/php7-mysql-unit-docker
 
 pipelines:
   default:
