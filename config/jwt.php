@@ -156,9 +156,8 @@ return [
         | Specify the provider that is used to store tokens in the blacklist
         |
         */
+        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
 
-        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter'
-
-    ]
+    ],
 
 ];
