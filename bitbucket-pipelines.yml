@@ -1,0 +1,21 @@
+image: clockwise/php7-mysql-unit-docker
+
+pipelines:
+  default:
+    - step:
+        script: # Modify the commands below to build your repository.
+          - composer --version
+          # copy default enviroment file
+          - cp .env.example .env
+          # install composer vendor scripts
+          - composer install
+          - vendor/bin/phpunit --version
+          - mysql --version
+          # start mysl
+          - service mysql start
+          # create default databese for project
+          - mysql -u root -e "CREATE DATABASE kicker_chart"
+          # migrate
+          - php artisan migrate
+          # run tests
+          - vendor/bin/phpunit
