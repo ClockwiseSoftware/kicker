@@ -17,5 +17,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
+        'is_admin' => (int)$faker->boolean(),
     ];
+});
+
+$factory->define(App\Models\Game::class, function (Faker\Generator $faker) {
+	return [
+		'played_at' => $faker->dateTimeAD,
+		'team_a_points' => $faker->randomNumber() ,
+		'team_b_points' => $faker->randomNumber(),
+	];
 });
