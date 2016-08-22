@@ -23,7 +23,7 @@
 */
 
 //routes for jwt-applications
-Route::group(["middleware" => ["api","cors"]], function() {
+Route::group(["middleware" => ["api"]], function() {
 
     Route::resource(
         '/api/index', 
@@ -44,7 +44,7 @@ Route::group(["middleware" => ["api","cors"]], function() {
 
     //restricted routes
     Route::group(
-        ["middleware" => ["jwt.auth","cors"]],
+        ["middleware" => ["jwt.auth"]],
         function() {
             Route::get(
                 '/api/users', 
