@@ -20,3 +20,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'is_admin' => (int)$faker->boolean(),
     ];
 });
+
+$factory->define(App\Models\Game::class, function (Faker\Generator $faker) {
+	return [
+		'played_at' => $faker->dateTimeAD,
+		'team_a_points' => $faker->randomNumber() ,
+		'team_b_points' => $faker->randomNumber(),
+	];
+});
