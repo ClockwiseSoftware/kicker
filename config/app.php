@@ -95,6 +95,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'facebook_secret' => "0e07aba312d66baba0c6759470d370c3",
+
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration

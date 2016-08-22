@@ -17,21 +17,25 @@ app.controller('CreateGameCtrl', [
       });
     };
 
-    $.selectPlayer = function selectPlayer(playerId) {
-      playerId = parseInt(playerId);
-      var player = _.find($.players, function (player) {
-        return player.id === playerId;
-      });
-      player.selected = true;
+    $.selectPlayer = 
+        function(playerId) {
+            playerId = parseInt(playerId);
+            var player = 
+                _.find(
+                    $.players, 
+                    function(player) {
+                        return player.id === playerId;
+                    });
+            player.selected = true;
 
-      var prevPlayer = $.game.players[$.game.activeTeam][$.game.activeIndex];
-      if (prevPlayer && prevPlayer.hasOwnProperty('id')) {
-        prevPlayer.selected = false;
-      }
+            var prevPlayer = 
+                    $.game.players[$.game.activeTeam][$.game.activeIndex];
+            if(prevPlayer && prevPlayer.hasOwnProperty('id'))
+                prevPlayer.selected = false;
 
-      $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
-      $.game.validate();
-    };
+            $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
+            $.game.validate();
+        };
 
     $.orderPlayers = function (player) {
       if ($.currentPlayer.id == player.id)
@@ -40,40 +44,59 @@ app.controller('CreateGameCtrl', [
       return player.name;
     };
 
-    $.createGame = function createGame() {
-      var timeoutId = $timeout(function () {
-        $.loading = true;
-      }, 500);
+    $.createGame = 
+        function() {
+            var timeoutId = $timeout(function () { $.loading = true;}, 500);
 
-      Match.create({}, $.game.getFormData()).$promise
-        .then(function () {
-          $timeout.cancel(timeoutId);
-          $.loading = false;
+            Match
+                .create({}, $.game.getFormData())
+                .$promise
+                .then(function () {
+                    $timeout.cancel(timeoutId);
+                    $.loading = false;
 
-          $location.path('/');
-        })
-        .catch(function (res) {
-          $timeout.cancel(timeoutId);
-          $.loading = false;
+                    $location.path('/');
+                })
+                .catch(function (res) {
 
-          if (res.status === 422) {
-            $.errors = res.data;
-          } else {
-            $.errors = {
-              text: ['Something terrible has happened. Please, try again later!']
-            };
-          }
-        });
-    };
+                    $timeout.cancel(timeoutId);
+                    $.loading = false;
 
-    Player.get().$promise
-      .then(function (res) {
-        $.players = res.data;
-        _.each($.players, function (player) {
-          player.selected = false;
-          player.avatar_url = player.avatar_url ? player.avatar_url : '/img/no-avatar.min.png';
-        });
-      });
+                    if (res.status === 422) {
+                      $.errors = res.data;
+                    } else {
+                      $.errors = {
+                        text: ['Something terrible has happened. Please, try again later!']
+                      };
+                    }
+                });
+        };
+
+    Player
+        .get()
+        .$promise
+        .then(
+            function(res) {
+                $.players = res.data;
+                _.each(
+                    $.players, 
+                    function(player) {
+                        player.selected = false;
+                        player.avatar_url = 
+                            player.avatar_url ? 
+                                player.avatar_url : 
+                                '/img/no-avatar.min.png';
+
+
+
+                    });
+
+                if($.currentPlayer) {
+                    $.game.setActiveTeam('winners'); 
+                    $.game.setActiveIndex(0);
+                    $.selectPlayer($.currentPlayer.id)
+                }
+            });
 
     var $playedAt = jQuery('#played-at');
     $playedAt.datetimepicker({

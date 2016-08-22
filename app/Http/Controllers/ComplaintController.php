@@ -26,6 +26,6 @@ class ComplaintController extends Controller
             ]);
         }
 
-        return redirect('/');
+        //return redirect('/');
     }
 }

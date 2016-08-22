@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of jwt-auth.
- *
- * (c) Sean Tymon <tymon148@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 return [
 
     /*
@@ -21,7 +12,7 @@ return [
     |
     */
 
-    'secret' => env('JWT_SECRET', 'changethis'),
+    'secret' => env('JWT_SECRET', '4hsbACU5CmaiwuE3tiTzy8CnEYBg7gKd'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +47,8 @@ return [
     |
     | Specify the hashing algorithm that will be used to sign the token.
     |
-    | See here: https://github.com/namshi/jose/tree/2.2.0/src/Namshi/JOSE/Signer
-    | for possible values
+    | Possible values are:
+    | 'HS256', 'HS512', 'HS384', 'RS256'
     |
     */
 
@@ -165,7 +156,6 @@ return [
         | Specify the provider that is used to store tokens in the blacklist
         |
         */
-
         'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
 
     ],

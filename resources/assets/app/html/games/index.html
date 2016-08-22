@@ -66,7 +66,12 @@
                 </div>
             </div>
             <div class="game-information">
-                <div class="controls" ng-if="user.isGuest === false" data-id="{{ game.id }}">
+                <div 
+                    class="controls" 
+                    ng-if="
+                        user.isGuest === false &&
+                        currentPlayer.deleted !== true" 
+                    data-id="{{ game.id }}">
                     <!--<a href="#"-->
                        <!--class="btn btn-default btn-xs control-button"-->
                        <!--ng-href="#/game/{{ game.id }}/update"-->
@@ -78,12 +83,20 @@
                        <!--ng-if="user.isAdmin"-->
                     <!--&gt;<i class="fa fa-ban"></i></a>-->
 
-                    <md-button class="md-icon-button" aria-label="Complain"
-                               md-ink-ripple="#c01935"
-                               ng-click="!game.loading ? complain(game.id, $event) : null"
-                    >
-                        <i class="fa fa-flag complain"
-                           ng-class="game.isComplainedByUser(currentPlayer) ? 'active-complain' : 'not-active-complain'"></i>
+                    <md-button 
+                        class="md-icon-button" 
+                        aria-label="Complain"
+                        md-ink-ripple="#c01935"
+                        ng-click="
+                            !game.loading ? 
+                                complain(game.id, $event) : 
+                                null">
+                        <i  
+                            class="fa fa-flag complain"
+                            ng-class="
+                                game.isComplainedByUser(currentPlayer) ? 'active-complain' : 
+                                'not-active-complain'">
+                        </i>
                     </md-button>
                 </div>
                 <div class="result-container additional">

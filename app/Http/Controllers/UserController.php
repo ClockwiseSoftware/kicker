@@ -59,8 +59,7 @@ class UserController extends Controller
             $role = $user->isAdmin() ? User::ROLE_ADMIN : User::ROLE_USER;
         }
 
-        return response()
-                    ->json($role);
+        return response()->json($role);
     }
 
     public function one(Request $request)
@@ -77,8 +76,7 @@ class UserController extends Controller
         $users = User::paginate(1000);
 
         if ($request->wantsJson()) {
-            return response()
-                        ->json($users);
+            return response()->json($users);
         }
     }
 
@@ -144,9 +142,11 @@ class UserController extends Controller
 
         $user->deleteAvatar();
 
-        $destinationPath = public_path() . '/uploads';
+        $destinationPath = public_path() . "/uploads";
         $fileName = $user->id . '.' . $avatar->getClientOriginalExtension();
-        Image::make($avatar->getRealPath())->fit(120, 120)->save($avatar->getRealPath());
+        Image::make($avatar->getRealPath())
+            ->fit(120, 120)
+            ->save($avatar->getRealPath());
 
         if (!$avatar->move($destinationPath, $fileName)) {
             return response([
