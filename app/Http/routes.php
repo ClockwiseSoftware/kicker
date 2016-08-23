@@ -176,5 +176,5 @@ Route::group(['middleware' => ['web']], function () {
     
 
     // Chart routes
-    Route::get('/chart', 'ChartController@getIndex')->name('chart');
+    Route::get('/chart', 'ChartController@index')->name('chart');
 });
