@@ -7,7 +7,7 @@ app.controller('UsersEditCtrl', [
 
         $scope.uploadPic = function(file, user) {
             file.upload = Upload.upload({
-                url: '/user/' + user.id + '/avatar',
+                url: '/api/user/' + user.id + '/avatar',
                 method: 'POST',
                 data: {
                     avatar: file
@@ -41,7 +41,7 @@ app.controller('UsersEditCtrl', [
 
         $scope.init = function () {
             $http({
-                url: '/users',
+                url: '/api/users',
                 method: 'GET'
             }).success(function(response) {
                 angular.forEach(response.data, function(data) {
@@ -53,7 +53,7 @@ app.controller('UsersEditCtrl', [
             resetErrors(user);
 
             $http({
-                url: '/user/' + user.id,
+                url: '/api/user/' + user.id,
                 method: 'PUT',
                 data: user.getFormData()
             }).error(function(response) {

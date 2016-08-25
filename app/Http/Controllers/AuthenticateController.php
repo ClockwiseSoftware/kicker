@@ -142,15 +142,13 @@ class AuthenticateController extends Controller
 
         // If user is already signed in then link accounts.
         if($user) {
-
             $user->facebook_id = $profile['id'];
             $user->email = $user->email ?: $profile['email'];
             $user->name = $user->name ?: $profile['name'];
             $user->avatar_url = 
                 $user->avatar_url ?: $profile['picture']['data']['url'];
-        }
-        else {  // Create a new user account or return an existing one.
-
+        } else {
+        	// Create a new user account or return an existing one.
             $user = new User();
             $user->facebook_id = $profile['id'];
             $user->email = $profile['email'];
@@ -166,7 +164,8 @@ class AuthenticateController extends Controller
                     $user,
                     [   "facebook_id" => $profile['id'],
                         "email" => $profile['email'],
-                        "password" => $user->password]);
+                        "password" => $user->password
+                    ]);
 
         if($token)
             return response()->json(compact('token'));

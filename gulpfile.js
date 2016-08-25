@@ -51,6 +51,9 @@ elixir(function (mix) {
     // Angular
     'bower/angular/angular.min.js',
 
+    // Satellizer
+    'bower/satellizer/dist/satellizer.js',
+
     // Angular derivatives
     'bower/angular-route/angular-route.min.js',
     'bower/angular-sanitize/angular-sanitize.min.js',
@@ -83,7 +86,7 @@ elixir(function (mix) {
     'app/services/GameService.js',
     'app/services/CreateGameService.js',
     'app/services/UserSearchService.js',
-    'app/services/userComplain.js',
+    'app/services/UserComplain.js',
 
     // Resources
     'app/resources/Player.js',
@@ -104,6 +107,8 @@ elixir(function (mix) {
     'app/services/AuthUserService.js',
     'app/controllers/SignupCtrl.js',
 
+    //Logout
+    'app/controllers/LogoutCtrl.js',
     // Signin
     'app/controllers/SigninCtrl.js'
 

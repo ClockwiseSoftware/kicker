@@ -1,5 +1,5 @@
-app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser',
-    function($scope, $http, $location, $window, AuthUser) {
+app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser', '$auth',
+    function($scope, $http, $location, $window, AuthUser, $auth) {
         $scope.user = new AuthUser();
         $scope.errors = [];
 

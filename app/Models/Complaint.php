@@ -25,4 +25,12 @@ class Complaint extends Model
     {
         return $this->hasOne(Game::class, 'id', 'game_id');
     }
+
+	public function scopeGetGame($query, $game_id) {
+		return $query->where('game_id', $game_id);
+    }
+
+    public function scopePlayer($query, $user_id) {
+    	return $query->where('user_id', $user_id);
+    }
 }

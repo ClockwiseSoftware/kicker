@@ -1,27 +1,23 @@
-app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser',
-    function($scope, $http, $location, $window, AuthUser) {
+app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser', '$auth',
+    function($scope, $http, $location, $window, AuthUser, $auth) {
         $scope.user = new AuthUser();
         $scope.errors = [];
 
         $scope.signin = function (user) {
-            $http({
-                url: '/signin',
-                method: 'POST',
-                data: $scope.user
-            }).success(function(res) {
-                $window.location.href = '/';
-            }).error(function(res) {
-                $scope.errors = [];
-
-                for (var attr in res) {
-                    if (!res.hasOwnProperty(attr))
-                        continue;
-
-                    for (var i = 0; i < res[attr].length; i++) {
-                        $scope.errors.push(res[attr][i]);
-                    }
-                }
-            });
+            console.log(user);
+            $auth
+                .login ({
+                    'email': user.email,
+                    'password': user.password
+                })
+                .then(function (response) {
+                    $window.location.href = '/';
+                })
+                .catch(function (response) {
+                    console.log(response);
+                    $scope.errors = [];
+                    $scope.errors.push(response.statusText);
+                });
         }
     }
 ]);

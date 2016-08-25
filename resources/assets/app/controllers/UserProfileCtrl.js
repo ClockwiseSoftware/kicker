@@ -56,7 +56,7 @@ app.controller('UserProfileCtrl', [
       $.errors = {};
       if (avatar && !avatar.$error) {
         Upload.upload({
-          url: '/user/' + $.player.id + '/avatar',
+          url: '/api/user/' + $.player.id + '/avatar',
           data: {
             avatar: avatar
           }

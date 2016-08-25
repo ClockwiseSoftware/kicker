@@ -1,27 +1,27 @@
 (function (app) {
   app.factory('Player', ['$resource',
     function ($resource) {
-      return $resource('user/me', {id: '@id', params: '@params'}, {
+      return $resource('/api/user/me', {id: '@id', params: '@params'}, {
         me: {
           method: 'GET',
           isArray: false
         },
         get: {
           method: 'GET',
-          url: 'users'
+          url: 'api/users'
         },
         update: {
           method: 'PUT',
-          url: 'user/:id'
+          url: 'api/user/:id'
         },
         delete: {
           method: 'DELETE',
-          url: 'user/:id',
+          url: 'api/user/:id',
           isArray: true
         },
         restore: {
           method: 'POST',
-          url: 'user/:id/restore'
+          url: 'api/user/:id/restore'
         }
       });
     }]);

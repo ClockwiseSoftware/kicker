@@ -92,10 +92,15 @@ Route::group(["middleware" => ["api"]], function() {
                 'GameController@delete')
                     ->where('id', '[0-9]+');
 
-            Route::get(
-                '/api/game/{id}/{msg}/complain', 
+            Route::post(
+                '/api/game/{game_id}/complain',
                 'ComplaintController@create')
-                    ->where('id', '[0-9]+');
+                    ->where('game_id', '[0-9]+');
+
+	        Route::delete(
+                '/api/game/{game_id}/complain',
+                'ComplaintController@delete')
+                    ->where('game_id', '[0-9]+');
 
             Route::post(
                 '/api/game', 
@@ -166,7 +171,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::put('game/{id}', 'GameController@update')->where('id', '[0-9]+');
         Route::delete('game/{id}', 'GameController@delete')->where('id', '[0-9]+');
         Route::get('game/{id}/delete', 'GameController@delete')->where('id', '[0-9]+');
-        Route::get('game/{id}/{msg}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
+        Route::post('game/{game_id}/complain', 'ComplaintController@create')->where('id', '[0-9]+');
+        Route::delete('game/{game_id}/complain', 'ComplaintController@delete')->where('id', '[0-9]+');
     });
     Route::group(['middleware' => ['auth']], function () {
         Route::post('game', 'GameController@create');

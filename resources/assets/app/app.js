@@ -2,10 +2,10 @@ var app = angular
   .module('kickerApp', [
     'ngRoute', 'ngSanitize', 'ui.bootstrap',
     'ngFileUpload', 'ngResource', 'ngAnimate',
-    'ngDialog', 'ngMaterial', 'ngMessages'
+    'ngDialog', 'ngMaterial', 'ngMessages','satellizer'
   ]).config([
-    '$httpProvider', '$routeProvider',
-    function ($httpProvider, $routeProvider) {
+    '$httpProvider', '$routeProvider', '$authProvider',
+    function ($httpProvider, $routeProvider, $authProvider) {
       $routeProvider
       // Signup and Signin pages
         .when('/signup', {
@@ -13,27 +13,34 @@ var app = angular
           templateUrl: 'html/auth/signup.html',
           activeTab: 'signup'
         })
+
         .when('/signin', {
           controller: 'SigninCtrl',
           templateUrl: 'html/auth/signin.html',
           activeTab: 'signin'
         })
 
+        .when('/logout', {
+          controller: 'LogoutCtrl',
+          templateUrl: 'html/auth/signin.html',
+          activeTab: 'logout'
+        })
+
         // Games pages
         .when('/', {
           controller: 'GamesCtrl',
           templateUrl: 'html/games/index.html',
-          activeTab: 'games'
+          activeTab: ''
         })
         .when('/game/create', {
           controller: 'CreateGameCtrl',
           templateUrl: 'html/games/create.html',
-          activeTab: 'create-game'
+          activeTab: 'game/create'
         })
         .when('/game/:id/update', {
           controller: 'UpdateGameCtrl',
           templateUrl: 'html/games/update.html',
-          activeTab: 'edit=game'
+          activeTab: 'edit-game'
         })
         .when('/game/:id/complainers', {
           controller: 'ComplainersCtrl',
@@ -51,7 +58,7 @@ var app = angular
         .when('/user/profile', {
           templateUrl: 'html/user/profile.html',
           controller: 'UserProfileCtrl',
-          activeTab: 'profile'
+          activeTab: 'user/profile'
         })
 
         // Chart pages
@@ -66,6 +73,11 @@ var app = angular
           templateUrl: 'html/games/index.html',
           activeTab: 'games'
         });
+
+        $authProvider.loginUrl =
+            "api/auth";
+        $authProvider.signupUrl =
+            "api/signup";
     }
   ])
   .run([
@@ -133,6 +145,52 @@ var app = angular
     });
   })
   .run(['$rootScope', function ($) {
+
+    $.views = [
+      {
+        title: "Games",
+        url: "",
+        cond: "any"
+      },
+
+      {
+        title: "Chart",
+        url: "chart",
+        cond: "any",
+        default: true
+      },
+
+      {
+        title: "Add Game",
+        url: "game/create",
+        cond: "auth"
+      },
+
+
+      {
+        title: "Profile",
+        url: "user/profile",
+        cond: "auth"
+      },
+
+      {
+        title: "Login",
+        url: "signin",
+        cond: "noauth"
+      },
+
+      {
+        title: "Signup",
+        url: "signup",
+        cond: "noauth"
+      },
+
+      {
+        title: "Logout",
+        url: "logout",
+        cond: "auth"
+      }];
+
     $.activeTab = '';
 
     $.$on('$routeChangeStart', function (scope, next, current) {
