@@ -68,6 +68,24 @@ var app = angular
           activeTab: 'games'
         });
 
+        //app config
+        var AppConfigProvider = {
+          appId : "487882954740697",
+          apiUrl: window.location.origin + "/"
+        };
+
+        var commonConfig = {
+          clientId: AppConfigProvider.appId,
+          url: AppConfigProvider.apiUrl+"api/fb/signin",
+          redirectUri: window.location.origin+"/",
+          popupOptions: {
+            location: "no",
+            toolbar: "no"
+          }
+        };
+
+        $authProvider.facebook(commonConfig);
+
         $authProvider.loginUrl =
             "api/auth";
         $authProvider.signupUrl =

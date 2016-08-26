@@ -24,6 +24,21 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
                         }
                     }
                 });
-        }
+        };
+
+        $scope.fbSignin =
+            function() {
+                $auth
+                    .authenticate("facebook")
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (response) {
+                        console.log(response);
+                        $window.location.href = '/';
+                    });
+            };
+
+
     }
 ]);
