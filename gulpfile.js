@@ -96,6 +96,7 @@ elixir(function (mix) {
     'app/repositories/GamesRepository.js',
 
     // Controllers
+    'app/controllers/MainCtrl.js',
     'app/controllers/GamesCtrl.js',
     'app/controllers/CreateGameCtrl.js',
     'app/controllers/UpdateGameCtrl.js',
@@ -107,8 +108,6 @@ elixir(function (mix) {
     'app/services/AuthUserService.js',
     'app/controllers/SignupCtrl.js',
 
-    //Logout
-    'app/controllers/LogoutCtrl.js',
     // Signin
     'app/controllers/SigninCtrl.js'
 

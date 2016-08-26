@@ -4,24 +4,31 @@ app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
         $scope.errors = [];
 
         $scope.signup = function (user) {
-            $http({
-                url: '/signup',
-                method: 'POST',
-                data: $scope.user
-            }).success(function() {
-                $window.location.href = '/';
-            }).error(function(res) {
-                $scope.errors = [];
+            $auth
+                .signup(user)
+                .then(function (response) {
+                    $auth
+                        .login({
+                            'email': user.email,
+                            'password': user.password
+                        })
+                        .then(function (response) {
+                            // console.log(response);
+                            $window.location.href = '/';
+                        });
+                })
+                .catch(function (response) {
+                    $scope.errors = [];
+                    for (var field in response.data) {
+                        var prop = response.data[field];
 
-                for (var attr in res) {
-                    if (!res.hasOwnProperty(attr))
-                        continue;
-
-                    for (var i = 0; i < res[attr].length; i++) {
-                        $scope.errors.push(res[attr][i]);
+                        for (var i = 0; i < prop.length; i++) {
+                            $scope.errors.push(prop[i]);
+                        }
                     }
-                }
-            });
+
+                });
+
         }
     }
 ]);

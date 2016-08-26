@@ -99,7 +99,7 @@ Route::group(["middleware" => ["api"]], function() {
 
 	        Route::delete(
                 '/api/game/{game_id}/complain',
-                'ComplaintController@delete')
+                'ComplaintController@del')
                     ->where('game_id', '[0-9]+');
 
             Route::post(

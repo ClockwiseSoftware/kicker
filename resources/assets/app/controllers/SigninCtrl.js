@@ -14,9 +14,15 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
                     $window.location.href = '/';
                 })
                 .catch(function (response) {
-                    console.log(response);
                     $scope.errors = [];
-                    $scope.errors.push(response.statusText);
+                    console.log(response);
+                    for (var field in response.data) {
+                        var prop = response.data[field];
+
+                        for (var i = 0; i < prop.length; i++) {
+                            $scope.errors.push(prop[i]);
+                        }
+                    }
                 });
         }
     }

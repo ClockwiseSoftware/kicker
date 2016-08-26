@@ -20,12 +20,6 @@ var app = angular
           activeTab: 'signin'
         })
 
-        .when('/logout', {
-          controller: 'LogoutCtrl',
-          templateUrl: 'html/auth/signin.html',
-          activeTab: 'logout'
-        })
-
         // Games pages
         .when('/', {
           controller: 'GamesCtrl',
@@ -144,52 +138,7 @@ var app = angular
       }
     });
   })
-  .run(['$rootScope', function ($) {
-
-    $.views = [
-      {
-        title: "Games",
-        url: "",
-        cond: "any"
-      },
-
-      {
-        title: "Chart",
-        url: "chart",
-        cond: "any",
-        default: true
-      },
-
-      {
-        title: "Add Game",
-        url: "game/create",
-        cond: "auth"
-      },
-
-
-      {
-        title: "Profile",
-        url: "user/profile",
-        cond: "auth"
-      },
-
-      {
-        title: "Login",
-        url: "signin",
-        cond: "noauth"
-      },
-
-      {
-        title: "Signup",
-        url: "signup",
-        cond: "noauth"
-      },
-
-      {
-        title: "Logout",
-        url: "logout",
-        cond: "auth"
-      }];
+  .run(['$rootScope', '$auth', function ($, $auth) {
 
     $.activeTab = '';
 

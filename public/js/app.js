@@ -1979,12 +1979,6 @@ var app = angular
           activeTab: 'signin'
         })
 
-        .when('/logout', {
-          controller: 'LogoutCtrl',
-          templateUrl: 'html/auth/signin.html',
-          activeTab: 'logout'
-        })
-
         // Games pages
         .when('/', {
           controller: 'GamesCtrl',
@@ -2103,52 +2097,7 @@ var app = angular
       }
     });
   })
-  .run(['$rootScope', function ($) {
-
-    $.views = [
-      {
-        title: "Games",
-        url: "",
-        cond: "any"
-      },
-
-      {
-        title: "Chart",
-        url: "chart",
-        cond: "any",
-        default: true
-      },
-
-      {
-        title: "Add Game",
-        url: "game/create",
-        cond: "auth"
-      },
-
-
-      {
-        title: "Profile",
-        url: "user/profile",
-        cond: "auth"
-      },
-
-      {
-        title: "Login",
-        url: "signin",
-        cond: "noauth"
-      },
-
-      {
-        title: "Signup",
-        url: "signup",
-        cond: "noauth"
-      },
-
-      {
-        title: "Logout",
-        url: "logout",
-        cond: "auth"
-      }];
+  .run(['$rootScope', '$auth', function ($, $auth) {
 
     $.activeTab = '';
 
@@ -2961,6 +2910,62 @@ app.factory('GamesRepository', ['$http', 'Game', function ($http, Game) {
 
   return GamesRepository;
 }]);
+app.controller('MainCtrl', ['$scope', '$auth', '$window',
+    function($scope, $auth, $window) {
+
+        $scope.isAuth = function () {
+            return $auth.isAuthenticated();
+        };
+
+        $scope.logout = function () {
+            $auth
+                .logout()
+                .then(function () {
+                    $window.location.href = '/';
+                });
+        };
+
+        $scope.views = [
+            {
+                title: "Games",
+                url: "",
+                cond: "any"
+            },
+
+            {
+                title: "Chart",
+                url: "chart",
+                cond: "any",
+                default: true
+            },
+
+            {
+                title: "Add Game",
+                url: "game/create",
+                cond: "auth"
+            },
+
+
+            {
+                title: "Profile",
+                url: "user/profile",
+                cond: "auth"
+            },
+
+            {
+                title: "Login",
+                url: "signin",
+                cond: "noauth"
+            },
+
+            {
+                title: "Signup",
+                url: "signup",
+                cond: "noauth"
+            }];
+
+    }
+]);
 app.controller(
   'GamesCtrl', 
   [ '$scope', 
@@ -3484,34 +3489,32 @@ app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
         $scope.errors = [];
 
         $scope.signup = function (user) {
-            $http({
-                url: '/signup',
-                method: 'POST',
-                data: $scope.user
-            }).success(function() {
-                $window.location.href = '/';
-            }).error(function(res) {
-                $scope.errors = [];
+            $auth
+                .signup(user)
+                .then(function (response) {
+                    $auth
+                        .login({
+                            'email': user.email,
+                            'password': user.password
+                        })
+                        .then(function (response) {
+                            // console.log(response);
+                            $window.location.href = '/';
+                        });
+                })
+                .catch(function (response) {
+                    $scope.errors = [];
+                    for (var field in response.data) {
+                        var prop = response.data[field];
 
-                for (var attr in res) {
-                    if (!res.hasOwnProperty(attr))
-                        continue;
-
-                    for (var i = 0; i < res[attr].length; i++) {
-                        $scope.errors.push(res[attr][i]);
+                        for (var i = 0; i < prop.length; i++) {
+                            $scope.errors.push(prop[i]);
+                        }
                     }
-                }
-            });
+
+                });
+
         }
-    }
-]);
-app.controller('LogoutCtrl', ['$scope', '$location', '$window', '$auth',
-    function($scope, $location, $window, $auth) {
-        $auth
-            .logout ()
-            .then(function (response) {
-                $window.location.href = '/';
-            });
     }
 ]);
 app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser', '$auth',
@@ -3530,9 +3533,15 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
                     $window.location.href = '/';
                 })
                 .catch(function (response) {
-                    console.log(response);
                     $scope.errors = [];
-                    $scope.errors.push(response.statusText);
+                    console.log(response);
+                    for (var field in response.data) {
+                        var prop = response.data[field];
+
+                        for (var i = 0; i < prop.length; i++) {
+                            $scope.errors.push(prop[i]);
+                        }
+                    }
                 });
         }
     }
