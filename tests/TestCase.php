@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
 
@@ -34,7 +36,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
 	/**
-	 * Make request
+	 * Make request to API
+	 * use saved token for auth request
 	 * @param $method string
 	 * @param $url string
 	 * @param array $params string
@@ -69,6 +72,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 		return $this->response;
 	}
 
+	/**
+	 * Make auth request, get token and save it
+	 */
 	public function auth() {
 		$this->request(
 			'POST',
@@ -81,5 +87,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
 		$this->token = $this->response_json['token'];
 
+	}
+
+	/**
+	 * Create few users
+	 * @param $count integer
+	 * @return mixed Users[]
+	 */
+	public function create_users($count) {
+		return factory(User::class, $count)->create();
 	}
 }
