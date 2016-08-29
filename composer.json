@@ -11,14 +11,18 @@
         "laravelcollective/html": "5.2.*",
         "intervention/image": "~2.3",
         "tymon/jwt-auth": "0.5.*",
-	"ext-gd": "*"
+	    "ext-gd": "*",
+        "predis/predis": "^1.1",
+        "barryvdh/laravel-cors": "^0.8.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0",
         "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*"
+        "symfony/dom-crawler": "2.8.*|3.0.*",
+        "barryvdh/laravel-ide-helper": "2.2.x-dev",
+        "doctrine/dbal": "~2.3"
     },
     "autoload": {
         "classmap": [

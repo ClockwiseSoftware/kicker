@@ -7,7 +7,7 @@
     "laravel-elixir-html-minify": "^1.0.1"
   },
   "dependencies": {
-    "laravel-elixir": "^4.0.0",
-    "bootstrap-sass": "^3.0.0"
+    "bootstrap-sass": "^3.0.0",
+    "laravel-elixir": "^4.0.0"
   }
 }

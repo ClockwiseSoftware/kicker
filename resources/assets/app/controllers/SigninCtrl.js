@@ -1,27 +1,44 @@
-app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser',
-    function($scope, $http, $location, $window, AuthUser) {
+app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUser', '$auth',
+    function($scope, $http, $location, $window, AuthUser, $auth) {
         $scope.user = new AuthUser();
         $scope.errors = [];
 
         $scope.signin = function (user) {
-            $http({
-                url: '/signin',
-                method: 'POST',
-                data: $scope.user
-            }).success(function(res) {
-                $window.location.href = '/';
-            }).error(function(res) {
-                $scope.errors = [];
+            console.log(user);
+            $auth
+                .login ({
+                    'email': user.email,
+                    'password': user.password
+                })
+                .then(function (response) {
+                    $window.location.href = '/';
+                })
+                .catch(function (response) {
+                    $scope.errors = [];
+                    console.log(response);
+                    for (var field in response.data) {
+                        var prop = response.data[field];
 
-                for (var attr in res) {
-                    if (!res.hasOwnProperty(attr))
-                        continue;
-
-                    for (var i = 0; i < res[attr].length; i++) {
-                        $scope.errors.push(res[attr][i]);
+                        for (var i = 0; i < prop.length; i++) {
+                            $scope.errors.push(prop[i]);
+                        }
                     }
-                }
-            });
-        }
+                });
+        };
+
+        $scope.fbSignin =
+            function() {
+                $auth
+                    .authenticate("facebook")
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (response) {
+                        console.log(response);
+                        $window.location.href = '/';
+                    });
+            };
+
+
     }
 ]);

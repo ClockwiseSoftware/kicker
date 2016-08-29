@@ -16,6 +16,6 @@ pipelines:
           # create default databese for project
           - mysql -u root -e "CREATE DATABASE kicker_chart"
           # migrate
-          - php artisan migrate
+          - php artisan migrate --seed
           # run tests
           - vendor/bin/phpunit

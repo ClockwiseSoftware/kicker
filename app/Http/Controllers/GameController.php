@@ -17,26 +17,25 @@ class GameController extends Controller
      * @param string $action
      * @return array
      */
-    protected function validationRules($action = self::ACTION_CREATE)
-    {
-        $rules = [
-            'games_users_a' => 'required|users_ids:2|unique_compare_to:games_users_b',
+	protected function validationRules($action = self::ACTION_CREATE) {
+		$rules = [
+			'games_users_a' => 'required|users_ids:2|unique_compare_to:games_users_b',
 //            'games_users_a' => 'required|integer',
-            'team_a_points' =>
-                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
-            'games_users_b' => 'required|users_ids:2|unique_compare_to:games_users_a',
-            'team_b_points' =>
-                "required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
-            'played_at' => 'required|date'
-        ];
+			'team_a_points' =>
+				"required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
+			'games_users_b' => 'required|users_ids:2|unique_compare_to:games_users_a',
+			'team_b_points' =>
+				"required|min:" . GameProcessor::POINTS_MIN . "|max:" . GameProcessor::POINTS_MAX . "|integer",
+			'played_at'     => 'required|date'
+		];
 
-        // Additional validation rules for creating of a game.
-        if ($action === self::ACTION_CREATE) {
-            $rules['team_b_points'] .= '|game_unique:300';
-        }
-        
-        return $rules;
-    }
+		// Additional validation rules for creating of a game.
+		if ($action === self::ACTION_CREATE) {
+			$rules['team_b_points'] .= '|game_unique:300';
+		}
+
+		return $rules;
+	}
 
     public function index(Request $request)
     {

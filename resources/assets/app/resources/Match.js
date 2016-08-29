@@ -1,7 +1,7 @@
 (function (app) {
   app.factory('Match', ['$resource',
     function ($resource) {
-      return $resource('game/:id', {id: '@id'}, {
+      return $resource('/api/game/:id', {id: '@id'}, {
         create: {
           method: 'POST'
         },

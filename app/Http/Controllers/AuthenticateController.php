@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SignInRequest;
+use App\Http\Requests\SignUpRequest;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Laravel\Socialite\Facades\Socialite;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use GuzzleHttp;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
 use App\User;
 use JWTAuth;
@@ -42,59 +45,43 @@ class AuthenticateController extends Controller
         //return response()->json(["cntrl.index"], 500);
     }
 
-    public function authenticate() {
-      	$credentials = Input::only('email', 'password');
-
+    public function authenticate(SignInRequest $request) {
         try {
             // verify the credentials and create a token for the user
-            if(!$token = JWTAuth::attempt($credentials))
+            if(!$token = JWTAuth::attempt($request->all())) {
                 return response()
-                            ->json(['error' => 'invalid_credentials'], 401);
+	                ->json(['error' => ['Invalid credentials']], 401);
+            }
 
         } 
         catch(JWTException $e) {
             // something went wrong
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return response()
+	            ->json(['error' => ['Could not create token']], 500);
         }
 
         // if no errors are encountered we can return a JWT
         return response()->json(compact('token'));
     }
 
-    public function signup() {
-
-        $credentials = Input::only('name', 'email', 'password');
-        
-        //validate credentials
-        $rules = [
-            "name" => "required|unique:users,name",
-            "email" => "required|email|unique:users,email",
-            "password" => "required"
-        ];
-
-        $validator = Validator::make($credentials, $rules);
-
-        if($validator->fails()) {
-
-            $err = implode(" ", $validator->errors()->all());
-            return response()->json(['error' => $err], 401);
-        }
-
+    public function signup(SignUpRequest $request) {
         //create new user
         $user = new User();
-        $user->name = $credentials["name"];
-        $user->email = $credentials["email"];
-        $user->setPassword($credentials["password"]);
+        $user->name = $request->get("name");
+        $user->email = $request->get("email");
+        $user->setPassword($request->get("password"));
         $user->save();
 
         //make token
         try {
-            if(!$token = JWTAuth::attempt($credentials))
-                return response()
-                        ->json(['error' => 'Error. Invalid credentials'], 401);
+            if(!$token = JWTAuth::attempt($request->all())) {
+	            return response()
+		            ->json(['error' => ['Invalid credentials']], 401);
+            }
         } 
         catch(JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return response()
+	            ->json(['error' => ['Could not create token']], 500);
         }
 
         //return jwt token
@@ -144,15 +131,13 @@ class AuthenticateController extends Controller
 
         // If user is already signed in then link accounts.
         if($user) {
-
             $user->facebook_id = $profile['id'];
             $user->email = $user->email ?: $profile['email'];
             $user->name = $user->name ?: $profile['name'];
             $user->avatar_url = 
                 $user->avatar_url ?: $profile['picture']['data']['url'];
-        }
-        else {  // Create a new user account or return an existing one.
-
+        } else {
+        	// Create a new user account or return an existing one.
             $user = new User();
             $user->facebook_id = $profile['id'];
             $user->email = $profile['email'];
@@ -168,11 +153,12 @@ class AuthenticateController extends Controller
                     $user,
                     [   "facebook_id" => $profile['id'],
                         "email" => $profile['email'],
-                        "password" => $user->password]);
+                        "password" => $user->password
+                    ]);
 
         if($token)
             return response()->json(compact('token'));
         else
-            return response()->json(['error' => 'something went wrong'], 500);
+            return response()->json(['error' => ['Something went wrong']], 500);
     }
 }

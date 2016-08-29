@@ -18,7 +18,7 @@ app.controller('ChartsCtrl', ['$scope', '$http', 'User',
         });
     };
 
-    $http.get('/user/me')
+    $http.get('/api/user/me')
       .success(function (user) {
         if (!user)
           return false;

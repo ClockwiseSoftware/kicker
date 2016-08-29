@@ -17,7 +17,7 @@ app.factory('UserSearch', ['$http', function($http) {
             params.search = search;
 
 
-        return $http.get('/user/search', {
+        return $http.get('/api/user/search', {
             params: params
         }).then(function(response) {
             if (response.data.length === 0) {

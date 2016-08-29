@@ -73,7 +73,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::paginate(1000);
+        $users = User::active()->paginate(1000);
 
         if ($request->wantsJson()) {
             return response()->json($users);

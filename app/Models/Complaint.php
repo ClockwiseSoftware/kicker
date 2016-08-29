@@ -9,6 +9,11 @@ class Complaint extends Model
 {
     protected $table = 'complaints';
     protected $fillable = ['game_id', 'user_id', 'reason'];
+	protected $casts = [
+		'game_id' => 'integer',
+		'user_id' => 'integer',
+		'id' => 'integer',
+	];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -24,5 +29,13 @@ class Complaint extends Model
     public function game()
     {
         return $this->hasOne(Game::class, 'id', 'game_id');
+    }
+
+	public function scopeGetGame($query, $game_id) {
+		return $query->where('game_id', $game_id);
+    }
+
+    public function scopePlayer($query, $user_id) {
+    	return $query->where('user_id', $user_id);
     }
 }

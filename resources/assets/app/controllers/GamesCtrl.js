@@ -36,7 +36,7 @@ app.controller(
       };
       function getUserRole() {
         $http({
-          url: '/user/role',
+          url: '/api/user/role',
           method: 'GET'
         }).success(function (role) {
           if (role === 'guest') {
@@ -60,26 +60,43 @@ app.controller(
                     var game = $.gamesRepository.get(id);
                     game.loading = true;
 
-                    var makeReq = 
-                          function(pUrl) {
+                    var updateGame = function(response) {
+                        $http
+                            .get('/api/game/' + id)
+                            .success(function (response) {
+                                game.loading = false;
+                                $.gamesRepository
+                                    .update(
+                                        response.id,
+                                        response);
+                            });
+                    };
+
+                    var addComplain =
+                          function(game_id, pData) {
+                            pUrl = '/api/game/'+game_id+'/complain';
                             $http
-                              .get(pUrl)
+                              .post(pUrl, {'reason': pData})
                               .success(
                                   function(response) {
-                                      $http
-                                          .get('/game/' + id)
-                                          .success(function (response) {
-                                              game.loading = false;
-                                              $.gamesRepository
-                                                .update(
-                                                    response.id, 
-                                                    response);
-                                  });
+                                      updateGame(response);
+
                               });
                           };
 
+                    var removeComplain = function (game_id) {
+                        pUrl = '/api/game/'+game_id+'/complain';
+                        $http
+                            .delete(pUrl)
+                            .success(
+                                function(response) {
+                                    updateGame(response);
+
+                                });
+                    };
+
                     if(game.isComplainedByUser($rootScope.currentPlayer)) {
-                        makeReq('/game/'+id+'/ /complain');
+                        removeComplain(id);
                     }
                     else {
                       UserComplain.show(
@@ -87,7 +104,7 @@ app.controller(
                             offsX: -40,
                             offsY: -40,
                             onOk: function(pData) {
-                                makeReq('/game/'+id+'/'+pData+'/complain');
+                                addComplain(id, pData);
                                 UserComplain.hide();
                             },
                             onClose: function() {

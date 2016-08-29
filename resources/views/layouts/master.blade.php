@@ -17,7 +17,7 @@
     </head>
     <body class="no-touch">
         <nav class="navbar navbar-default navbar-fixed-top navbar-center">
-            <div class="container">
+            <div class="container" ng-controller="MainCtrl">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                             data-target="#bs-example-navbar-collapse-6" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
@@ -26,16 +26,19 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav navbar-center">
-                        <li ng-class="{active: activeTab == 'games'}"><a href="/#/">Games</a></li>
-                        <li ng-class="{active: activeTab == 'chart'}"><a href="/#/chart">Chart</a></li>
-                        @if(!Auth::check())
-                            <li ng-class="{active: activeTab == 'signin'}"><a href="/#/signin">Login</a></li>
-                            <li ng-class="{active: activeTab == 'signup'}"><a href="/#/signup">Register</a></li>
-                        @else
-                            <li ng-class="{active: activeTab == 'create-game'}"><a href="/#/game/create">Add game</a></li>
-                            <li ng-class="{active: activeTab == 'profile'}"><a href="/#/user/profile">Profile</a></li>
-                            <li ng-class="{active: activeTab == 'logout'}"><a href="/logout">Logout</a></li>
-                        @endif
+                        <li ng-class="{active: activeTab == view.url}" ng-repeat="view in views" ng-show="
+                    view.cond === 'any' ||
+                    (view.cond === 'auth' && isAuth() ) ||
+                    (view.cond === 'noauth' && !isAuth() )">
+                            <a href="/#/@{{view.url}}">
+                                @{{view.title}}
+                            </a>
+                        </li>
+                        <li ng-show="isAuth()">
+                            <a href="#" ng-click="logout()">
+                                Logout
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
