@@ -109,7 +109,8 @@ class AuthenticateController extends Controller
             $client->request(
                 'GET', 
                 'https://graph.facebook.com/v2.5/oauth/access_token', 
-                ['query' => $params]);
+                ['query' => $params]
+            );
 
         $accessToken = json_decode($accessTokenResponse->getBody(), true);
 
@@ -160,7 +161,8 @@ class AuthenticateController extends Controller
                     [   "facebook_id" => $profile['id'],
                         "email" => $profile['email'],
                         "password" => $user->password
-                    ]);
+                    ]
+                );
 
         if($token)
             return response()->json(compact('token'));
