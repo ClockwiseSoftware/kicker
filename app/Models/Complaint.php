@@ -9,6 +9,11 @@ class Complaint extends Model
 {
     protected $table = 'complaints';
     protected $fillable = ['game_id', 'user_id', 'reason'];
+	protected $casts = [
+		'game_id' => 'integer',
+		'user_id' => 'integer',
+		'id' => 'integer',
+	];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

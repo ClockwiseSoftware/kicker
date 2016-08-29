@@ -21,7 +21,7 @@ class ComplaintController extends Controller
         $user = User::findMe();
         $complaint = Complaint::player($user->id)
             ->getGame((int)$game_id)
-	        ->get();
+	        ->first();
 
         if (count($complaint) > 0) {
             return response($complaint, 409);
@@ -54,6 +54,6 @@ class ComplaintController extends Controller
 			$complaint->delete();
 		}
 
-		return response('Ok', 200);
+		return response(['status' => 'ok'], 200);
     }
 }
