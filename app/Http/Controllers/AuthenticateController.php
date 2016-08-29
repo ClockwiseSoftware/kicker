@@ -23,11 +23,17 @@ use Hash;
 class AuthenticateController extends Controller
 {
 	public function __construct() {
-        $this->middleware(
-            'jwt.auth', 
-            [   'except' => [   'signup',
-                                'authenticate', 
-                                'fbCallback']]);
+		$this->middleware(
+			'jwt.auth',
+			[
+				'except' =>
+				 [
+				 	'signup',
+					 'authenticate',
+					 'fbCallback'
+				 ]
+			]
+		);
 	}
 
     public function index() {
