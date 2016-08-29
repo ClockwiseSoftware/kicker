@@ -11,6 +11,8 @@
 |
 */
 
+use Carbon\Carbon;
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -23,8 +25,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Game::class, function (Faker\Generator $faker) {
 	return [
-		'played_at' => $faker->dateTimeAD,
-		'team_a_points' => $faker->randomNumber() ,
-		'team_b_points' => $faker->randomNumber(),
+		'played_at' => Carbon::now()->format('m/d/Y H:i'),
+		'team_a_points' => 10 ,
+		'team_b_points' => rand(0,9),
+		'status' => 1,
 	];
 });

@@ -9,7 +9,7 @@ class JWTAuthTest extends TestCase
 	/**
 	 * @test
 	 */
-	public function auth() {
+	public function jwt_auth_with_api_return_token() {
 
 		parent::auth();
 

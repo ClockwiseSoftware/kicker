@@ -6,19 +6,21 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GameTest extends TestCase {
+
 	use DatabaseTransactions;
 
 	protected $users = [];
 	protected $points;
+
 	/**
 	 * @test
 	 */
-	public function save_game() {
+	public function save_game_with_api() {
 		$this->users = $this->create_users(4);
 
 		$this->auth();
 		$this->points = rand(0,9);
-		$this->create_game($this->points);
+		$this->create_game_request($this->points);
 
 		$this
 			->seeJson()
@@ -35,7 +37,7 @@ class GameTest extends TestCase {
 		);
 	}
 
-	public function create_game($points) {
+	public function create_game_request($points) {
 		$this->request('POST', '/api/game', [
 			'games_users_a' => [
 				$this->users[0]->id,
