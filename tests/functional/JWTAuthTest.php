@@ -11,9 +11,17 @@ class JWTAuthTest extends TestCase {
 	/** @test */
 	public function jwt_auth_with_api_return_token() {
 
-		$this->auth();
+		$password = str_random(10);
+		$user = factory(User::class)->create(['password'=> bcrypt($password)]);
 
-		$this->seeJson()->seeJsonStructure(['token']);
+		$response = $this->request('POST','/api/auth',[
+			'email' => $user->email,
+			'password' => $password
+		], false);
+
+		$response
+			->seeJson()
+			->seeJsonStructure(['token']);
 
 	}
 
@@ -23,17 +31,17 @@ class JWTAuthTest extends TestCase {
 
 	/** @test */
 	public function not_auth_user_dont_see_list() {
-		$this->request('GET', '/api/users');
-		$this->assertResponseStatus(400);
-		$this->seeJson(['error' => 'token_not_provided']);
+		$response = $this->request('GET', '/api/users', [], false);
+		$response
+			->assertResponseStatus(400)
+			->seeJson(['error' => 'token_not_provided']);
 	}
 
 	/** @test */
 	public function users_list_api() {
 		$this->auth();
-
-		$this->request('GET', '/api/users');
-		$this
+		$response = $this->request('GET', '/api/users');
+		$response
 			->seeJson()
 			->seeJsonStructure(['total', 'data']);
 	}
@@ -42,8 +50,8 @@ class JWTAuthTest extends TestCase {
 	public function users_list_not_contain_deleted_users() {
 		$this->auth();
 		$user = factory(User::class)->create(['deleted' => 1]);
-		$this->request('GET', '/api/users');
-		$this
+		$response = $this->request('GET', '/api/users');
+		$response
 			->seeJson()
 			->seeJsonStructure(['total', 'data'])
 			->dontSeeJson(['id' => $user->id])
@@ -52,41 +60,52 @@ class JWTAuthTest extends TestCase {
 
 	/** @test */
 	public function check_user_info_witout_auth_api() {
-		$this->request('GET', '/api/users/me');
-		$this->assertResponseStatus(400);
-		$this->seeJson(['error' => 'token_not_provided']);
+		$response = $this->request('GET', '/api/users/me', [], false);
+		$response->assertResponseStatus(400);
+		$response->seeJson(['error' => 'token_not_provided']);
 	}
 
 	/** @test */
 	public function check_user_info_api() {
-		$user = $this->auth();
-		$this->request('GET', '/api/users/me');
-//		$this->seeJson([
-//			'id'      => $user->id,
-//			'name'    => $user->name,
-//			'rating'  => $user->rating,
-//		]);
+		$this->auth();
+		$response = $this->request(
+			'GET',
+			'/api/users/me'
+		);
+
+		$response
+			->seeJsonStructure([
+				'id', 'name', 'rating'
+			]);
 	}
 
 	/** @test */
 	public function check_user_role_witout_auth_api() {
-		$this->request('GET', '/api/users/role');
+		$this->request('GET', '/api/users/role', [], false);
 		$this->assertResponseStatus(400);
 		$this->seeJson(['error' => 'token_not_provided']);
 	}
 
-//	/** @test */
-//	public function check_user_admin_role_api() {
-//		$this->auth(['is_admin' => 1]);
-//		$this->request('GET', '/api/users/role');
-//		$this->see('admin');
-//	}
-//	/** @test */
-//	public function check_user_role_api() {
-//		$this->auth(['is_admin' => 0]);
-//		$this->request('GET', '/api/users/role');
-//		$this->see('user');
-//	}
+	/** @test */
+	public function check_user_admin_role_api() {
+		$this->auth();
+
+		$this->user->is_admin = 1;
+		$this->user->save();
+
+		$this->request('GET', '/api/users/role');
+		$this->see('admin');
+	}
+	/** @test */
+	public function check_user_role_api() {
+		$this->auth();
+
+		$this->user->is_admin = 0;
+		$this->user->save();
+
+		$this->request('GET', '/api/users/role');
+		$this->see('user');
+	}
 
 
 }

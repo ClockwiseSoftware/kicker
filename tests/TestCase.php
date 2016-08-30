@@ -8,6 +8,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 	protected $response;
 	protected $response_json;
 	protected $token = false;
+	protected $user;
 
     /**
      * The base URL to use while testing the application.
@@ -41,13 +42,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 	 * @param $method string
 	 * @param $url string
 	 * @param array $params string
+	 * @param bool $auth
 	 * @return mixed
 	 */
-	public function request($method, $url, $params = []) {
+	public function request($method, $url, $params = [], $auth = true) {
 
 		$headers = [];
 
-		if ($this->token) {
+		if ($this->token && $auth) {
 			$headers = array_merge(
 				$headers,
 				[
@@ -62,30 +64,24 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 			$params,
 			$headers
 		);
-		$this->response_json = $response->decodeResponseJson();
 
-		return $this->response;
+		return $response;
 	}
 
 	/**
 	 * Make auth request, get token and save it
 	 */
 	public function auth() {
-		$this->token = '';
-		$user = factory(User::class)->create(['password'=> bcrypt('qwerty')]);
+		if (empty($this->user)) {
+			$password = str_random(10);
+			$this->user = factory(User::class)->create(['password' => bcrypt($password)]);
 
-		$this->request(
-			'POST',
-			'/api/auth',
-			[
-				'email'    => $user->email,
-				'password' => 'qwerty'
-			]
-		);
-
-		$this->token = $this->response_json['token'];
-
-		return $user;
+			$this->token = JWTAuth::attempt([
+				'email'    => $this->user->email,
+				'password' => $password,
+			]);
+		}
+		return $this->user;
 	}
 
 	/**

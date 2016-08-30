@@ -18,9 +18,9 @@ class GameTest extends TestCase {
 
 		$this->auth();
 		$this->points = rand(0,9);
-		$this->create_game_request($this->points);
+		$response = $this->create_game_request($this->points);
 
-		$this
+		$response
 			->seeJson()
 			->seeJsonStructure(['id']);
 
@@ -28,7 +28,6 @@ class GameTest extends TestCase {
 		$this->seeInDatabase(
 			'games',
 			[
-				'id' => $this->response_json['id'],
 				'team_a_points' => 10,
 				'team_b_points' => $this->points,
 			]
@@ -42,7 +41,7 @@ class GameTest extends TestCase {
 	}
 
 	public function create_game_request($points) {
-		$this->request('POST', '/api/games', [
+		return $this->request('POST', '/api/games', [
 			'games_users_a' => [
 				$this->users[0]->id,
 				$this->users[1]->id

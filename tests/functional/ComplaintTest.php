@@ -15,8 +15,6 @@ class ComplaintTest extends TestCase  {
 
 	/** @var  Game */
 	protected $game;
-	/** @var  User */
-	protected $user;
 	/** @var Collection  */
 	protected $users = [];
 	/** @var Collection  */
@@ -31,10 +29,10 @@ class ComplaintTest extends TestCase  {
 		$this->prepareGames();
 
 		$reason = str_random(10);
-		$this->create_complaint_request($this->game->id, $reason);
+		$response = $this->create_complaint_request($this->game->id, $reason);
 
 		// check response has complaint data
-		$this->seeJson([
+		$response->seeJson([
 			'game_id' => $this->game->id,
 			'user_id' => $this->user->id,
 			'reason'  => $reason
@@ -54,31 +52,34 @@ class ComplaintTest extends TestCase  {
 	public function send_complaint_with_large_reason_api() {
 		$this->prepareGames();
 		$reason = str_random(300);
-		$this->create_complaint_request($this->game->id, $reason);
-		$this->assertResponseStatus(422);
-		$this->seeJson([
-			'reason' => ['The reason may not be greater than 255 characters.']
-		]);
+		$response = $this->create_complaint_request($this->game->id, $reason);
+		$response
+			->assertResponseStatus(422)
+			->seeJson([
+				'reason' => ['The reason may not be greater than 255 characters.']
+			]);
 	}
 
 	/** @test */
 	public function send_complaint_with_empty_reason_api() {
 		$this->prepareGames();
-		$this->create_complaint_request($this->game->id, '');
-		$this->assertResponseStatus(422);
-		$this->seeJson([
-			'reason' => ['The reason field is required.']
-		]);
+		$response = $this->create_complaint_request($this->game->id, '');
+		$response
+			->assertResponseStatus(422)
+			->seeJson([
+				'reason' => ['The reason field is required.']
+			]);
 	}
 
 	/** @test */
 	public function send_complaint_with_null_reason_api() {
 		$this->prepareGames();
-		$this->create_complaint_request($this->game->id, null);
-		$this->assertResponseStatus(422);
-		$this->seeJson([
-			'reason' => ['The reason field is required.']
-		]);
+		$response = $this->create_complaint_request($this->game->id, null);
+		$response
+			->assertResponseStatus(422)
+			->seeJson([
+				'reason' => ['The reason field is required.']
+			]);
 	}
 
 	/** @test */
@@ -101,12 +102,12 @@ class ComplaintTest extends TestCase  {
 		// choose random game
 		$this->game = $this->games->random();
 		// authenticate
-		$this->user = $this->auth();
+		$this->auth();
 	}
 
 	public function create_complaint_request($game_id, $text) {
 		// send complaint for rnd game
-		$this->request(
+		return $this->request(
 			'POST',
 			'/api/games/' . $game_id . '/complain',
 			[
@@ -116,7 +117,7 @@ class ComplaintTest extends TestCase  {
 	}
 
 	public function delete_complaint_request($game_id) {
-		$this->request(
+		return $this->request(
 			'DELETE',
 			'/api/games/' . $game_id . '/complain'
 		);
