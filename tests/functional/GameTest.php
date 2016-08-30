@@ -12,9 +12,7 @@ class GameTest extends TestCase {
 	protected $users = [];
 	protected $points;
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function save_game_with_api() {
 		$this->users = $this->create_users(4);
 
@@ -37,9 +35,7 @@ class GameTest extends TestCase {
 		);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function check_games() {
 		$this->request('GET', '/');
 		$this->seeJson()->seeJsonStructure(['total', 'data']);
