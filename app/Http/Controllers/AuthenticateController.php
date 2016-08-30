@@ -73,9 +73,9 @@ class AuthenticateController extends Controller
     public function signup(SignUpRequest $request) {
         //create new user
         $user = new User();
-        $user->name = $request->get("name");
-        $user->email = $request->get("email");
-        $user->setPassword($request->get("password"));
+        $user->name = $request->input("name");
+        $user->email = $request->input("email");
+        $user->setPassword($request->input("password"));
         $user->save();
 
         //make token
