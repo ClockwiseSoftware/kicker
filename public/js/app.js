@@ -2306,7 +2306,7 @@ app.controller('ChartsCtrl', ['$scope', '$http', 'User',
         });
     };
 
-    $http.get('/api/user/me')
+    $http.get('/api/users/me')
       .success(function (user) {
         if (!user)
           return false;
@@ -2592,7 +2592,7 @@ app.factory('UserSearch', ['$http', function($http) {
             params.search = search;
 
 
-        return $http.get('/api/user/search', {
+        return $http.get('/api/users/search', {
             params: params
         }).then(function(response) {
             if (response.data.length === 0) {
@@ -2795,7 +2795,7 @@ app.factory(
 (function (app) {
   app.factory('Player', ['$resource',
     function ($resource) {
-      return $resource('/api/user/me', {id: '@id', params: '@params'}, {
+      return $resource('/api/users/me', {id: '@id', params: '@params'}, {
         me: {
           method: 'GET',
           isArray: false
@@ -2806,16 +2806,16 @@ app.factory(
         },
         update: {
           method: 'PUT',
-          url: 'api/user/:id'
+          url: 'api/users/:id'
         },
         delete: {
           method: 'DELETE',
-          url: 'api/user/:id',
+          url: 'api/users/:id',
           isArray: true
         },
         restore: {
           method: 'POST',
-          url: 'api/user/:id/restore'
+          url: 'api/users/:id/restore'
         }
       });
     }]);
@@ -3022,7 +3022,7 @@ app.controller(
       };
       function getUserRole() {
         $http({
-          url: '/api/user/role',
+          url: '/api/users/role',
           method: 'GET'
         }).success(function (role) {
           if (role === 'guest') {
@@ -3365,7 +3365,7 @@ app.controller('UsersEditCtrl', [
             resetErrors(user);
 
             $http({
-                url: '/api/user/' + user.id,
+                url: '/api/users/' + user.id,
                 method: 'PUT',
                 data: user.getFormData()
             }).error(function(response) {
@@ -3457,7 +3457,7 @@ app.controller('UserProfileCtrl', [
       $.errors = {};
       if (avatar && !avatar.$error) {
         Upload.upload({
-          url: '/api/user/' + $.player.id + '/avatar',
+          url: '/api/users/' + $.player.id + '/avatar',
           data: {
             avatar: avatar
           }

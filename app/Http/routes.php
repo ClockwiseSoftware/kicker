@@ -51,68 +51,68 @@ Route::group(["middleware" => ["api"], "prefix" => "api"], function() {
                 'UserController@index');
 
             Route::get(
-                '/user/me',
+                '/users/me',
                 'UserController@one');
 
             Route::get(
-                '/user/role',
+                '/users/role',
                 'UserController@role');            
 
             Route::put(
-                '/user/{id}',
+                '/users/{id}',
                 'UserController@update')
                     ->where('id', '[0-9]+');
 
             Route::delete(
-                '/user/{id}',
+                '/users/{id}',
                 'UserController@delete')
                     ->where('id', '[0-9]+');
 
             Route::post(
-                '/user/{id}/restore',
+                '/users/{id}/restore',
                 'UserController@restore');
 
             Route::post(
-                '/user/{id}/avatar',
+                '/users/{id}/avatar',
                 'UserController@updateAvatar')
                     ->where('id', '[0-9]+');
 
             Route::put(
-                '/game/{id}',
+                '/games/{id}',
                 'GameController@update')
                     ->where('id', '[0-9]+');
 
             Route::delete(
-                '/game/{id}',
+                '/games/{id}',
                 'GameController@delete')
                     ->where('id', '[0-9]+');
 
             Route::get(
-                '/game/{id}/delete',
+                '/games/{id}/delete',
                 'GameController@delete')
                     ->where('id', '[0-9]+');
 
             Route::post(
-                '/game/{game_id}/complain',
+                '/games/{game_id}/complain',
                 'ComplaintController@create')
                     ->where('game_id', '[0-9]+');
 
 	        Route::delete(
-                '/game/{game_id}/complain',
+                '/games/{game_id}/complain',
                 'ComplaintController@delete')
                     ->where('game_id', '[0-9]+');
 
             Route::post(
-                '/game',
+                '/games',
                 'GameController@create');
 
             Route::get(
-                '/game/{id}',
+                '/games/{id}',
                 'GameController@one')
                     ->where('id', '[0-9]+');
 
             Route::get(
-                '/games',
+                '/gamess',
                 'GameController@index')
                     ->name('home');
         });
@@ -121,7 +121,7 @@ Route::group(["middleware" => ["api"], "prefix" => "api"], function() {
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/user/search', 'UserController@search');
+    Route::get('/users/search', 'UserController@search');
 
     // Games routes
     Route::get('/', 'GameController@index')->name('home');

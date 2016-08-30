@@ -62,7 +62,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 			$params,
 			$headers
 		);
-
 		$this->response_json = $response->decodeResponseJson();
 
 		return $this->response;

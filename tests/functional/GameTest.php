@@ -37,8 +37,16 @@ class GameTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @test
+	 */
+	public function check_games() {
+		$this->request('GET', '/');
+		$this->seeJson()->seeJsonStructure(['total', 'data']);
+	}
+
 	public function create_game_request($points) {
-		$this->request('POST', '/api/game', [
+		$this->request('POST', '/api/games', [
 			'games_users_a' => [
 				$this->users[0]->id,
 				$this->users[1]->id

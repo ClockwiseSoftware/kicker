@@ -1,7 +1,7 @@
 (function (app) {
   app.factory('Player', ['$resource',
     function ($resource) {
-      return $resource('/api/user/me', {id: '@id', params: '@params'}, {
+      return $resource('/api/users/me', {id: '@id', params: '@params'}, {
         me: {
           method: 'GET',
           isArray: false
@@ -12,16 +12,16 @@
         },
         update: {
           method: 'PUT',
-          url: 'api/user/:id'
+          url: 'api/users/:id'
         },
         delete: {
           method: 'DELETE',
-          url: 'api/user/:id',
+          url: 'api/users/:id',
           isArray: true
         },
         restore: {
           method: 'POST',
-          url: 'api/user/:id/restore'
+          url: 'api/users/:id/restore'
         }
       });
     }]);

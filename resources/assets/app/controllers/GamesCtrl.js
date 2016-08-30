@@ -36,7 +36,7 @@ app.controller(
       };
       function getUserRole() {
         $http({
-          url: '/api/user/role',
+          url: '/api/users/role',
           method: 'GET'
         }).success(function (role) {
           if (role === 'guest') {

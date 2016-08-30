@@ -53,7 +53,7 @@ app.controller('UsersEditCtrl', [
             resetErrors(user);
 
             $http({
-                url: '/api/user/' + user.id,
+                url: '/api/users/' + user.id,
                 method: 'PUT',
                 data: user.getFormData()
             }).error(function(response) {

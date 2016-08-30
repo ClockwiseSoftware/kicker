@@ -7,14 +7,17 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class JWTAuthTest extends TestCase
 {
 	use DatabaseTransactions;
-	/**
-	 * @test
-	 */
+	
+	/** @test */
 	public function jwt_auth_with_api_return_token() {
 
 		parent::auth();
 
 		$this->seeJson()->seeJsonStructure(['token']);
 
+	}
+
+	public function jwt_signup_return() {
+		
 	}
 }
