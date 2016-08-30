@@ -6,7 +6,7 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - composer --version
           # copy default enviroment file
-          - cp .env.example .env
+          #- cp .env.example .env
           # install composer vendor scripts
           - composer install
           - vendor/bin/phpunit --version
@@ -14,7 +14,7 @@ pipelines:
           # start mysl
           - service mysql start
           # create default databese for project
-          - mysql -u root -e "CREATE DATABASE kicker_chart"
+          - mysql -u root -e "CREATE DATABASE $DB_DATABASE"
           # migrate
           - php artisan migrate --seed
           # run tests
