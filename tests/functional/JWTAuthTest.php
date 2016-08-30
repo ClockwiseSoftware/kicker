@@ -80,7 +80,7 @@ class JWTAuthTest extends TestCase {
 	}
 
 	/** @test */
-	public function check_user_role_witout_auth_api() {
+	public function check_user_role_without_auth_api() {
 		$this->request('GET', '/api/users/role', [], false);
 		$this->assertResponseStatus(400);
 		$this->seeJson(['error' => 'token_not_provided']);
@@ -96,6 +96,7 @@ class JWTAuthTest extends TestCase {
 		$this->request('GET', '/api/users/role');
 		$this->see('admin');
 	}
+	
 	/** @test */
 	public function check_user_role_api() {
 		$this->auth();
