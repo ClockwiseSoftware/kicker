@@ -71,6 +71,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 	 * Make auth request, get token and save it
 	 */
 	public function auth() {
+		$this->token = '';
 		$user = factory(User::class)->create(['password'=> bcrypt('qwerty')]);
 
 		$this->request(

@@ -177,6 +177,11 @@ class User extends Authenticatable
         return (bool) $this->is_admin;
     }
 
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
     public function hasRole($role)
     {
         if ($role === 'admin')

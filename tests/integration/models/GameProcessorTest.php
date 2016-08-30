@@ -5,15 +5,13 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class GameProcessorTest extends TestCase
-{
+class GameProcessorTest extends TestCase {
 	use DatabaseTransactions;
 
 	/**
 	 * @test
 	 */
-	public function check_calculating_rating()
-	{
+	public function check_calculating_rating() {
 		$users = [];
 		$ratings = [
 			1400, 1500, 1200, 1300,
