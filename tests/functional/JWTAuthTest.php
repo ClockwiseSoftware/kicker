@@ -75,18 +75,18 @@ class JWTAuthTest extends TestCase {
 		$this->seeJson(['error' => 'token_not_provided']);
 	}
 
-	/** @test */
-	public function check_user_admin_role_api() {
-		$this->auth(['is_admin' => 1]);
-		$this->request('GET', '/api/users/role');
-		$this->see('admin');
-	}
-	/** @test */
-	public function check_user_role_api() {
-		$this->auth(['is_admin' => 0]);
-		$this->request('GET', '/api/users/role');
-		$this->see('user');
-	}
+//	/** @test */
+//	public function check_user_admin_role_api() {
+//		$this->auth(['is_admin' => 1]);
+//		$this->request('GET', '/api/users/role');
+//		$this->see('admin');
+//	}
+//	/** @test */
+//	public function check_user_role_api() {
+//		$this->auth(['is_admin' => 0]);
+//		$this->request('GET', '/api/users/role');
+//		$this->see('user');
+//	}
 
 
 }
