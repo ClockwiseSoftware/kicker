@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class JWTAuthTest extends TestCase
 {
+	use DatabaseTransactions;
 	/**
 	 * @test
 	 */

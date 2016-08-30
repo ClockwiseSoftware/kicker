@@ -26,13 +26,17 @@ class ComplaintController extends Controller
         if (count($complaint) > 0) {
             return response($complaint, 409);
         } else {
-        	$reason = $request->get('reason');
+        	$reason = $request->input('reason');
 
-            $complaint = Complaint::create([
-                'user_id' => $user->id,
-                'game_id' => $game_id,
-                'reason' => $reason
-            ]);
+	        try {
+		        $complaint = Complaint::create([
+			        'user_id' => $user->id,
+			        'game_id' => $game_id,
+			        'reason'  => $reason
+		        ]);
+	        } catch (\Exception $e) {
+	        	return response()->json(['error' => ['Saving error']], 400);
+	        }
 
 	        return response($complaint, 201);
         }

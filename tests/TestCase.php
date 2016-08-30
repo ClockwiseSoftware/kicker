@@ -45,10 +45,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 	 */
 	public function request($method, $url, $params = []) {
 
-		$headers =
-			[
-				'Accept' => 'application/json'
-			];
+		$headers = [];
 
 		if ($this->token) {
 			$headers = array_merge(
@@ -59,7 +56,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 			);
 
 		}
-
 		$response = $this->json(
 			$method,
 			$url,
@@ -76,23 +72,26 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 	 * Make auth request, get token and save it
 	 */
 	public function auth() {
+		$user = factory(User::class)->create(['password'=> bcrypt('qwerty')]);
+
 		$this->request(
 			'POST',
 			'/api/auth',
 			[
-				'email'    => 'admin@admin.com',
-				'password' => 'admin'
+				'email'    => $user->email,
+				'password' => 'qwerty'
 			]
 		);
 
 		$this->token = $this->response_json['token'];
 
+		return $user;
 	}
 
 	/**
 	 * Create few users
 	 * @param $count integer
-	 * @return mixed Users[]
+	 * @return mixed User[]
 	 */
 	public function create_users($count) {
 		return factory(User::class, $count)->create();

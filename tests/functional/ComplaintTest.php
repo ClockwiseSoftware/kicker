@@ -25,23 +25,27 @@ class ComplaintTest extends TestCase  {
 	public function send_complaint_with_api() {
 		$this->check_games();
 		// get rnd game
-		$this->rndGame();
+		$this->rndGame(1);
 
 		// authenticate
-		$this->auth();
+		$user = $this->auth();
 
 		$this->create_complaint_request();
 
 		// check response has complaint data
 		$this->seeJson([
-			'game_id' => $this->game['id'], 'user_id' => 1
+			'game_id' => $this->game['id'],
+			'user_id' => $user->id,
+			'reason'  => 'reason text'
 		])->seeJsonStructure([
 			'id', 'game_id', 'user_id', 'reason'
 		]);
 
 		// check db for isset record about complaint
 		$this->seeInDatabase('complaints', [
-			'game_id' => $this->game['id'], 'user_id' => 1
+			'game_id' => $this->game['id'],
+			'user_id' => $user->id,
+			'reason'  => 'reason text'
 		]);
 	}
 
@@ -51,10 +55,10 @@ class ComplaintTest extends TestCase  {
 	public function delete_complaint_with_api() {
 		$this->check_games();
 
-		$this->rndGame();
+		$this->rndGame(2);
 
 		// authenticate
-		$this->auth();
+		$user = $this->auth();
 
 		$this->create_complaint_request();
 
@@ -64,16 +68,17 @@ class ComplaintTest extends TestCase  {
 		);
 
 		$this->dontSeeInDatabase('complaints', [
-			'game_id' => $this->game['id'], 'user_id' => 1
+			'game_id' => $this->game['id'], 'user_id' => $user->id
 		]);
 
 	}
 
-	public function rndGame() {
+	public function rndGame($id = 0) {
 		// db has more that 0 games
 		$this->assertTrue($this->response_json['total'] > 0);
 		// get rnd game for send complaint
-		$id = rand(0, $this->response_json['total'] - 1);
+		if (!$id)
+			$id = rand(0, count($this->response_json['data']) - 1);
 		// save rnd game
 		$this->game = $this->response_json['data'][$id];
 	}
@@ -84,7 +89,7 @@ class ComplaintTest extends TestCase  {
 			'POST',
 			'/api/game/' . $this->game['id'] . '/complain',
 			[
-				'reason' => 'asdasdas ad adas'
+				'reason' => 'reason text'
 			]
 		);
 	}
@@ -106,18 +111,18 @@ class ComplaintTest extends TestCase  {
 		);
 
 		foreach ($games as $game) {
-			$this->create_game_user($game, $this->users[0], $rating[0][0]);
-			$this->create_game_user($game, $this->users[1], $rating[0][1]);
-			$this->create_game_user($game, $this->users[2], $rating[1][0]);
-			$this->create_game_user($game, $this->users[3], $rating[1][1]);
+			$this->create_game_user($game, $this->users[0], $rating[0][0],'a');
+			$this->create_game_user($game, $this->users[1], $rating[0][1],'a');
+			$this->create_game_user($game, $this->users[2], $rating[1][0],'b');
+			$this->create_game_user($game, $this->users[3], $rating[1][1],'b');
 		}
 	}
 
-	public function create_game_user($game, $user, $rating) {
+	public function create_game_user($game, $user, $rating, $team) {
 		$game_user = new GameUser([
 			'user_id'    => $user->id,
 			'game_id'    => $game->id,
-			'team_index' => 'a',
+			'team_index' => $team,
 			'rating_before' => $user->rating,
 			'rating_after' => $rating
 		]);
