@@ -42,7 +42,6 @@ app.controller('UpdateGameCtrl', [
     };
 
     $.role = checkUserRole();
-    console.log($.user);
 
     Match.get({id: $.gameId}).$promise
       .then(function (res) {

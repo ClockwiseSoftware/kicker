@@ -82,6 +82,9 @@ class GameController extends Controller
 
     public function update(Request $request, $id)
     {
+    	if (!$request->user()->isAdmin()) {
+    		return response('Unauthorized', 401);
+	    }
         $this->validate($request, $this->validationRules(self::ACTION_UPDATE));
         $game = Game::findOrFail($id);
 

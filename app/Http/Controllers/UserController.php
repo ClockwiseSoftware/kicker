@@ -84,11 +84,17 @@ class UserController extends Controller
     {
         $user = User::findMe();
 
-        if (!$user)
-            abort(404);
+        if (!$user) {
+	        return response ('User not found',404);
+        }
 
-        if (!$user->softDelete())
-            abort(500);
+	    if (!$this->canEdit($user, $request)) {
+		    return response('Unauthorized', 401);
+	    }
+
+        if (!$user->softDelete()) {
+	        return response ('User can not be deleted',500);
+        }
 
         return response([]);
     }
@@ -98,8 +104,9 @@ class UserController extends Controller
         $user = $request->user();
         $user->deleted = false;
 
-        if (!$user->save())
-            abort(500);
+        if (!$user->save()) {
+	        return response('User can not be restored',500);
+        }
 
         return response($user);
     }
@@ -108,14 +115,19 @@ class UserController extends Controller
     {
         $user = User::where('id', $id)->first();
 
-        if (!$user)
-            abort(404);
+        if (!$user) {
+	        return response('User not found', 404);
+        }
+
+	    if (!$this->canEdit($user, $request)) {
+	    	return response('Unauthorized', 401);
+	    }
 
         $this->validate($request, $this->validationRules($user));
         $user->fill($request->all());
 
-        if ($request->get('password')) {
-            $user->setPassword($request->get('password'));
+        if ($request->has('password')) {
+            $user->setPassword($request->input('password'));
         }
 
         $user->save();
@@ -129,6 +141,11 @@ class UserController extends Controller
     public function updateAvatar(Request $request, $id)
     {
         $user = User::where('id', $id)->firstOrFail();
+
+	    if (!$this->canEdit($user, $request)) {
+		    return response('Unauthorized', 401);
+	    }
+
         $avatar = $request->file('avatar');
         $rules = [
             'avatar' => 'required|mimes:jpeg,bmp,png'
@@ -160,5 +177,9 @@ class UserController extends Controller
         return response([
             'avatar' => $user->avatar_url
         ]);
+    }
+
+    protected function canEdit(User $user, Request $request) {
+		return ($request->user()->id == $user->id or $request->user()->isAdmin());
     }
 }

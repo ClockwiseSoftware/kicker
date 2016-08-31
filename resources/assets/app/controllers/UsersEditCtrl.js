@@ -1,6 +1,6 @@
 app.controller('UsersEditCtrl', [
-    '$scope', '$http', 'Upload', 'User',
-    function($scope, $http, Upload, User) {
+    '$scope', '$http', 'Upload', 'User', '$location',
+    function($scope ,$http, Upload, User, $location) {
         $scope.users = [];
         $scope.inEditing = {};
         $scope.errors = {};
@@ -40,6 +40,15 @@ app.controller('UsersEditCtrl', [
         }
 
         $scope.init = function () {
+
+            checkUserRole = function () {
+                if ($scope.user.isAdmin == false) {
+                    $location.path('/');
+                }
+            };
+
+            $.role = checkUserRole();
+
             $http({
                 url: '/api/users',
                 method: 'GET'
@@ -85,5 +94,6 @@ app.controller('UsersEditCtrl', [
         };
 
         $scope.init();
+
     }
 ]);
