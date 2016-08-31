@@ -97,6 +97,9 @@ class GameController extends Controller
 
     public function delete(Request $request, $id)
     {
+	    if (!$request->user()->isAdmin()) {
+		    return response('Unauthorized', 401);
+	    }
         $game = Game::findOrFail($id);
 
         if ($game->delete())

@@ -13,7 +13,7 @@ class AddPlayedAtToGamesTable extends Migration
     public function up()
     {
         Schema::table('games', function (Blueprint $table) {
-            $table->timestamp('played_at');
+            $table->timestamp('played_at')->nullable();
         });
     }
 

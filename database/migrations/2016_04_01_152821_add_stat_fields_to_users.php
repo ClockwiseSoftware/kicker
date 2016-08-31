@@ -13,10 +13,10 @@ class AddStatFieldsToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->addColumn('integer', 'count_wins');
-            $table->addColumn('integer', 'count_draws');
-            $table->addColumn('integer', 'count_looses');
-            $table->addColumn('integer', 'rating');
+            $table->addColumn('integer', 'count_wins')->nullable()->default(0);
+            $table->addColumn('integer', 'count_draws')->nullable()->default(0);
+            $table->addColumn('integer', 'count_looses')->nullable()->default(0);
+            $table->addColumn('integer', 'rating')->nullable()->default(0);
         });
     }
 
