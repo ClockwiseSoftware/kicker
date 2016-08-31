@@ -81,6 +81,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 				'password' => $password,
 			]);
 		}
+
 		return $this->user;
 	}
 

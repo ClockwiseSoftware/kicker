@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Game;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -91,7 +92,7 @@ class AppServiceProvider extends ServiceProvider
                     });
                 })
                 ->where(
-                    DB::raw('UNIX_TIMESTAMP(created_at)'), '>=', DB::raw("UNIX_TIMESTAMP(NOW()) - {$secondsDelta}")
+                    'created_at', '>=', Carbon::now()->subSeconds($secondsDelta)
                 )->with(['gamesUsersA', 'gamesUsersB'])
                 ->get();
 
