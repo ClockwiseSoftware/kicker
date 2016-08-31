@@ -1,4 +1,4 @@
-image: clockwise/php7-mysql-unit-docker
+image: bodva/phpunit-alpain
 
 pipelines:
   default:
@@ -8,11 +8,6 @@ pipelines:
           # install composer vendor scripts
           - composer install
           - vendor/bin/phpunit --version
-          - mysql --version
-          # start mysl
-          - service mysql start
-          # create default databese for project
-          - mysql -u root -e "CREATE DATABASE $DB_DATABASE"
           # migrate
           - php artisan migrate --seed
           # run tests
