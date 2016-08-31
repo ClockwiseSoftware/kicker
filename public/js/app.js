@@ -2823,7 +2823,7 @@ app.factory(
 (function (app) {
   app.factory('Match', ['$resource',
     function ($resource) {
-      return $resource('/api/game/:id', {id: '@id'}, {
+      return $resource('/api/games/:id', {id: '@id'}, {
         create: {
           method: 'POST'
         },
@@ -3048,7 +3048,7 @@ app.controller(
 
                     var updateGame = function(response) {
                         $http
-                            .get('/api/game/' + id)
+                            .get('/api/games/' + id)
                             .success(function (response) {
                                 game.loading = false;
                                 $.gamesRepository
@@ -3060,7 +3060,7 @@ app.controller(
 
                     var addComplain =
                           function(game_id, pData) {
-                            pUrl = '/api/game/'+game_id+'/complain';
+                            pUrl = '/api/games/'+game_id+'/complain';
                             $http
                               .post(pUrl, {'reason': pData})
                               .success(
@@ -3071,7 +3071,7 @@ app.controller(
                           };
 
                     var removeComplain = function (game_id) {
-                        pUrl = '/api/game/'+game_id+'/complain';
+                        pUrl = '/api/games/'+game_id+'/complain';
                         $http
                             .delete(pUrl)
                             .success(
@@ -3305,7 +3305,7 @@ app.controller('ComplainersCtrl', ['$scope', '$http', '$routeParams', 'Game',
         $scope.gameId = $routeParams.id;
         $scope.game = null;
 
-        $http.get('/api/game/' + $scope.gameId).then(function(response) {
+        $http.get('/api/games/' + $scope.gameId).then(function(response) {
             $scope.game = new GameService(response.data);
         });
     }

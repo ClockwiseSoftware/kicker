@@ -62,7 +62,7 @@ app.controller(
 
                     var updateGame = function(response) {
                         $http
-                            .get('/api/game/' + id)
+                            .get('/api/games/' + id)
                             .success(function (response) {
                                 game.loading = false;
                                 $.gamesRepository
@@ -74,7 +74,7 @@ app.controller(
 
                     var addComplain =
                           function(game_id, pData) {
-                            pUrl = '/api/game/'+game_id+'/complain';
+                            pUrl = '/api/games/'+game_id+'/complain';
                             $http
                               .post(pUrl, {'reason': pData})
                               .success(
@@ -85,7 +85,7 @@ app.controller(
                           };
 
                     var removeComplain = function (game_id) {
-                        pUrl = '/api/game/'+game_id+'/complain';
+                        pUrl = '/api/games/'+game_id+'/complain';
                         $http
                             .delete(pUrl)
                             .success(

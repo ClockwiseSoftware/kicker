@@ -4,7 +4,7 @@ app.controller('ComplainersCtrl', ['$scope', '$http', '$routeParams', 'Game',
         $scope.gameId = $routeParams.id;
         $scope.game = null;
 
-        $http.get('/api/game/' + $scope.gameId).then(function(response) {
+        $http.get('/api/games/' + $scope.gameId).then(function(response) {
             $scope.game = new GameService(response.data);
         });
     }
