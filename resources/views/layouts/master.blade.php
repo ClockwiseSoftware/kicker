@@ -15,9 +15,9 @@
         {{ Html::style('css/main.css') }}
         @yield('styles')
     </head>
-    <body class="no-touch">
+    <body class="no-touch" ng-controller="MainCtrl">
         <nav class="navbar navbar-default navbar-fixed-top navbar-center">
-            <div class="container" ng-controller="MainCtrl">
+            <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                             data-target="#bs-example-navbar-collapse-6" aria-expanded="false"><span class="sr-only">Toggle navigation</span>

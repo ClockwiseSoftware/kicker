@@ -2928,8 +2928,8 @@ app.factory('GamesRepository', ['$http', 'Game', function ($http, Game) {
 
   return GamesRepository;
 }]);
-app.controller('MainCtrl', ['$scope', '$auth', '$window',
-    function($scope, $auth, $window) {
+app.controller('MainCtrl', ['$scope','$rootScope', '$auth', '$window', '$http',
+    function($scope, $rootScope, $auth, $window, $http) {
 
         $scope.isAuth = function () {
             return $auth.isAuthenticated();
@@ -2942,6 +2942,30 @@ app.controller('MainCtrl', ['$scope', '$auth', '$window',
                     $window.location.href = '/';
                 });
         };
+
+        // @TODO encapsulate it somewhere
+        $scope.user = {
+            isGuest: false,
+            isUser: false,
+            isAdmin: false
+        };
+        function getUserRole() {
+            $http({
+                url: '/api/users/role',
+                method: 'GET'
+            }).success(function (role) {
+                if (role === 'guest') {
+                    $scope.user.isGuest = true;
+                } else if (role === 'user') {
+                    $scope.user.isUser = true;
+                } else if (role === 'admin') {
+                    $scope.user.isAdmin = true;
+                }
+                return role;
+            });
+        }
+
+        $scope.userRole = getUserRole();
 
         $scope.views = [
             {
@@ -3013,29 +3037,6 @@ app.controller(
           $.gamesRepository.load(true);
         }, 100);
       };
-
-      // @TODO encapsulate it somewhere
-      $.user = {
-        isGuest: false,
-        isUser: false,
-        isAdmin: false
-      };
-      function getUserRole() {
-        $http({
-          url: '/api/users/role',
-          method: 'GET'
-        }).success(function (role) {
-          if (role === 'guest') {
-            $.user.isGuest = true;
-          } else if (role === 'user') {
-            $.user.isUser = true;
-          } else if (role === 'admin') {
-            $.user.isAdmin = true;
-          }
-        });
-      }
-
-      $.userRole = getUserRole();
 
       $.complain = 
           function (id, pEv) {
@@ -3249,6 +3250,15 @@ app.controller('UpdateGameCtrl', [
       $.game.players[$.game.activeTeam][$.game.activeIndex] = player;
       $.game.validate();
     };
+
+    checkUserRole = function () {
+      if ($.user.isAdmin == false) {
+        $location.path('/');
+      }
+    };
+
+    $.role = checkUserRole();
+    console.log($.user);
 
     Match.get({id: $.gameId}).$promise
       .then(function (res) {

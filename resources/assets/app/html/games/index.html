@@ -72,16 +72,16 @@
                         user.isGuest === false &&
                         currentPlayer.deleted !== true" 
                     data-id="{{ game.id }}">
-                    <!--<a href="#"-->
-                       <!--class="btn btn-default btn-xs control-button"-->
-                       <!--ng-href="#/game/{{ game.id }}/update"-->
-                       <!--ng-if="user.isAdmin"-->
-                    <!--&gt;<i class="fa fa-pencil"></i></a>-->
-                    <!--<a href="#"-->
-                       <!--ng-href="/game/{{ game.id }}/delete"-->
-                       <!--class="btn btn-danger btn-xs control-button"-->
-                       <!--ng-if="user.isAdmin"-->
-                    <!--&gt;<i class="fa fa-ban"></i></a>-->
+                    <a href="#"
+                       class="btn btn-default btn-xs control-button"
+                       ng-href="#/game/{{ game.id }}/update"
+                       ng-if="user.isAdmin"
+                    ><i class="fa fa-pencil"></i></a>
+                    <a href="#"
+                       ng-href="/game/{{ game.id }}/delete"
+                       class="btn btn-danger btn-xs control-button"
+                       ng-if="user.isAdmin"
+                    ><i class="fa fa-ban"></i></a>
 
                     <md-button 
                         class="md-icon-button" 

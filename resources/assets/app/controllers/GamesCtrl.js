@@ -28,29 +28,6 @@ app.controller(
         }, 100);
       };
 
-      // @TODO encapsulate it somewhere
-      $.user = {
-        isGuest: false,
-        isUser: false,
-        isAdmin: false
-      };
-      function getUserRole() {
-        $http({
-          url: '/api/users/role',
-          method: 'GET'
-        }).success(function (role) {
-          if (role === 'guest') {
-            $.user.isGuest = true;
-          } else if (role === 'user') {
-            $.user.isUser = true;
-          } else if (role === 'admin') {
-            $.user.isAdmin = true;
-          }
-        });
-      }
-
-      $.userRole = getUserRole();
-
       $.complain = 
           function (id, pEv) {
 

@@ -35,6 +35,15 @@ app.controller('UpdateGameCtrl', [
       $.game.validate();
     };
 
+    checkUserRole = function () {
+      if ($.user.isAdmin == false) {
+        $location.path('/');
+      }
+    };
+
+    $.role = checkUserRole();
+    console.log($.user);
+
     Match.get({id: $.gameId}).$promise
       .then(function (res) {
         $.game = new CreateGameService(res);
