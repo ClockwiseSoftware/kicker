@@ -8,6 +8,7 @@ pipelines:
           # install composer vendor scripts
           - composer install
           - vendor/bin/phpunit --version
+          - touch database/database.sqlite
           # migrate
           - php artisan migrate --seed
           # run tests
