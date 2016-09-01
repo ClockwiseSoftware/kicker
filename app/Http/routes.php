@@ -112,7 +112,7 @@ Route::group(["middleware" => ["api"], "prefix" => "api"], function() {
                     ->where('id', '[0-9]+');
 
             Route::get(
-                '/gamess',
+                '/games',
                 'GameController@index')
                     ->name('home');
         });
