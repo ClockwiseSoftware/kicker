@@ -52,7 +52,7 @@ elixir(function (mix) {
     'bower/angular/angular.min.js',
 
     // Satellizer
-    'bower/satellizer/dist/satellizer.js',
+    'bower/satellizer//satellizer.min.js',
 
     // Angular derivatives
     'bower/angular-route/angular-route.min.js',

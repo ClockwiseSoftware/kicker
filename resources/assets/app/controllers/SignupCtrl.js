@@ -28,7 +28,20 @@ app.controller('SignupCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
                     }
 
                 });
-
         }
+
+        $scope.fbSignup =
+            function() {
+                $auth
+                    .authenticate("facebook")
+                    .then(function (response) {
+                        $window.location.href = '/';
+                        // console.log(response);
+                    })
+                    .catch(function (response) {
+                        // console.log(response);
+                        $window.location.href = '/';
+                    });
+            };
     }
 ]);
