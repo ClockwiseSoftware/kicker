@@ -38,14 +38,26 @@ class GameController extends Controller
 	}
 
     public function index(Request $request)
-    {
-        $query = Game::where('status', Game::STATUS_ACTIVE)
-            ->with(['complaints.user', 'gamesUsersA.user', 'gamesUsersB.user'])
-            ->orderBy('games.played_at', 'desc')
-            ->orderBy('games.id', 'desc');
+    {   
+        $req = $request->all();
+        // \Log::info($req);
+
+        $query = 
+            Game
+                ::where('status', Game::STATUS_ACTIVE)
+                ->with([
+                    'complaints.user', 
+                    'gamesUsersA.user', 
+                    'gamesUsersB.user'])
+                ->orderBy('games.played_at', 'desc')
+                ->orderBy('games.id', 'desc');
 
         $usersGames = (bool) $request->get('usersGames');
         $user = $request->user();
+
+        if (isset($req["maxId"]) && $req["maxId"] > 0) {
+            $query->where("games.id", ">", $req["maxId"]);
+        }
 
         if ($usersGames && $user) {
             $query->forUser($user);
