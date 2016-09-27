@@ -118,13 +118,16 @@ Route::group(["middleware" => ["api"], "prefix" => "api"], function() {
         });
 });
 
-
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/users/search', 'UserController@search');
 
     // Games routes
-    Route::get('/', 'GameController@index')->name('home');
+    Route::group(
+        ['middleware' => ['jwt.soft-auth']],
+        function() {
+            Route::get('/', 'GameController@index')->name('home');
+        });
 
     // Chart routes
     Route::get('/chart', 'ChartController@index')->name('chart');
