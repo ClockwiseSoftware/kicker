@@ -32,14 +32,13 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
                     .authenticate("facebook")
                     .then(function (response) {
                         $window.location.href = '/';
-                        console.log(response);
+                        // console.log(response);
                     })
                     .catch(function (response) {
-                        console.log(response);
-                        $window.location.href = '/';
+                        console.error(response);
+                        // $window.location.href = '/';
                     });
             };
-
 
     }
 ]);

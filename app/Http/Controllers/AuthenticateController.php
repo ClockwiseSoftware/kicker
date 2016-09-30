@@ -95,7 +95,7 @@ class AuthenticateController extends Controller
     }
 
     public function fbCallback(Request $request) {
-
+        // \Log::info($request->all());
         $client = new GuzzleHttp\Client();
         $params = [
             'code' => $request->input('code'),
@@ -125,7 +125,7 @@ class AuthenticateController extends Controller
                             'fields' => 'id,name,email,picture']]);
 
         $profile = json_decode($profileResponse->getBody(), true);
-        \Log::info($profile);
+        // \Log::info($profile);
         if(!isset($profile['id']))
             return response()->json(
                         ['error' => 'Facebook ID not returned'],

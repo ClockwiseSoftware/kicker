@@ -66,7 +66,9 @@ var app = angular
           controller: 'GamesCtrl',
           templateUrl: 'html/games/index.html',
           activeTab: 'games'
-        });
+        })
+
+        .otherwise("/");
 
         //app config
         var AppConfigProvider = {
@@ -77,7 +79,9 @@ var app = angular
         var commonConfig = {
           clientId: AppConfigProvider.appId,
           url: AppConfigProvider.apiUrl+"api/fb/signin",
-          redirectUri: window.location.origin+"/",
+        //   redirectUri: window.location.origin+"/",
+          display: "popup",
+          scope: ["email"],
           popupOptions: {
             location: "no",
             toolbar: "no"
