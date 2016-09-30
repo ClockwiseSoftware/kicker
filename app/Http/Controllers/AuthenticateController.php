@@ -59,7 +59,7 @@ class AuthenticateController extends Controller
 	                ->json(['error' => ['Invalid credentials']], 401);
             }
 
-        } 
+        }
         catch(JWTException $e) {
             // something went wrong
             return response()
@@ -84,7 +84,7 @@ class AuthenticateController extends Controller
 	            return response()
 		            ->json(['error' => ['Invalid credentials']], 401);
             }
-        } 
+        }
         catch(JWTException $e) {
             return response()
 	            ->json(['error' => ['Could not create token']], 500);
@@ -105,30 +105,30 @@ class AuthenticateController extends Controller
         ];
 
         // Exchange authorization code for access token.
-        $accessTokenResponse = 
+        $accessTokenResponse =
             $client->request(
-                'GET', 
-                'https://graph.facebook.com/v2.5/oauth/access_token', 
+                'GET',
+                'https://graph.facebook.com/v2.5/oauth/access_token',
                 ['query' => $params]
             );
 
         $accessToken = json_decode($accessTokenResponse->getBody(), true);
 
         // Retrieve profile information about the current user.
-        $profileResponse = 
+        $profileResponse =
             $client
                 ->request(
-                    'GET', 
-                    'https://graph.facebook.com/v2.5/me', 
+                    'GET',
+                    'https://graph.facebook.com/v2.5/me',
                     [   'query' => [
                             'access_token' => $accessToken['access_token'],
                             'fields' => 'id,name,email,picture']]);
 
         $profile = json_decode($profileResponse->getBody(), true);
-
+        \Log::info($profile);
         if(!isset($profile['id']))
             return response()->json(
-                        ['error' => 'Facebook ID not returned'], 
+                        ['error' => 'Facebook ID not returned'],
                         500);
 
         if(!array_key_exists('email', $profile))
@@ -141,7 +141,7 @@ class AuthenticateController extends Controller
             $user->facebook_id = $profile['id'];
             $user->email = $user->email ?: $profile['email'];
             $user->name = $user->name ?: $profile['name'];
-            $user->avatar_url = 
+            $user->avatar_url =
                 $user->avatar_url ?: $profile['picture']['data']['url'];
         } else {
         	// Create a new user account or return an existing one.
@@ -155,7 +155,7 @@ class AuthenticateController extends Controller
         $user->password = bcrypt($user->generateTempPassword());
         $user->save();
 
-        $token = 
+        $token =
                 JWTAuth::fromUser(
                     $user,
                     [   "facebook_id" => $profile['id'],
