@@ -26,11 +26,14 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav navbar-center">
-                        <li ng-class="{active: activeTab == view.url}" ng-repeat="view in views" ng-show="
-                    view.cond === 'any' ||
-                    (view.cond === 'auth' && isAuth() ) ||
-                    (view.cond === 'noauth' && !isAuth() )">
-                            <a href="/#/@{{view.url}}">
+                        <li
+                            ng-class="{active: activeTab == view.url}"
+                            ng-repeat="view in views"
+                            ng-show="
+                                view.cond === 'any' ||
+                                (view.cond === 'auth' && isAuth() ) ||
+                                (view.cond === 'noauth' && !isAuth() )">
+                            <a href="/#/@{{view.url}}" ng-cloak>
                                 @{{view.title}}
                             </a>
                         </li>

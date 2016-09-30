@@ -4,7 +4,7 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
         $scope.errors = [];
 
         $scope.signin = function (user) {
-            console.log(user);
+            // console.log(user);
             $auth
                 .login ({
                     'email': user.email,
@@ -28,6 +28,7 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
 
         $scope.fbSignin =
             function() {
+                // debugger;
                 $auth
                     .authenticate("facebook")
                     .then(function (response) {

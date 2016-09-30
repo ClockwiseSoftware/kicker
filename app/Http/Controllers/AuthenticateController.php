@@ -131,8 +131,8 @@ class AuthenticateController extends Controller
                         ['error' => 'Facebook ID not returned'],
                         500);
 
-        if(!array_key_exists('email', $profile))
-                $profile['email'] = sha1($profile['id']);
+        // if(!array_key_exists('email', $profile))
+        $profile['email'] = sha1($profile['id']);
 
         $user = User::where('facebook_id', $profile['id'])->first();
 
