@@ -31,13 +31,8 @@ app.controller('SigninCtrl', ['$scope', '$http', '$location', '$window', 'AuthUs
                 // debugger;
                 $auth
                     .authenticate("facebook")
-                    // .then(function (response) {
-                        // $window.location.href = '/';
-                        // console.log(response);
-                    // })
                     .catch(function (response) {
                         console.error(response);
-                        // $window.location.href = '/';
                     });
             };
 
