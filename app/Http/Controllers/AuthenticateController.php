@@ -125,16 +125,18 @@ class AuthenticateController extends Controller
                             'fields' => 'id,name,email,picture']]);
 
         $profile = json_decode($profileResponse->getBody(), true);
-        // \Log::info($profile);
+//         \Log::info($profile);
         if(!isset($profile['id']))
             return response()->json(
                         ['error' => 'Facebook ID not returned'],
                         500);
 
-        // if(!array_key_exists('email', $profile))
-        $profile['email'] = sha1($profile['id']);
+         if(!array_key_exists('email', $profile)) {
+	         $profile['email'] = sha1($profile['id']);
+         }
 
-        $user = User::where('facebook_id', $profile['id'])->first();
+         /** @var User $user */
+        $user = User::where('facebook_id', $profile['id'])->orWhere('email', $profile['email'])->first();
 
         // If user is already signed in then link accounts.
         if($user) {
