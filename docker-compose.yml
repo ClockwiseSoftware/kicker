@@ -31,6 +31,8 @@ services:
             - "MYSQL_DATABASE=kicker_chart"
         ports:
             - "33061:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
     cache:
         image: redis:3.0
         ports:
