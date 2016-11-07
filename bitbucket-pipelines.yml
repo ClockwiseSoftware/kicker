@@ -1,4 +1,4 @@
-image: clockwise/docker-phpunit-alpain
+image: clockwise/docker-phpunit-alpain:master
 
 pipelines:
   default:
