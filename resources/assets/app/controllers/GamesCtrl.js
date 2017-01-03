@@ -7,7 +7,8 @@ app.controller(
     'Game',
     'GamesRepository',
     "UserComplain",
-    function ($, $rootScope, $http, $timeout, Game, GamesRepository, UserComplain) {
+    '$route',
+    function ($, $rootScope, $http, $timeout, Game, GamesRepository, UserComplain, $route) {
       $.gamesRepository = new GamesRepository();
       $.games = $.gamesRepository.storage;
 
@@ -20,6 +21,13 @@ app.controller(
             $.$emit('finishLoading');
           });
         }
+      };
+
+      $.delete = function (id) {
+        $http.post('/api/games/' + id, {_method: 'delete'})
+          .success(function () {
+            $route.reload();
+          })
       };
 
       $.showOlnlyMyGames = function showOlnlyMyGames() {
