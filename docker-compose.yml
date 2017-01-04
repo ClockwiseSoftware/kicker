@@ -10,6 +10,8 @@ services:
             - "8080:80"
         links:
             - app
+        hostname: kicker_chart
+        domainname: kicker_chart.local
     app:
         build:
             context: ./
@@ -24,6 +26,8 @@ services:
             - "DB_HOST=database"
             - "REDIS_PORT=6379"
             - "REDIS_HOST=cache"
+            - "APP_ENV=develop"
+            - "APP_DEBUG=true"
     database:
         image: mysql:5.6
         environment:
