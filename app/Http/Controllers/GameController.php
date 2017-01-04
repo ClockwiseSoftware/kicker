@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GameRequests\DeleteGameRequest;
 use App\Models\Complaint;
 use App\Models\Game;
 use App\Models\GameProcessor;
@@ -107,16 +108,11 @@ class GameController extends Controller
         return response($game, 500);
     }
 
-    public function delete(Request $request, $id)
+    public function delete(DeleteGameRequest $request)
     {
-	    if (!$request->user()->isAdmin()) {
-		    return response('Unauthorized', 401);
-	    }
-        $game = Game::findOrFail($id);
+        /** @var Game $game */
+        $game = Game::find((int) $request->get('id'));
 
-        if ($game->delete())
-            return redirect()->route('home');
-
-        return response($game, 500);
+        return $game->delete() ? response($game) : response('Something went wrong', 500);
     }
 }
