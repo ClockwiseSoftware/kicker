@@ -93,4 +93,30 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 	public function create_users($count) {
 		return factory(User::class, $count)->create();
 	}
+
+    /**
+     * @return $this
+     */
+    public function authAdmin() {
+        return $this->createUser($isAdmin = true);
+    }
+
+    /**
+     * @return $this
+     */
+    public function authRegularUser() {
+        return $this->createUser($isAdmin = false);
+    }
+
+    /**
+     * @param bool $isAdmin
+     * @return $this
+     */
+    protected function createUser($isAdmin = false) {
+        $user = $this->auth();
+        $user->is_admin = (bool) $isAdmin;
+        $user->save();
+
+        return $this;
+    }
 }
