@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GameRequests\DeleteGameRequest;
 use App\Models\Complaint;
 use App\Models\Game;
 use App\Models\GameProcessor;
@@ -39,16 +38,14 @@ class GameController extends Controller
 	}
 
     public function index(Request $request)
-    {   
+    {
         $req = $request->all();
         // \Log::info($req);
 
-        $query = 
-            Game
-                ::where('status', Game::STATUS_ACTIVE)
+        $query = Game::where('status', Game::STATUS_ACTIVE)
                 ->with([
-                    'complaints.user', 
-                    'gamesUsersA.user', 
+                    'complaints.user',
+                    'gamesUsersA.user',
                     'gamesUsersB.user'])
                 ->orderBy('games.played_at', 'desc')
                 ->orderBy('games.id', 'desc');
@@ -108,11 +105,8 @@ class GameController extends Controller
         return response($game, 500);
     }
 
-    public function delete(DeleteGameRequest $request)
+    public function delete(Game $game)
     {
-        /** @var Game $game */
-        $game = Game::find((int) $request->get('id'));
-
         return $game->delete() ? response($game) : response('Something went wrong', 500);
     }
 }

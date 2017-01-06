@@ -33,11 +33,23 @@ class DeleteGameTest extends TestCase {
             ->parseResponse();
 
         $this->delete_game_request($response->id + 1)
-            ->seeStatusCode(422)
+            ->seeStatusCode(404)
             ->seeInDatabase('games', [
                 'id' => $response->id
             ]);
     }
+
+	/** @test */
+	public function delete_request_without_id() {
+		$this->users = $this->create_users(4);
+
+		$response = $this->authAdmin()
+			->create_game_request(rand(0, 9))
+			->parseResponse();
+
+		$this->delete_game_request()
+			->seeStatusCode(405);
+	}
 
     /** @test */
     public function delete_game_with_api() {
@@ -78,7 +90,7 @@ class DeleteGameTest extends TestCase {
      * @param int $id
      * @return self
      */
-    public function delete_game_request($id) {
+    public function delete_game_request($id = "") {
         return $this->request('DELETE', "/api/games/{$id}");
     }
 
