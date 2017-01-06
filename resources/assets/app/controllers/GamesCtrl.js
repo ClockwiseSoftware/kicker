@@ -24,10 +24,10 @@ app.controller(
       };
 
       $.delete = function (id) {
-        $http.post('/api/games/' + id, {_method: 'delete'})
+        $http.delete('/api/games/' + id)
           .success(function () {
             $route.reload();
-          })
+          });
       };
 
       $.showOlnlyMyGames = function showOlnlyMyGames() {
