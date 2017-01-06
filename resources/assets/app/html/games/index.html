@@ -77,8 +77,8 @@
                        ng-href="#/game/{{ game.id }}/update"
                        ng-if="user.isAdmin"
                     ><i class="fa fa-pencil"></i></a>
-                    <a href="#"
-                       ng-href="/game/{{ game.id }}/delete"
+                    <a href="javascript:void(0)"
+                       ng-click="delete(game.id)"
                        class="btn btn-danger btn-xs control-button"
                        ng-if="user.isAdmin"
                     ><i class="fa fa-ban"></i></a>
