@@ -83,9 +83,11 @@ Route::group(["middleware" => ["api"], "prefix" => "api"], function() {
                     ->where('id', '[0-9]+');
 
             Route::delete(
-                '/games/{id}',
-                'GameController@delete')
-                    ->where('id', '[0-9]+');
+                '/games/{game}',
+                'GameController@delete'
+            )
+            ->where('game', '[0-9]+')
+            ->middleware('jwt.admin');
 
             Route::get(
                 '/games/{id}/delete',
